@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static WalksInNature.Data.Models.DataConstants;
+using static WalksInNature.Data.Models.DataConstants.Walk;
 
 namespace WalksInNature.Data.Models
 {
@@ -8,13 +8,14 @@ namespace WalksInNature.Data.Models
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(WalkNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
 
         [Required]
         public string ImageUrl { get; set; }
 
         [Required]
+        [MaxLength(StartPointMaxLength)]
         public string StartPoint { get; set; }
         public int RegionId { get; set; }
         public Region Region { get; init; }

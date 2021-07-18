@@ -11,19 +11,34 @@
     var thirdWalk = walks.Count > 2 ? walks[2] : null;
 }
 
-@if (!walks.Any()) 
+@if (!walks.Any())
 {
     <div class="jumbotron">
-        <h1 class="display-4">Welcome to the our site for walks in nature!</h1>
-        <p class="lead">There are no walks in the system currently available, so why don't you just add one?</p>
+        <h1 class="display-4 text-center">Welcome to Walks in Nature!</h1>
+        <p class="lead text-center">There are no walks in the system currently available, so why don't you just add one?</p>
         <hr class="my-4">
-        <p class="lead">
-            <a asp-controller="Walks" asp-action="Add" class="btn btn-primary btn-lg" role="button">Add Walk</a>
+        <p class="lead text-center">
+            <a asp-controller="Walks" asp-action="Add" class="btn btn-info btn-lg" role="button">Add Walk</a>
         </p>
     </div>
 }
 
-<div class="mb-5"></div>
+@if (walks.Any())
+{
+<div class="jumbotron">
+    <h1 class="display-4 text-center">Welcome to Walks in Nature!</h1>
+    <p class="lead text-center">Enjoy of nature! Share with us! Let's go together!</p>    
+</div>
+}
+
+<!--
+<div class="row">
+    <p class="text-center" style="color:steelblue;font-size:30px;"><em>Welcome to Walks In Nature!</em></p>
+    <p class="text-center" style="color:steelblue;font-size:24px;"><em>Enjoy of nature! Share with us! Let's go together!</em></p>
+</div>
+-->
+
+<div class="mb-3"></div>
 
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
@@ -32,7 +47,7 @@
             <div class="carousel-item active">
                 <img class="d-block w-100" src="@firstWalk.ImageUrl" alt="@firstWalk.Name @firstWalk.Region">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Walks" asp-action="Details" asp-route-id="@firstWalk.Id">@firstWalk.Name (@firstWalk.Region)</a></h5>
+                    <h5><a class="btn btn-info" asp-controller="Walks" asp-action="Details" asp-route-id="@firstWalk.Id">@firstWalk.Name (@firstWalk.Region)</a></h5>
                 </div>
             </div>
         }
@@ -41,7 +56,7 @@
             <div class="carousel-item">
                 <img class="d-block w-100" src="@secondWalk.ImageUrl" alt="@secondWalk.Name @secondWalk.Region">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Walks" asp-action="Details" asp-route-id="@secondWalk.Id">@secondWalk.Name (@secondWalk.Region)</a></h5>
+                    <h5><a class="btn btn-info" asp-controller="Walks" asp-action="Details" asp-route-id="@secondWalk.Id">@secondWalk.Name (@secondWalk.Region)</a></h5>
                 </div>
             </div>
         }
@@ -50,7 +65,7 @@
             <div class="carousel-item">
                 <img class="d-block w-100" src="@thirdWalk.ImageUrl" alt="@thirdWalk.Name @thirdWalk.Region">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Walks" asp-action="Details" asp-route-id="@thirdWalk.Id">@thirdWalk.Name (@thirdWalk.Region)</a></h5>
+                    <h5><a class="btn btn-info" asp-controller="Walks" asp-action="Details" asp-route-id="@thirdWalk.Id">@thirdWalk.Name (@thirdWalk.Region)</a></h5>
                 </div>
             </div>
         }
@@ -65,18 +80,18 @@
     </a>
 </div>
 
-<div class="mb-5"></div>
+<div class="mb-3"></div>
 
 <div class="jumbotron">
     <div class="row">
-        <h2 class="col-md-4 text-center">
+        <h4 class="col-md-4 text-center">
             @Model.TotalWalks Walks
-        </h2>
-        <h2 class="col-md-4 text-center">
+        </h4>
+        <h4 class="col-md-4 text-center">
             @Model.TotalUsers Users
-        </h2>
-        <h2 class="col-md-4 text-center">
+        </h4>
+        <h4 class="col-md-4 text-center">
             @Model.TotalEvents Events
-        </h2>
+        </h4>
     </div>
 </div>

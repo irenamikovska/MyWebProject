@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static WalksInNature.Data.Models.DataConstants;
+using static WalksInNature.Data.Models.DataConstants.Level;
 
 namespace WalksInNature.Data.Models
 {
@@ -9,8 +9,9 @@ namespace WalksInNature.Data.Models
         public int Id { get; init; }
 
         [Required]
-        [MaxLength(LevelNameMaxLength)]
+        [MaxLength(NameMaxLength)]
         public string Name { get; set; }
         public IEnumerable<Walk> Walks { get; set; }
+        public IEnumerable<Event> Events { get; set; }
     }
 }

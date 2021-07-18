@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WalksInNature.Data.Models;
 
@@ -13,6 +14,8 @@ namespace WalksInNature.Data
         public DbSet<Walk> Walks { get; init; }
         public DbSet<Level> Levels { get; init; }
         public DbSet<Region> Regions { get; init; }
+        public DbSet<Event> Events { get; init; }
+        public DbSet<Guide> Guides { get; init; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -29,6 +32,34 @@ namespace WalksInNature.Data
                 .WithMany(x => x.Walks)
                 .HasForeignKey(x => x.RegionId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+              .Entity<Event>()
+              .HasOne(x => x.Level)
+              .WithMany(x => x.Events)
+              .HasForeignKey(x => x.LevelId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+               .Entity<Event>()
+               .HasOne(x => x.Region)
+               .WithMany(x => x.Events)
+               .HasForeignKey(x => x.RegionId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+              .Entity<Event>()
+              .HasOne(x => x.Guide)
+              .WithMany(x => x.Events)
+              .HasForeignKey(x => x.GuideId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+               .Entity<Guide>()
+               .HasOne<IdentityUser>()
+               .WithOne()
+               .HasForeignKey<Guide>(x => x.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);
         }

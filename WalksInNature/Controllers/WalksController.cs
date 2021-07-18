@@ -33,7 +33,7 @@ namespace WalksInNature.Controllers
             walksQuery = query.Sorting switch
             {
                 WalkSorting.Name => walksQuery.OrderBy(x => x.Name),
-                WalkSorting.Level => walksQuery.OrderByDescending(x => x.Level.Name),
+                WalkSorting.Level => walksQuery.OrderByDescending(x => x.Level.Id),
                 WalkSorting.DateCreated or _ => walksQuery.OrderByDescending(x => x.Id)
             };
             

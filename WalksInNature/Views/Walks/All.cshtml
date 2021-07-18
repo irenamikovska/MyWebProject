@@ -52,7 +52,7 @@
 <div class="row mb-5">
 
     <div class="col-md-6">
-        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+        <a class="btn btn-info @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-controller="Walks"
            asp-action="All"
            asp-route-currentPage="@previousPage"
@@ -62,7 +62,7 @@
     </div>
 
     <div class="col-md-6">
-        <a class="btn btn-primary float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
+        <a class="btn btn-info float-right @(Model.CurrentPage == maxPage ? "disabled" : string.Empty)"
            asp-controller="Walks"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
@@ -71,7 +71,6 @@
            asp-route-sorting="@((int)Model.Sorting)">>></a>
     </div>
 </div>
-
 
 <div class="row">
     @foreach (var walk in Model.Walks)
@@ -83,7 +82,7 @@
                     <h5 class="card-title text-center">@walk.Name</h5>
                     <h6 class="card-title text-center">Region: @walk.Region</h6>
                     <h6 class="card-title text-center">Level: @walk.Level</h6>
-                    <a asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id" class="btn btn-primary">More details</a>
+                    <a asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id" class="btn btn-info">More info</a>
                 </div>
             </div>
         </div>
