@@ -10,7 +10,7 @@ using WalksInNature.Data;
 namespace WalksInNature.Data.Migrations
 {
     [DbContext(typeof(WalksDbContext))]
-    [Migration("20210718141816_EventAndGuideTables")]
+    [Migration("20210719082116_EventAndGuideTables")]
     partial class EventAndGuideTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,7 +238,7 @@ namespace WalksInNature.Data.Migrations
                     b.Property<int>("GuideId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImagePath")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -257,6 +257,9 @@ namespace WalksInNature.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("StartingHour")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

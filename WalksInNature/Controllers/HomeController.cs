@@ -14,6 +14,8 @@ namespace WalksInNature.Controllers
         public IActionResult Index()
         {
             var totalWalks = this.data.Walks.Count();
+            var totalEvents = this.data.Events.Count();
+            var totalUsers = this.data.Users.Count();
             
             var walks = this.data
                     .Walks
@@ -31,6 +33,8 @@ namespace WalksInNature.Controllers
             return View(new IndexViewModel 
             {
                 TotalWalks = totalWalks,
+                TotalUsers = totalUsers,
+                TotalEvents = totalEvents,
                 Walks = walks
             });
         }     

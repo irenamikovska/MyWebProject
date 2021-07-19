@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using WalksInNature.Data;
@@ -12,7 +13,7 @@ namespace WalksInNature.Controllers
         private readonly WalksDbContext data;
         public WalksController(WalksDbContext data) => this.data = data;
 
-        // bind to model class properties
+        // FromQuery - bind to all properties in model class, instead of:
         // public IActionResult All(string searchTerm, string region, WalkSorting sorting, int currentPage)
         public IActionResult All([FromQuery]AllWalksQueryModel query)
         {
@@ -66,6 +67,7 @@ namespace WalksInNature.Controllers
             return View(query);            
         }
 
+        [Authorize]
         public IActionResult Add() => View(new AddWalkFormModel 
         {
             Regions = this.GetWalkRegions(),
@@ -73,6 +75,7 @@ namespace WalksInNature.Controllers
         });
 
         [HttpPost]
+        [Authorize]
         public IActionResult Add(AddWalkFormModel input)
         {
             if (!this.data.Regions.Any(x => x.Id == input.RegionId)) 

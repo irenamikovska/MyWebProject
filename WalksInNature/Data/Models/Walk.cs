@@ -17,8 +17,10 @@ namespace WalksInNature.Data.Models
         [Required]
         [MaxLength(StartPointMaxLength)]
         public string StartPoint { get; set; }
+
         public int RegionId { get; set; }
         public Region Region { get; init; }
+
         public int LevelId { get; set; }
         public Level Level { get; init; }
 

@@ -236,7 +236,7 @@ namespace WalksInNature.Data.Migrations
                     b.Property<int>("GuideId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ImagePath")
+                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -255,6 +255,9 @@ namespace WalksInNature.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("StartingHour")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
