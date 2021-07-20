@@ -1,6 +1,6 @@
-﻿namespace WalksInNature.Models.Walks
+﻿namespace WalksInNature.Services.Walks
 {
-    public class WalkListingViewModel
+    public class WalkServiceModel
     {
         public int Id { get; init; }
         public string Name { get; init; }

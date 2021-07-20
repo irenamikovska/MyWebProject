@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WalksInNature.Data;
 using WalksInNature.Infrastructure;
+using WalksInNature.Services.Statistics;
+using WalksInNature.Services.Walks;
 
 namespace WalksInNature
 {
@@ -36,6 +38,9 @@ namespace WalksInNature
                 .AddEntityFrameworkStores<WalksDbContext>();
 
             services.AddControllersWithViews();
+
+            services.AddTransient<IStatisticsService, StatisticsService>();
+            services.AddTransient<IWalkService, WalkService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -25,10 +25,10 @@
 
 @if (walks.Any())
 {
-<div class="jumbotron">
-    <h1 class="display-4 text-center">Welcome to Walks in Nature!</h1>
-    <p class="lead text-center" style="color:black;font-size:30px"><em>Enjoy of nature! Share with us! Let's go together!</em></p>    
-</div>
+    <div class="jumbotron">
+        <h1 class="display-4 text-center">Welcome to Walks in Nature!</h1>
+        <p class="lead text-center" style="color:black;font-size:30px"><em>Enjoy of nature! Share with us! Let's go together!</em></p>
+    </div>
 }
 
 <div class="mb-3"></div>
@@ -75,16 +75,30 @@
 
 <div class="mb-3"></div>
 
-<div class="jumbotron">
-    <div class="row">
-        <h4 class="col-md-4 text-center">
-            @Model.TotalWalks Walks
-        </h4>
-        <h4 class="col-md-4 text-center">
-            @Model.TotalUsers Users
-        </h4>
-        <h4 class="col-md-4 text-center">
-            @Model.TotalEvents Events
-        </h4>
+<div class="row">
+    <div class="col-12 text-center">
+        <button class="btn btn-info" id="statistics-button">Show Site Statistics</button>
     </div>
 </div>
+
+<div class="jumbotron d-none" id="statistics">
+    <div class="row">
+        <h4 class="col-md-4 text-center" id="total-walks"></h4>
+        <h4 class="col-md-4 text-center" id="total-users"></h4>
+        <h4 class="col-md-4 text-center" id="total-events"></h4>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $('#statistics-button').on('click', ev => {
+            $.get('/api/statistics', (data) => {
+                $('#total-walks').text(data.totalWalks + " Walks");
+                $('#total-users').text(data.totalUsers + " Users");
+                $('#total-events').text(data.totalEvents + " Events");
+                $('#statistics').removeClass('d-none');
+                $('#statistics-button').hide();
+            });
+        });
+    </script>
+}

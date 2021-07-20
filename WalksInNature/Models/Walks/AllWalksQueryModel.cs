@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WalksInNature.Services.Walks;
 
 namespace WalksInNature.Models.Walks
 {
@@ -9,7 +10,7 @@ namespace WalksInNature.Models.Walks
 
         [Display(Name = "Search by text")]
         public string SearchTerm { get; init; }      
-        public IEnumerable<WalkListingViewModel> Walks { get; set; }
+        public IEnumerable<WalkServiceModel> Walks { get; set; }
 
         // for filtering by region
         public string Region { get; init; }

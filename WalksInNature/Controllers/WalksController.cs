@@ -5,64 +5,37 @@ using System.Linq;
 using WalksInNature.Data;
 using WalksInNature.Data.Models;
 using WalksInNature.Models.Walks;
+using WalksInNature.Services.Walks;
 
 namespace WalksInNature.Controllers
 {
     public class WalksController : Controller
     {
+        private readonly IWalkService walkService;
         private readonly WalksDbContext data;
-        public WalksController(WalksDbContext data) => this.data = data;
+        public WalksController(IWalkService walkService, WalksDbContext data) 
+        {
+            this.walkService = walkService;
+            this.data = data; 
+        } 
 
         // FromQuery - bind to all properties in model class, instead of:
         // public IActionResult All(string searchTerm, string region, WalkSorting sorting, int currentPage)
         public IActionResult All([FromQuery]AllWalksQueryModel query)
         {
-            var walksQuery = this.data.Walks.AsQueryable();
-            
-            if (!string.IsNullOrWhiteSpace(query.Region))
-            {
-                walksQuery = walksQuery.Where(x => x.Region.Name == query.Region);
-            }
+            var queryResult = this.walkService.All(
+                query.Region,
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllWalksQueryModel.WalksPerPage);
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                walksQuery = walksQuery.Where(x =>
-                    x.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
-                    x.Region.Name.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-            
-            walksQuery = query.Sorting switch
-            {
-                WalkSorting.Name => walksQuery.OrderBy(x => x.Name),
-                WalkSorting.Level => walksQuery.OrderByDescending(x => x.Level.Id),
-                WalkSorting.DateCreated or _ => walksQuery.OrderByDescending(x => x.Id)
-            };
-            
-            var totalWalks = walksQuery.Count();
 
-            var walks = walksQuery  
-                .Skip((query.CurrentPage - 1) * AllWalksQueryModel.WalksPerPage)
-                .Take(AllWalksQueryModel.WalksPerPage)               
-                .Select(x => new WalkListingViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ImageUrl = x.ImageUrl,
-                    Region = x.Region.Name,
-                    Level = x.Level.Name
-                })
-                .ToList();
+            var walkRegions = this.walkService.AllWalkRegions();
 
-            var walkRegions = this.data
-                .Walks
-                .Select(x => x.Region.Name)
-                .Distinct()
-                .OrderBy(r => r)
-                .ToList();
-
-            query.TotalWalks = totalWalks;
             query.Regions = walkRegions;
-            query.Walks = walks;
+            query.TotalWalks = queryResult.TotalWalks;
+            query.Walks = queryResult.Walks;
 
             return View(query);            
         }
