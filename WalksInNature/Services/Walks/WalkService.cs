@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WalksInNature.Data;
+using WalksInNature.Data.Models;
 using WalksInNature.Models.Walks;
 
 namespace WalksInNature.Services.Walks
@@ -55,6 +56,25 @@ namespace WalksInNature.Services.Walks
                 CurrentPage = currentPage,
                 Walks = walks
             };
+        }
+
+        public int Create(string name, string imageUrl, string startPoint, 
+            int regionId, int levelId, string description)
+        {
+            var walkToAdd = new Walk
+            {
+                Name = name,
+                ImageUrl = imageUrl,
+                StartPoint = startPoint,
+                RegionId = regionId,
+                LevelId = levelId,
+                Description = description
+            };
+
+            this.data.Walks.Add(walkToAdd);
+            this.data.SaveChanges();
+
+            return walkToAdd.Id;
         }
 
         public IEnumerable<string> AllWalkRegions()

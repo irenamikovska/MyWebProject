@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WalksInNature.Services.Events;
 
 namespace WalksInNature.Models.Events
 {
@@ -9,7 +10,7 @@ namespace WalksInNature.Models.Events
 
         [Display(Name = "Search by text")]
         public string SearchTerm { get; init; }      
-        public IEnumerable<EventListingViewModel> Events { get; set; }
+        public IEnumerable<EventServiceModel> Events { get; set; }
 
         // for filtering by region
         public string Date { get; init; }         

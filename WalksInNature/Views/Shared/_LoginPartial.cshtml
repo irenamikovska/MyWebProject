@@ -1,13 +1,29 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using WalksInNature.Data.Models
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@inject IGuideService GuideService 
 
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Guides" asp-action="Become">Become Guide</a>
-        </li>
+        var userId = User.GetId();
+        var userIsGuide = GuideService.IsGuide(userId);
+        //var userIsAdmin = User.IsAdmin();
+
+        @if (userIsGuide)
+        { 
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="MyEvents">My Events</a>
+            </li>
+        }
+        else 
+        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="Guides" asp-action="Become">Become Guide</a>
+            </li>
+        }
+        
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
         </li>

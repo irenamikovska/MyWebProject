@@ -35,7 +35,6 @@
                 </select>
             </div>
         </div>
-
     </div>
 </form>
 
@@ -77,20 +76,4 @@
     <h2 class="text-center">No events found by the given criteria!</h2>
 }
 
-<div class="row">
-    @foreach (var item in Model.Events)
-    {
-        <div class="col-md-4">
-            <div class="card mb-3">
-                <img class="card-img-top" src="@item.ImageUrl" alt="@item.Date">
-                <div class="card-body text-center">
-                    <h5 class="card-title text-center">@item.Name</h5>
-                    <h5 class="card-title text-center">@item.Date</h5>
-                    <h6 class="card-title text-center">Region: @item.Region</h6>
-                    <h6 class="card-title text-center">Level: @item.Level</h6>
-                    <a asp-controller="Events" asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">More info</a>
-                </div>
-            </div>
-        </div>
-    }
-</div>
+<partial name="_EventsPartial" model="@Model.Events"/>

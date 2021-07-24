@@ -1,100 +1,80 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+using System;
 using System.Globalization;
-using System.Linq;
-using WalksInNature.Data;
-using WalksInNature.Data.Models;
 using WalksInNature.Infrastructure;
 using WalksInNature.Models.Events;
+using WalksInNature.Services.Events;
+using WalksInNature.Services.Guides;
+using WalksInNature.Services.Levels;
+using WalksInNature.Services.Regions;
 
 namespace WalksInNature.Controllers
 {
     public class EventsController : Controller
     {
-        private readonly WalksDbContext data;
-        public EventsController(WalksDbContext data) => this.data = data;
+        private readonly IEventService eventService;
+        private readonly IGuideService guideService;
+        private readonly IRegionService regionService;
+        private readonly ILevelService levelService;
+        public EventsController(IEventService eventService, 
+            IGuideService guideService,
+            IRegionService regionService,
+            ILevelService levelService) 
+        {
+            this.eventService = eventService;
+            this.guideService = guideService;
+            this.regionService = regionService;
+            this.levelService = levelService;
+        } 
 
         public IActionResult All([FromQuery] AllEventsQueryModel query)
         {
-            var eventsQuery = this.data.Events.AsQueryable();
+            var queryResult = this.eventService.All(
+                query.Date,               
+                query.SearchTerm,
+                query.Sorting,
+                query.CurrentPage,
+                AllEventsQueryModel.EventsPerPage);                       
 
-            if (!string.IsNullOrWhiteSpace(query.Date))
-            {
-                eventsQuery = eventsQuery.Where(x => x.Date.ToString() == query.Date);
-            }
+            var eventDates = this.eventService.AllEventDates();
 
-            if (!string.IsNullOrWhiteSpace(query.SearchTerm))
-            {
-                eventsQuery = eventsQuery.Where(x =>
-                    x.Name.ToLower().Contains(query.SearchTerm.ToLower()) ||
-                    x.Region.Name.ToLower().Contains(query.SearchTerm.ToLower()));
-            }
-
-            eventsQuery = query.Sorting switch
-            {
-                EventSorting.Name => eventsQuery.OrderBy(x => x.Name),
-                EventSorting.Region => eventsQuery.OrderBy(x => x.Region.Id),
-                EventSorting.DateCreated or _ => eventsQuery.OrderByDescending(x => x.Id)
-            };
-
-            var totalEvents = eventsQuery.Count();
-
-            var events = eventsQuery
-                .Skip((query.CurrentPage - 1) * AllEventsQueryModel.EventsPerPage)
-                .Take(AllEventsQueryModel.EventsPerPage)
-                .Select(x => new EventListingViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Date = x.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    StartingHour = x.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
-                    ImageUrl = x.ImageUrl,
-                    Region = x.Region.Name,
-                    Level = x.Level.Name,
-                    GuideId = x.GuideId
-                })
-                .ToList();
-            
-            var eventDates = this.data
-                .Events
-                .Select(x => x.Date.ToString())
-                .Distinct()
-                .OrderBy(d => d)
-                .ToList();
-
-            query.TotalEvents = totalEvents;
             query.Dates = eventDates;
-            query.Events = events;
+            query.TotalEvents = queryResult.TotalEvents;            
+            query.Events = queryResult.Events;
 
             return View(query);
         }
 
         [Authorize]
+        public IActionResult MyEvents()
+        {
+            var myEvents = this.eventService.ByUser(this.User.GetId());
+
+            return View(myEvents);
+        }
+
+        [Authorize]
         public IActionResult Add()
         {
-            if (!this.UserIsGuide())
+            if (!this.guideService.IsGuide(this.User.GetId()))
             {
                 return RedirectToAction(nameof(GuidesController.Become), "Guides");
             }
 
-            return View(new AddEventFormModel
+            return View(new EventFormModel
             {
-                Regions = this.GetEventRegions(),
-                Levels = this.GetEventLevels()
+                Regions = this.regionService.GetRegions(),
+                Levels = this.levelService.GetLevels()
             });
         }
          
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddEventFormModel input)
+        public IActionResult Add(EventFormModel input)
         {
-            var guideId = this.data
-                .Guides
-                .Where(d => d.UserId == this.User.GetId())
-                .Select(d => d.Id)
-                .FirstOrDefault();
+            var guideId = this.guideService.GetGuideId(this.User.GetId());                 
 
             if (guideId == 0)
             {
@@ -102,12 +82,12 @@ namespace WalksInNature.Controllers
             }
 
 
-            if (!this.data.Regions.Any(x => x.Id == input.RegionId))
+            if (!this.regionService.RegionExists(input.RegionId))
             {
                 this.ModelState.AddModelError(nameof(input.RegionId), "Region does not exist.");
             }
 
-            if (!this.data.Levels.Any(x => x.Id == input.LevelId))
+            if (!this.levelService.LevelExists(input.LevelId))
             {
                 this.ModelState.AddModelError(nameof(input.LevelId), "Level does not exist.");
             }            
@@ -115,53 +95,103 @@ namespace WalksInNature.Controllers
 
             if (!ModelState.IsValid)
             {
-                input.Regions = this.GetEventRegions();
-                input.Levels = this.GetEventLevels();
+                input.Regions = this.regionService.GetRegions();
+                input.Levels = this.levelService.GetLevels();
+
                 return View(input);
             }
 
-            var eventToAdd = new Event
-            {
-                Name = input.Name,
-                ImageUrl = input.ImageUrl,
-                Date = input.Date,
-                StartingHour = input.StartingHour,
-                StartPoint = input.StartPoint,
-                RegionId = input.RegionId,
-                LevelId = input.LevelId,
-                Description = input.Description,
-                GuideId = guideId
-            };
+            this.eventService.Create(input.Name, input.ImageUrl, 
+                input.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                input.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
+                input.StartPoint, input.RegionId, input.LevelId, 
+                input.Description, guideId);
+                        
+            return RedirectToAction(nameof(All));
+        }
 
-            this.data.Events.Add(eventToAdd);
-            this.data.SaveChanges();
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.GetId();
+
+            if (!this.guideService.IsGuide(userId))
+            {
+                return RedirectToAction(nameof(GuidesController.Become), "Guides");
+            }
+
+            var eventToEdit = this.eventService.GetDetails(id);
+
+            if (eventToEdit.UserId != userId)
+            {
+                return Unauthorized();
+            }
+
+            return View(new EventFormModel
+            {
+                Name = eventToEdit.Name,
+                ImageUrl = eventToEdit.ImageUrl,
+                StartPoint = eventToEdit.StartPoint,
+                RegionId = eventToEdit.RegionId,
+                LevelId = eventToEdit.LevelId,
+                Date = DateTime.ParseExact(eventToEdit.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                StartingHour = DateTime.ParseExact(eventToEdit.StartingHour, "hh:mm", CultureInfo.InvariantCulture),
+                Description = eventToEdit.Description,
+                GuideId = eventToEdit.GuideId,
+                Regions = this.regionService.GetRegions(),
+                Levels = this.levelService.GetLevels()
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, EventFormModel eventToEdit)
+        {
+            var guideId = this.guideService.GetGuideId(this.User.GetId());
+
+            if (guideId == 0)
+            {
+                return RedirectToAction(nameof(GuidesController.Become), "Guides");
+            }
+
+            if (!this.regionService.RegionExists(eventToEdit.RegionId))
+            {
+                this.ModelState.AddModelError(nameof(eventToEdit.RegionId), "Region does not exist.");
+            }
+
+            if (!this.levelService.LevelExists(eventToEdit.LevelId))
+            {
+                this.ModelState.AddModelError(nameof(eventToEdit.LevelId), "Level does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                eventToEdit.Regions = this.regionService.GetRegions();
+                eventToEdit.Levels = this.levelService.GetLevels();
+
+                return View(eventToEdit);
+            }
+
+            if (!this.eventService.IsByGuide(id, guideId))
+            {
+                return BadRequest();
+            }
+
+            this.eventService.Edit(
+                id, 
+                eventToEdit.Name,
+                eventToEdit.ImageUrl,
+                eventToEdit.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                eventToEdit.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
+                eventToEdit.StartPoint,
+                eventToEdit.RegionId,
+                eventToEdit.LevelId,
+                eventToEdit.Description              
+               );
 
             return RedirectToAction(nameof(All));
         }
 
-        private bool UserIsGuide()
-            => this.data
-                .Guides
-                .Any(d => d.UserId == this.User.GetId());
 
-        private IEnumerable<EventRegionViewModel> GetEventRegions()
-            => this.data
-                .Regions
-                .Select(x => new EventRegionViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
-                .ToList();
-
-        private IEnumerable<EventLevelViewModel> GetEventLevels()
-            => this.data
-                .Levels
-                .Select(x => new EventLevelViewModel
-                {
-                    Id = x.Id,
-                    Name = x.Name
-                })
-                .ToList();
     }
 }

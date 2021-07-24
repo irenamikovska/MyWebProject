@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WalksInNature.Services.Levels;
+using WalksInNature.Services.Regions;
 using static WalksInNature.Data.Models.DataConstants.Walk;
 
 namespace WalksInNature.Models.Walks
@@ -29,7 +31,7 @@ namespace WalksInNature.Models.Walks
         [Required]
         [StringLength(int.MaxValue, MinimumLength = DescriptionMinLength, ErrorMessage = "The {0} should be at least {2} characters")]
         public string Description { get; init; }
-        public IEnumerable<WalkRegionViewModel> Regions { get; set; }
-        public IEnumerable<WalkLevelViewModel> Levels { get; set; }
+        public IEnumerable<RegionServiceModel> Regions { get; set; }
+        public IEnumerable<LevelServiceModel> Levels { get; set; }
     }
 }

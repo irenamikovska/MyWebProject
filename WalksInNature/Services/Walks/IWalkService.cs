@@ -9,5 +9,7 @@ namespace WalksInNature.Services.Walks
 
         IEnumerable<string> AllWalkRegions();
 
+        int Create(string name, string imageUrl, string startPoint,
+            int regionId, int levelId, string description);
     }
 }

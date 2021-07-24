@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 using System.Linq;
 using WalksInNature.Data;
-using WalksInNature.Models;
 using WalksInNature.Models.Home;
 using WalksInNature.Services.Statistics;
 
@@ -45,8 +43,7 @@ namespace WalksInNature.Controllers
             });
         }     
         
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() => View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+       public IActionResult Error() => View();
         
     }
 }

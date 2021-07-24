@@ -7,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WalksInNature.Data;
 using WalksInNature.Infrastructure;
+using WalksInNature.Services.Events;
+using WalksInNature.Services.Guides;
+using WalksInNature.Services.Levels;
+using WalksInNature.Services.Regions;
 using WalksInNature.Services.Statistics;
 using WalksInNature.Services.Walks;
 
@@ -41,6 +45,10 @@ namespace WalksInNature
 
             services.AddTransient<IStatisticsService, StatisticsService>();
             services.AddTransient<IWalkService, WalkService>();
+            services.AddTransient<IGuideService, GuideService>();
+            services.AddTransient<IEventService, EventService>();
+            services.AddTransient<IRegionService, RegionService>();
+            services.AddTransient<ILevelService, LevelService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
