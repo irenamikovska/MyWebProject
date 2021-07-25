@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WalksInNature.Data.Models;
 
 namespace WalksInNature.Data
 {
-    public class WalksDbContext : IdentityDbContext
+    public class WalksDbContext : IdentityDbContext<User>
     {
         public WalksDbContext(DbContextOptions<WalksDbContext> options)
             : base(options)
@@ -56,7 +55,7 @@ namespace WalksInNature.Data
 
             builder
                .Entity<Guide>()
-               .HasOne<IdentityUser>()
+               .HasOne<User>()
                .WithOne()
                .HasForeignKey<Guide>(x => x.UserId)
                .OnDelete(DeleteBehavior.Restrict);
