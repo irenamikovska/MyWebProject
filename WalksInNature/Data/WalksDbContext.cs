@@ -33,6 +33,13 @@ namespace WalksInNature.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
+                .Entity<Walk>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.Walks)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder
               .Entity<Event>()
               .HasOne(x => x.Level)
               .WithMany(x => x.Events)

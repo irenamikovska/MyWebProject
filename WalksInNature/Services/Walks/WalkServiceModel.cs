@@ -7,5 +7,7 @@
         public string ImageUrl { get; init; }
         public string Region { get; set; }
         public string Level { get; set; }
+        public string UserId { get; set; }
     }
 }
+

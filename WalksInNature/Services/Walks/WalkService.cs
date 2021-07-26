@@ -36,18 +36,10 @@ namespace WalksInNature.Services.Walks
 
             var totalWalks = walksQuery.Count();
 
-            var walks = walksQuery
+            var walks = GetWalks(walksQuery
                 .Skip((currentPage - 1) * walksPerPage)
-                .Take(walksPerPage)
-                .Select(x => new WalkServiceModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    ImageUrl = x.ImageUrl,
-                    Region = x.Region.Name,
-                    Level = x.Level.Name
-                })
-                .ToList();
+                .Take(walksPerPage));
+                
 
             return new WalkQueryServiceModel
             {
@@ -59,7 +51,7 @@ namespace WalksInNature.Services.Walks
         }
 
         public int Create(string name, string imageUrl, string startPoint, 
-            int regionId, int levelId, string description)
+            int regionId, int levelId, string description, string userId)
         {
             var walkToAdd = new Walk
             {
@@ -68,7 +60,8 @@ namespace WalksInNature.Services.Walks
                 StartPoint = startPoint,
                 RegionId = regionId,
                 LevelId = levelId,
-                Description = description
+                Description = description,
+                UserId = userId
             };
 
             this.data.Walks.Add(walkToAdd);
@@ -84,6 +77,69 @@ namespace WalksInNature.Services.Walks
                 .Distinct()
                 .OrderBy(r => r)
                 .ToList();
+
+        public WalkDetailsServiceModel GetDetails(int walkId)        
+             => this.data
+               .Walks
+               .Where(x => x.Id == walkId)
+               .Select(x => new WalkDetailsServiceModel
+               {
+                   Id = x.Id,
+                   Name = x.Name,
+                   ImageUrl = x.ImageUrl,
+                   StartPoint = x.StartPoint,
+                   Region = x.Region.Name,
+                   Level = x.Level.Name,                  
+                   Description = x.Description,                
+                   UserId = x.UserId
+               })
+               .FirstOrDefault();
+
+        public IEnumerable<WalkServiceModel> WalksByUser(string userId)
+            => GetWalks(this.data
+                .Walks
+                .Where(x => x.UserId == userId));
+        
+        public bool WalkIsByUser(int walkId, string userId)
+            => this.data
+                    .Walks
+                    .Any(x => x.Id == walkId && x.UserId == userId);
+
+
+        public bool Edit(int id, string name, string imageUrl, string startPoint, int regionId, int levelId, string description)
+        {
+            var walkData = this.data.Walks.Find(id);
+
+            if (walkData == null)
+            {
+                return false;
+            }
+
+            walkData.Name = name;
+            walkData.ImageUrl = imageUrl;           
+            walkData.StartPoint = startPoint;
+            walkData.RegionId = regionId;
+            walkData.LevelId = levelId;
+            walkData.Description = description;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
+
+        private static IEnumerable<WalkServiceModel> GetWalks(IQueryable<Walk> walkQuery)
+           => walkQuery
+               .Select(x => new WalkServiceModel
+               {
+                   Id = x.Id,
+                   Name = x.Name,                   
+                   ImageUrl = x.ImageUrl,
+                   Region = x.Region.Name,
+                   Level = x.Level.Name,
+                   UserId = x.UserId
+               })
+               .ToList();
+
         
     }
 }

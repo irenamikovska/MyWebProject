@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WalksInNature.Infrastructure;
 using WalksInNature.Models.Walks;
 using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
@@ -41,8 +42,17 @@ namespace WalksInNature.Controllers
             return View(query);            
         }
 
+
         [Authorize]
-        public IActionResult Add() => View(new AddWalkFormModel 
+        public IActionResult MyWalks()
+        {
+            var myWalks = this.walkService.WalksByUser(this.User.GetId());
+
+            return View(myWalks);
+        }
+
+        [Authorize]
+        public IActionResult Add() => View(new WalkFormModel 
         {
             Regions = this.regionService.GetRegions(),
             Levels = this.levelService.GetLevels()
@@ -51,8 +61,10 @@ namespace WalksInNature.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Add(AddWalkFormModel input)
+        public IActionResult Add(WalkFormModel input)
         {
+            var userId = this.User.GetId();
+
             if (!this.regionService.RegionExists(input.RegionId))
             {
                 this.ModelState.AddModelError(nameof(input.RegionId), "Region does not exist.");
@@ -62,7 +74,6 @@ namespace WalksInNature.Controllers
             {
                 this.ModelState.AddModelError(nameof(input.LevelId), "Level does not exist.");
             }
-
 
             if (!ModelState.IsValid)
             {
@@ -78,12 +89,86 @@ namespace WalksInNature.Controllers
                 input.StartPoint,
                 input.RegionId,
                 input.LevelId,
-                input.Description
+                input.Description,
+                userId
             );
                     
             return RedirectToAction(nameof(All));
         }
-                
+
+        [Authorize]
+        public IActionResult Edit(int id)
+        {
+            var userId = this.User.GetId();
+            /*
+            if (!this.walkService.WalkIsByUser(id, userId) && !User.IsAdmin())
+            {
+                //return RedirectToAction(nameof(UsersController.Login), "Users");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }*/
+
+            var walkToEdit = this.walkService.GetDetails(id);
+
+            if (walkToEdit.UserId != userId && !User.IsAdmin())
+            {
+                return Unauthorized();
+            }
+
+            return View(new WalkFormModel
+            {
+                Name = walkToEdit.Name,
+                ImageUrl = walkToEdit.ImageUrl,
+                StartPoint = walkToEdit.StartPoint,
+                RegionId = walkToEdit.RegionId,
+                LevelId = walkToEdit.LevelId,               
+                Description = walkToEdit.Description,
+                UserId = walkToEdit.UserId,
+                Regions = this.regionService.GetRegions(),
+                Levels = this.levelService.GetLevels()
+            });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(int id, WalkFormModel walk)
+        {
+            var userId = this.User.GetId();
+
+            if (!this.regionService.RegionExists(walk.RegionId))
+            {
+                this.ModelState.AddModelError(nameof(walk.RegionId), "Region does not exist.");
+            }
+
+            if (!this.levelService.LevelExists(walk.LevelId))
+            {
+                this.ModelState.AddModelError(nameof(walk.LevelId), "Level does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                walk.Regions = this.regionService.GetRegions();
+                walk.Levels = this.levelService.GetLevels();
+
+                return View(walk);
+            }
+
+            if (!this.walkService.WalkIsByUser(id, userId) && !User.IsAdmin())
+            {
+                return BadRequest();
+            }
+
+            this.walkService.Edit(
+                id,
+                walk.Name,
+                walk.ImageUrl,
+                walk.StartPoint,
+                walk.RegionId,
+                walk.LevelId,
+                walk.Description
+               );
+
+            return RedirectToAction(nameof(All));
+        }
 
     }
 }

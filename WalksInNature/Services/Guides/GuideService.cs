@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using WalksInNature.Data;
+using WalksInNature.Data.Models;
 
 namespace WalksInNature.Services.Guides
 {
@@ -21,5 +22,19 @@ namespace WalksInNature.Services.Guides
                 .Select(x => x.Id)
                 .FirstOrDefault();
 
+        public int Create(string name, string phoneNumber, string userId) 
+        {
+            var guideToAdd = new Guide
+            {
+                Name = name,
+                PhoneNumber = phoneNumber,
+                UserId = userId
+            };
+
+            this.data.Guides.Add(guideToAdd);
+            this.data.SaveChanges();
+
+            return guideToAdd.Id;
+        }
     }
 }

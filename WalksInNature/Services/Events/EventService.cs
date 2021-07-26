@@ -120,12 +120,12 @@ namespace WalksInNature.Services.Events
             return true;
         }
 
-        public IEnumerable<EventServiceModel> ByUser(string userId)
+        public IEnumerable<EventServiceModel> EventsOfGuide(string userId)
             => GetEvents(this.data
                 .Events
-                .Where(c => c.Guide.UserId == userId));
+                .Where(e => e.Guide.UserId == userId));
 
-        public bool IsByGuide(int eventId, int guideId)
+        public bool EventIsByGuide(int eventId, int guideId)
                 => this.data
                     .Events
                     .Any(x => x.Id == eventId && x.GuideId == guideId);
@@ -136,8 +136,7 @@ namespace WalksInNature.Services.Events
                 .Distinct()
                 .OrderBy(d => d)
                 .ToList();
-
-        
+               
 
         private static IEnumerable<EventServiceModel> GetEvents(IQueryable<Event> eventQuery)
             => eventQuery

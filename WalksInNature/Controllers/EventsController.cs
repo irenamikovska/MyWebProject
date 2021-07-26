@@ -49,7 +49,7 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult MyEvents()
         {
-            var myEvents = this.eventService.ByUser(this.User.GetId());
+            var myEvents = this.eventService.EventsOfGuide(this.User.GetId());
 
             return View(myEvents);
         }
@@ -90,8 +90,7 @@ namespace WalksInNature.Controllers
             if (!this.levelService.LevelExists(input.LevelId))
             {
                 this.ModelState.AddModelError(nameof(input.LevelId), "Level does not exist.");
-            }            
-
+            }          
 
             if (!ModelState.IsValid)
             {
@@ -115,14 +114,14 @@ namespace WalksInNature.Controllers
         {
             var userId = this.User.GetId();
 
-            if (!this.guideService.IsGuide(userId))
+            if (!this.guideService.IsGuide(userId) && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(GuidesController.Become), "Guides");
             }
 
             var eventToEdit = this.eventService.GetDetails(id);
 
-            if (eventToEdit.UserId != userId)
+            if (eventToEdit.UserId != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
@@ -149,7 +148,7 @@ namespace WalksInNature.Controllers
         {
             var guideId = this.guideService.GetGuideId(this.User.GetId());
 
-            if (guideId == 0)
+            if (guideId == 0 && !User.IsAdmin())
             {
                 return RedirectToAction(nameof(GuidesController.Become), "Guides");
             }
@@ -172,7 +171,7 @@ namespace WalksInNature.Controllers
                 return View(eventToEdit);
             }
 
-            if (!this.eventService.IsByGuide(id, guideId))
+            if (!this.eventService.EventIsByGuide(id, guideId) && !User.IsAdmin())
             {
                 return BadRequest();
             }

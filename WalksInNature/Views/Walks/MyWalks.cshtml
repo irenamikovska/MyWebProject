@@ -1,0 +1,14 @@
+﻿@model IEnumerable<WalkServiceModel>
+
+@{
+    ViewBag.Title = "My Walks";
+    ViewBag.AllowWalkEdit = true;
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any walks yet!</h2>
+}
+
+<partial name="_WalksPartial" model="@Model" />
+

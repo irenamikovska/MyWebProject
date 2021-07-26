@@ -4,6 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using WalksInNature.Data.Models;
+using System;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+
+using static WalksInNature.WebConstants;
 
 namespace WalksInNature.Infrastructure
 {
@@ -11,21 +16,30 @@ namespace WalksInNature.Infrastructure
     {
         public static IApplicationBuilder PrepareDatabase(this IApplicationBuilder app)
         {
-            using var scopedServices = app.ApplicationServices.CreateScope();
+            using var serviceScope = app.ApplicationServices.CreateScope();
             
-            var data = scopedServices.ServiceProvider.GetService<WalksDbContext>();
+            var services = serviceScope.ServiceProvider;
 
-            data.Database.Migrate();
+            MigrateDatabase(services);
 
-            SeedRegions(data);
-
-            SeedLevels(data);
+            SeedRegions(services);
+            SeedLevels(services); 
+            SeedAdministrator(services);
 
             return app;
         }
 
-        private static void SeedRegions(WalksDbContext data) 
+        private static void MigrateDatabase(IServiceProvider services)
         {
+            var data = services.GetRequiredService<WalksDbContext>();
+
+            data.Database.Migrate();
+        }
+
+        private static void SeedRegions(IServiceProvider services) 
+        {
+            var data = services.GetRequiredService<WalksDbContext>();
+
             if (data.Regions.Any())
             {
                 return;
@@ -66,8 +80,10 @@ namespace WalksInNature.Infrastructure
             data.SaveChanges();
         }
 
-        private static void SeedLevels(WalksDbContext data)
+        private static void SeedLevels(IServiceProvider services)
         {
+            var data = services.GetRequiredService<WalksDbContext>();
+
             if (data.Levels.Any())
             {
                 return;
@@ -81,6 +97,40 @@ namespace WalksInNature.Infrastructure
             });
 
             data.SaveChanges();
+        }
+
+        private static void SeedAdministrator(IServiceProvider services)
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            Task.Run(async () =>
+                {
+                    if (await roleManager.RoleExistsAsync(AdministratorRoleName))
+                    {
+                        return;
+                    }
+
+                    var role = new IdentityRole { Name = AdministratorRoleName };
+
+                    await roleManager.CreateAsync(role);
+
+                    const string adminEmail = "admin@walks.com";
+                    const string adminPassword = "admin123";
+
+                    var user = new User
+                    {
+                        Email = adminEmail,
+                        UserName = adminEmail,
+                        FullName = "Admin"
+                    };
+
+                    await userManager.CreateAsync(user, adminPassword);
+
+                    await userManager.AddToRoleAsync(user, role.Name);
+                })
+                .GetAwaiter()
+                .GetResult();
         }
     }
 }

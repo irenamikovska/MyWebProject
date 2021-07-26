@@ -9,15 +9,15 @@
     {
         var userId = User.GetId();
         var userIsGuide = GuideService.IsGuide(userId);
-        //var userIsAdmin = User.IsAdmin();
+        var userIsAdmin = User.IsAdmin();
 
-        @if (userIsGuide)
+        @if (userIsGuide && !userIsAdmin)
         { 
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="MyEvents">My Events</a>
             </li>
         }
-        else 
+        else if(!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Guides" asp-action="Become">Become Guide</a>

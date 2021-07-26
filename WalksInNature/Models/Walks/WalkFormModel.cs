@@ -6,7 +6,7 @@ using static WalksInNature.Data.Models.DataConstants.Walk;
 
 namespace WalksInNature.Models.Walks
 {
-    public class AddWalkFormModel
+    public class WalkFormModel
     {
         [Required]       
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage="The {0} should be between {2} and {1} characters")]
@@ -31,6 +31,8 @@ namespace WalksInNature.Models.Walks
         [Required]
         [StringLength(int.MaxValue, MinimumLength = DescriptionMinLength, ErrorMessage = "The {0} should be at least {2} characters")]
         public string Description { get; init; }
+
+        public string UserId { get; set; }
         public IEnumerable<RegionServiceModel> Regions { get; set; }
         public IEnumerable<LevelServiceModel> Levels { get; set; }
     }

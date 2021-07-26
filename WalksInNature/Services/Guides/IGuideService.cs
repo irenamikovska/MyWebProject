@@ -2,8 +2,9 @@
 {
     public interface IGuideService
     {
-        public bool IsGuide(string userId);
-        public int GetGuideId(string userId);
-        
+        bool IsGuide(string userId);
+        int GetGuideId(string userId);
+        int Create(string name, string phoneNumber, string userId);
+
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WalksInNature.Services.Events
+﻿namespace WalksInNature.Services.Events
 {
     public class EventServiceModel
     {

@@ -1,18 +1,16 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using WalksInNature.Data;
-using WalksInNature.Data.Models;
 using WalksInNature.Infrastructure;
 using WalksInNature.Models.Guides;
+using WalksInNature.Services.Guides;
 
 namespace WalksInNature.Controllers
 {
     public class GuidesController : Controller
     {
-        private readonly WalksDbContext data;
-        public GuidesController(WalksDbContext data)
-            => this.data = data;
+        private readonly IGuideService guideService;
+        public GuidesController(IGuideService guideService)
+            => this.guideService = guideService;
 
         [Authorize]
         public IActionResult Become() => View();
@@ -22,10 +20,8 @@ namespace WalksInNature.Controllers
         public IActionResult Become(BecomeGuideFormModel input)
         {
             var userId = this.User.GetId();
-
-            var userIsAlreadyGuide = this.data
-                .Guides
-                .Any(d => d.UserId == userId);
+                        
+            var userIsAlreadyGuide = this.guideService.IsGuide(userId);
 
             if (userIsAlreadyGuide)
             {
@@ -36,17 +32,9 @@ namespace WalksInNature.Controllers
             {
                 return View(input);
             }
-
-            var guideToAdd = new Guide
-            {
-                Name = input.Name,
-                PhoneNumber = input.PhoneNumber,
-                UserId = userId
-            };
-
-            this.data.Guides.Add(guideToAdd);
-            this.data.SaveChanges();
-
+           
+            this.guideService.Create(input.Name, input.PhoneNumber, userId);
+           
             return RedirectToAction("All", "Events");
         }
     }

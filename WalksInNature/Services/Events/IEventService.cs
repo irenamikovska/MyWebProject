@@ -10,9 +10,9 @@ namespace WalksInNature.Services.Events
 
         EventDetailsServiceModel GetDetails(int eventId);
 
-        IEnumerable<EventServiceModel> ByUser(string userId);
+        IEnumerable<EventServiceModel> EventsOfGuide(string userId);
 
-        bool IsByGuide(int eventId, int guideId);
+        bool EventIsByGuide(int eventId, int guideId);
 
         int Create(string name, string imageUrl, string date, string startingHour,
             string startPoint, int regionId, int levelId, string description, int guideId);

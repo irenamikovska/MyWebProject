@@ -9,7 +9,17 @@ namespace WalksInNature.Services.Walks
 
         IEnumerable<string> AllWalkRegions();
 
+        WalkDetailsServiceModel GetDetails(int walkId);
+
+        IEnumerable<WalkServiceModel> WalksByUser(string userId);
+
+        bool WalkIsByUser(int walkId, string userId);
+
         int Create(string name, string imageUrl, string startPoint,
+            int regionId, int levelId, string description, string userId);
+
+        bool Edit(int id, string name, string imageUrl, string startPoint,
             int regionId, int levelId, string description);
     }
 }
+
