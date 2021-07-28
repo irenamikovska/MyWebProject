@@ -120,7 +120,7 @@ namespace WalksInNature.Services.Events
             return true;
         }
 
-        public IEnumerable<EventServiceModel> EventsOfGuide(string userId)
+        public IEnumerable<EventServiceModel> EventsByGuide(string userId)
             => GetEvents(this.data
                 .Events
                 .Where(e => e.Guide.UserId == userId));

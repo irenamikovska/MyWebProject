@@ -11,9 +11,7 @@ namespace WalksInNature.Services.Walks
 
         WalkDetailsServiceModel GetDetails(int walkId);
 
-        IEnumerable<WalkServiceModel> WalksByUser(string userId);
-
-        bool WalkIsByUser(int walkId, string userId);
+        IEnumerable<WalkServiceModel> WalksByUser(string userId);        
 
         int Create(string name, string imageUrl, string startPoint,
             int regionId, int levelId, string description, string userId);

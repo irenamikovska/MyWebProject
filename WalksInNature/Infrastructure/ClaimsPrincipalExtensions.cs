@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using static WalksInNature.WebConstants;
+using static WalksInNature.Areas.Admin.AdminConstants;
 
 namespace WalksInNature.Infrastructure
 {

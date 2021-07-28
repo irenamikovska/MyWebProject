@@ -8,7 +8,7 @@ using System;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-using static WalksInNature.WebConstants;
+using static WalksInNature.Areas.Admin.AdminConstants;
 
 namespace WalksInNature.Infrastructure
 {

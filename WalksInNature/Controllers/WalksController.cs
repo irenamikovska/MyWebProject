@@ -14,9 +14,7 @@ namespace WalksInNature.Controllers
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
         
-        public WalksController(IWalkService walkService,
-            IRegionService regionService,
-            ILevelService levelService) 
+        public WalksController(IWalkService walkService, IRegionService regionService, ILevelService levelService) 
         {
             this.walkService = walkService;
             this.regionService = regionService;
@@ -152,7 +150,10 @@ namespace WalksInNature.Controllers
                 return View(walk);
             }
 
-            if (!this.walkService.WalkIsByUser(id, userId) && !User.IsAdmin())
+            var walkToEdit = this.walkService.GetDetails(id);         
+
+
+            if (walkToEdit.UserId != userId && !User.IsAdmin())
             {
                 return BadRequest();
             }

@@ -49,7 +49,7 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult MyEvents()
         {
-            var myEvents = this.eventService.EventsOfGuide(this.User.GetId());
+            var myEvents = this.eventService.EventsByGuide(this.User.GetId());
 
             return View(myEvents);
         }

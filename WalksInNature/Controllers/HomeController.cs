@@ -43,9 +43,11 @@ namespace WalksInNature.Controllers
                 TotalEvents = totalStatistics.TotalEvents,
                 Walks = walks
             });
-        }     
-        
-       public IActionResult Error() => View();
+        }
+
+        public IActionResult Useful() => View();
+
+        public IActionResult Error() => View();
         
     }
 }

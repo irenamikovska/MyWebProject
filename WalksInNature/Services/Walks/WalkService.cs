@@ -98,13 +98,7 @@ namespace WalksInNature.Services.Walks
         public IEnumerable<WalkServiceModel> WalksByUser(string userId)
             => GetWalks(this.data
                 .Walks
-                .Where(x => x.UserId == userId));
-        
-        public bool WalkIsByUser(int walkId, string userId)
-            => this.data
-                    .Walks
-                    .Any(x => x.Id == walkId && x.UserId == userId);
-
+                .Where(x => x.UserId == userId));       
 
         public bool Edit(int id, string name, string imageUrl, string startPoint, int regionId, int levelId, string description)
         {
