@@ -43,7 +43,9 @@ namespace WalksInNature
                 })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<WalksDbContext>();
-                       
+
+            services.AddAutoMapper(typeof(Startup));
+
             services.AddControllersWithViews(options =>
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WalksInNature.Data;
 using WalksInNature.Models.Home;
@@ -11,11 +13,13 @@ namespace WalksInNature.Controllers
     {
         private readonly IStatisticsService statistics;
         private readonly WalksDbContext data;
+        private readonly IMapper mapper;
 
-        public HomeController(IStatisticsService statistics, WalksDbContext data)
+        public HomeController(IStatisticsService statistics, WalksDbContext data, IMapper mapper)
         {
             this.statistics = statistics;
             this.data = data;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
@@ -24,13 +28,7 @@ namespace WalksInNature.Controllers
             var walks = this.data
               .Walks
               .OrderByDescending(x => x.Id)
-              .Select(x => new WalkIndexViewModel
-              {
-                  Id = x.Id,
-                  Name = x.Name,
-                  ImageUrl = x.ImageUrl,
-                  Region = x.Region.Name                        
-              })
+              .ProjectTo<WalkIndexViewModel>(this.mapper.ConfigurationProvider)            
               .Take(3)
               .ToList();
             
