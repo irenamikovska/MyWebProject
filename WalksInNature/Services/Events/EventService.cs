@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,13 +11,7 @@ namespace WalksInNature.Services.Events
     public class EventService : IEventService
     {
         private readonly WalksDbContext data;
-        private readonly IMapper mapper;
-        public EventService(WalksDbContext data, IMapper mapper)
-        {
-            this.data = data;
-            this.mapper = mapper;
-        }
-        
+        public EventService(WalksDbContext data) => this.data = data;
 
         public EventQueryServiceModel All(string date, string searchTerm, 
             EventSorting sorting, int currentPage, int eventsPerPage)
@@ -65,9 +57,7 @@ namespace WalksInNature.Services.Events
            => this.data
                .Events
                .Where(x => x.Id == id)
-               .ProjectTo<EventDetailsServiceModel>(this.mapper.ConfigurationProvider)
-               /*
-                .Select(x => new EventDetailsServiceModel
+               .Select(x => new EventDetailsServiceModel
                {
                    Id = x.Id,
                    Name = x.Name,
@@ -80,7 +70,7 @@ namespace WalksInNature.Services.Events
                    Description = x.Description,
                    GuideId = x.GuideId,                   
                    UserId = x.Guide.UserId
-               })*/
+               })
                .FirstOrDefault();
 
 

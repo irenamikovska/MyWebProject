@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WalksInNature.Infrastructure;
 using WalksInNature.Models.Walks;
@@ -14,17 +13,12 @@ namespace WalksInNature.Controllers
         private readonly IWalkService walkService;
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
-        private readonly IMapper mapper;
-        public WalksController(
-                IWalkService walkService, 
-                IRegionService regionService, 
-                ILevelService levelService, 
-                IMapper mapper) 
+        
+        public WalksController(IWalkService walkService, IRegionService regionService, ILevelService levelService) 
         {
             this.walkService = walkService;
             this.regionService = regionService;
-            this.levelService = levelService;
-            this.mapper = mapper;
+            this.levelService = levelService;            
         } 
                
         public IActionResult All([FromQuery]AllWalksQueryModel query)
@@ -103,7 +97,13 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var userId = this.User.GetId();            
+            var userId = this.User.GetId();
+            /*
+            if (!this.walkService.WalkIsByUser(id, userId) && !User.IsAdmin())
+            {
+                //return RedirectToAction(nameof(UsersController.Login), "Users");
+                return RedirectToAction(nameof(HomeController.Index), "Home");
+            }*/
 
             var walkToEdit = this.walkService.GetDetails(id);
 
@@ -112,13 +112,18 @@ namespace WalksInNature.Controllers
                 return Unauthorized();
             }
 
-            var walkForm = this.mapper.Map<WalkFormModel>(walkToEdit);
-
-            walkForm.Regions = this.regionService.GetRegions();
-            walkForm.Levels = this.levelService.GetLevels();
-
-            return View(walkForm);
-
+            return View(new WalkFormModel
+            {
+                Name = walkToEdit.Name,
+                ImageUrl = walkToEdit.ImageUrl,
+                StartPoint = walkToEdit.StartPoint,
+                RegionId = walkToEdit.RegionId,
+                LevelId = walkToEdit.LevelId,               
+                Description = walkToEdit.Description,
+                UserId = walkToEdit.UserId,
+                Regions = this.regionService.GetRegions(),
+                Levels = this.levelService.GetLevels()
+            });
         }
 
         [HttpPost]

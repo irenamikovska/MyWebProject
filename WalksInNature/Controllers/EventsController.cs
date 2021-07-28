@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Globalization;
@@ -18,20 +17,15 @@ namespace WalksInNature.Controllers
         private readonly IGuideService guideService;
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
-        private readonly IMapper mapper;
-
-        public EventsController(
-                IEventService eventService, 
-                IGuideService guideService,
-                IRegionService regionService,
-                ILevelService levelService,  
-                IMapper mapper) 
+        public EventsController(IEventService eventService, 
+            IGuideService guideService,
+            IRegionService regionService,
+            ILevelService levelService) 
         {
             this.eventService = eventService;
             this.guideService = guideService;
             this.regionService = regionService;
             this.levelService = levelService;
-            this.mapper = mapper;
         } 
 
         public IActionResult All([FromQuery] AllEventsQueryModel query)
@@ -106,16 +100,11 @@ namespace WalksInNature.Controllers
                 return View(input);
             }
 
-            this.eventService.Create(
-                    input.Name, 
-                    input.ImageUrl, 
-                    input.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    input.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
-                    input.StartPoint, 
-                    input.RegionId, 
-                    input.LevelId, 
-                    input.Description, 
-                    guideId);
+            this.eventService.Create(input.Name, input.ImageUrl, 
+                input.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                input.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
+                input.StartPoint, input.RegionId, input.LevelId, 
+                input.Description, guideId);
                         
             return RedirectToAction(nameof(All));
         }
@@ -137,13 +126,20 @@ namespace WalksInNature.Controllers
                 return Unauthorized();
             }
 
-            var eventForm = this.mapper.Map<EventFormModel>(eventToEdit);
-
-            eventForm.Regions = this.regionService.GetRegions();
-            eventForm.Levels = this.levelService.GetLevels();
-
-            return View(eventForm);
-           
+            return View(new EventFormModel
+            {
+                Name = eventToEdit.Name,
+                ImageUrl = eventToEdit.ImageUrl,
+                StartPoint = eventToEdit.StartPoint,
+                RegionId = eventToEdit.RegionId,
+                LevelId = eventToEdit.LevelId,
+                Date = DateTime.ParseExact(eventToEdit.Date, "dd.MM.yyyy", CultureInfo.InvariantCulture),
+                StartingHour = DateTime.ParseExact(eventToEdit.StartingHour, "hh:mm", CultureInfo.InvariantCulture),
+                Description = eventToEdit.Description,
+                GuideId = eventToEdit.GuideId,
+                Regions = this.regionService.GetRegions(),
+                Levels = this.levelService.GetLevels()
+            });
         }
 
         [HttpPost]
