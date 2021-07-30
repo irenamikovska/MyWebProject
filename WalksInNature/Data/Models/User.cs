@@ -11,5 +11,7 @@ namespace WalksInNature.Data.Models
         public string FullName { get; set; }
 
         public IEnumerable<Walk> Walks { get; init; } = new List<Walk>();
+
+        public IEnumerable<Insurance> Insurances { get; init; } = new List<Insurance>();
     }
 }

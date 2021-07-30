@@ -17,7 +17,8 @@ namespace WalksInNature.Controllers
         private readonly IGuideService guideService;
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
-        public EventsController(IEventService eventService, 
+        public EventsController(
+            IEventService eventService, 
             IGuideService guideService,
             IRegionService regionService,
             ILevelService levelService) 
@@ -79,6 +80,11 @@ namespace WalksInNature.Controllers
             if (guideId == 0)
             {
                 return RedirectToAction(nameof(GuidesController.Become), "Guides");
+            }
+
+            if (input.Date < DateTime.UtcNow)
+            {
+                this.ModelState.AddModelError(nameof(input.Date), "Date have to be after current date.");
             }
 
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WalksInNature.Data;
 
 namespace WalksInNature.Data.Migrations
 {
     [DbContext(typeof(WalksDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210728185806_InsuranceTable")]
+    partial class InsuranceTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,8 +248,7 @@ namespace WalksInNature.Data.Migrations
 
                     b.Property<string>("Beneficiary")
                         .IsRequired()
-                        .HasMaxLength(800)
-                        .HasColumnType("nvarchar(800)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Duration")
                         .HasColumnType("int");

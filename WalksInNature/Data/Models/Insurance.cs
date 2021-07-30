@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using static WalksInNature.Data.Models.DataConstants.Insurance;
 
 namespace WalksInNature.Data.Models
 {
@@ -19,6 +17,7 @@ namespace WalksInNature.Data.Models
         public decimal TotalPrice { get; set; }
 
         [Required]
+        [MaxLength(BeneficiaryMaxLength)]
         public string Beneficiary { get; set; }        
 
         [Required]

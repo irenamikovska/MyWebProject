@@ -11,6 +11,7 @@ using WalksInNature.Data.Models;
 using WalksInNature.Infrastructure;
 using WalksInNature.Services.Events;
 using WalksInNature.Services.Guides;
+using WalksInNature.Services.Insurances;
 using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
 using WalksInNature.Services.Statistics;
@@ -55,6 +56,7 @@ namespace WalksInNature
             services.AddTransient<IEventService, EventService>();
             services.AddTransient<IRegionService, RegionService>();
             services.AddTransient<ILevelService, LevelService>();
+            services.AddTransient<IInsuranceService, InsuranceService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

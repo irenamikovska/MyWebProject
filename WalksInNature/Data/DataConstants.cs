@@ -47,6 +47,17 @@
             public const int PhoneMinLength = 6;
             public const int PhoneMaxLength = 30;
         }
-                 
+        public class Insurance
+        {
+            public const int PersonsMinValue = 1;
+            public const int PersonsMaxValue = 10;
+
+            public const int LimitMinValue = 2000;
+            public const int LimitMaxValue = 10000;
+
+            public const int BeneficiaryMinLength = 20;
+            public const int BeneficiaryMaxLength = 800;
+                       
+        }
     }
 }

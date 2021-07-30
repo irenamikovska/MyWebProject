@@ -15,7 +15,8 @@ namespace WalksInNature.Data
         public DbSet<Region> Regions { get; init; }
         public DbSet<Event> Events { get; init; }
         public DbSet<Guide> Guides { get; init; }
-
+        public DbSet<Insurance> Insurances { get; init; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -65,6 +66,13 @@ namespace WalksInNature.Data
                .HasOne<User>()
                .WithOne()
                .HasForeignKey<Guide>(x => x.UserId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+            builder
+               .Entity<Insurance>()
+               .HasOne(x => x.User)
+               .WithMany(x => x.Insurances)
+               .HasForeignKey(x => x.UserId)
                .OnDelete(DeleteBehavior.Restrict);
 
             base.OnModelCreating(builder);

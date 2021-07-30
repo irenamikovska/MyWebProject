@@ -19,7 +19,7 @@ namespace WalksInNature.Models.Walks
 
         [Required]
         [StringLength(StartPointMaxLength, MinimumLength = StartPointMinLength, ErrorMessage = "The {0} should be between {2} and {1} characters")]
-        [Display(Name = "Start point")]
+        [Display(Name = "Start Point")]
         public string StartPoint { get; init; }
 
         [Display(Name = "Region")]
