@@ -19,5 +19,8 @@ namespace WalksInNature.Services.Events
 
         bool Edit(int id, string name, string imageUrl, string date, string startingHour,
             string startPoint, int regionId, int levelId, string description);
+
+        bool AddUserToEvent(string userId, int eventId);
+
     }
 }

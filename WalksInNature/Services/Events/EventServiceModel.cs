@@ -10,6 +10,8 @@
         public string Region { get; set; }
         public string Level { get; set; }
         public int GuideId { get; set; }
+
+        public int Participants { get; set; }
     }
 }
 

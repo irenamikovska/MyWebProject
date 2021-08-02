@@ -205,6 +205,21 @@ namespace WalksInNature.Data.Migrations
                     b.ToTable("Events");
                 });
 
+            modelBuilder.Entity("WalksInNature.Data.Models.EventUser", b =>
+                {
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("EventId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EventsUsers");
+                });
+
             modelBuilder.Entity("WalksInNature.Data.Models.Guide", b =>
                 {
                     b.Property<int>("Id")
@@ -391,6 +406,10 @@ namespace WalksInNature.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("AddedByUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -415,18 +434,30 @@ namespace WalksInNature.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AddedByUserId");
 
                     b.HasIndex("LevelId");
 
                     b.HasIndex("RegionId");
 
+                    b.ToTable("Walks");
+                });
+
+            modelBuilder.Entity("WalksInNature.Data.Models.WalkUser", b =>
+                {
+                    b.Property<int>("WalkId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("WalkId", "UserId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Walks");
+                    b.ToTable("WalksUsers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -507,6 +538,25 @@ namespace WalksInNature.Data.Migrations
                     b.Navigation("Region");
                 });
 
+            modelBuilder.Entity("WalksInNature.Data.Models.EventUser", b =>
+                {
+                    b.HasOne("WalksInNature.Data.Models.Event", "Event")
+                        .WithMany("Users")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WalksInNature.Data.Models.User", "User")
+                        .WithMany("Events")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WalksInNature.Data.Models.Guide", b =>
                 {
                     b.HasOne("WalksInNature.Data.Models.User", null)
@@ -535,6 +585,12 @@ namespace WalksInNature.Data.Migrations
 
             modelBuilder.Entity("WalksInNature.Data.Models.Walk", b =>
                 {
+                    b.HasOne("WalksInNature.Data.Models.User", "AddedByUser")
+                        .WithMany("Walks")
+                        .HasForeignKey("AddedByUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("WalksInNature.Data.Models.Level", "Level")
                         .WithMany("Walks")
                         .HasForeignKey("LevelId")
@@ -547,16 +603,35 @@ namespace WalksInNature.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("WalksInNature.Data.Models.User", "User")
-                        .WithMany("Walks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.Navigation("AddedByUser");
 
                     b.Navigation("Level");
 
                     b.Navigation("Region");
+                });
+
+            modelBuilder.Entity("WalksInNature.Data.Models.WalkUser", b =>
+                {
+                    b.HasOne("WalksInNature.Data.Models.User", "User")
+                        .WithMany("Likes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WalksInNature.Data.Models.Walk", "Walk")
+                        .WithMany("Likes")
+                        .HasForeignKey("WalkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
+
+                    b.Navigation("Walk");
+                });
+
+            modelBuilder.Entity("WalksInNature.Data.Models.Event", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("WalksInNature.Data.Models.Guide", b =>
@@ -580,9 +655,18 @@ namespace WalksInNature.Data.Migrations
 
             modelBuilder.Entity("WalksInNature.Data.Models.User", b =>
                 {
+                    b.Navigation("Events");
+
                     b.Navigation("Insurances");
 
+                    b.Navigation("Likes");
+
                     b.Navigation("Walks");
+                });
+
+            modelBuilder.Entity("WalksInNature.Data.Models.Walk", b =>
+                {
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

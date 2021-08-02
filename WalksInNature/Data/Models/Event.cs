@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using static WalksInNature.Data.Models.DataConstants.Event;
 
@@ -34,7 +35,7 @@ namespace WalksInNature.Data.Models
         public int GuideId { get; set; }
         public Guide Guide { get; init; }  
         
-        //public IEnumerable<IdentityUser> Users { get; init; } = new List<IdentityUser>();
+        public virtual ICollection<EventUser> Users { get; set; } = new HashSet<EventUser>();
 
     }
 }

@@ -61,7 +61,7 @@ namespace WalksInNature.Services.Walks
                 RegionId = regionId,
                 LevelId = levelId,
                 Description = description,
-                UserId = userId
+                AddedByUserId = userId
             };
 
             this.data.Walks.Add(walkToAdd);
@@ -78,27 +78,54 @@ namespace WalksInNature.Services.Walks
                 .OrderBy(r => r)
                 .ToList();
 
-        public WalkDetailsServiceModel GetDetails(int walkId)        
-             => this.data
-               .Walks
-               .Where(x => x.Id == walkId)
-               .Select(x => new WalkDetailsServiceModel
-               {
-                   Id = x.Id,
-                   Name = x.Name,
-                   ImageUrl = x.ImageUrl,
-                   StartPoint = x.StartPoint,
-                   Region = x.Region.Name,
-                   Level = x.Level.Name,                  
-                   Description = x.Description,                
-                   UserId = x.UserId
-               })
-               .FirstOrDefault();
+        public WalkDetailsServiceModel GetDetails(int walkId)
+        {
+            var walk = this.data
+                   .Walks
+                   .Where(x => x.Id == walkId)
+                   .Select(x => new WalkDetailsServiceModel
+                   {
+                       Id = x.Id,
+                       Name = x.Name,
+                       ImageUrl = x.ImageUrl,
+                       StartPoint = x.StartPoint,
+                       RegionId = x.RegionId,
+                       Region = x.Region.Name,
+                       LevelId = x.LevelId,
+                       Level = x.Level.Name,
+                       Description = x.Description,
+                       UserId = x.AddedByUserId,
+                       Likes = x.Likes.Count()
+                   })
+                   .FirstOrDefault();
+
+            return walk;
+        }
+        public bool AddUserToWalk(string userId, int walkId)
+        {
+            var userWithLike = this.data.WalksUsers.Any(x => x.UserId == userId && x.WalkId == walkId);
+
+            if (userWithLike)
+            {
+                return false;
+            }
+            
+            var like = new WalkUser
+            {
+                WalkId = walkId,
+                UserId = userId,
+            };
+
+            this.data.WalksUsers.Add(like);
+            this.data.SaveChanges();
+
+            return true;
+        }
 
         public IEnumerable<WalkServiceModel> WalksByUser(string userId)
             => GetWalks(this.data
                 .Walks
-                .Where(x => x.UserId == userId));       
+                .Where(x => x.AddedByUserId == userId));       
 
         public bool Edit(int id, string name, string imageUrl, string startPoint, int regionId, int levelId, string description)
         {
@@ -130,7 +157,8 @@ namespace WalksInNature.Services.Walks
                    ImageUrl = x.ImageUrl,
                    Region = x.Region.Name,
                    Level = x.Level.Name,
-                   UserId = x.UserId
+                   UserId = x.AddedByUserId,
+                   Likes = x.Likes.Count()
                })
                .ToList();
 

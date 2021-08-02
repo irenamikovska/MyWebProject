@@ -69,7 +69,8 @@ namespace WalksInNature.Services.Events
                    StartingHour = x.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
                    Description = x.Description,
                    GuideId = x.GuideId,                   
-                   UserId = x.Guide.UserId
+                   UserId = x.Guide.UserId,
+                   Participants = x.Users.Count()
                })
                .FirstOrDefault();
 
@@ -149,9 +150,30 @@ namespace WalksInNature.Services.Events
                     ImageUrl = x.ImageUrl,
                     Region = x.Region.Name,
                     Level = x.Level.Name,
-                    GuideId = x.GuideId
+                    GuideId = x.GuideId,
+                    Participants = x.Users.Count()
                 })
                 .ToList();
 
+        public bool AddUserToEvent(string userId, int eventId)
+        {
+            var userWithEvent = this.data.EventsUsers.Any(x => x.UserId == userId && x.EventId == eventId);
+            
+            if (userWithEvent)
+            {
+                return false;
+            }
+
+            var eventUser = new EventUser
+            {
+                EventId = eventId,
+                UserId = userId,
+            };
+
+            this.data.EventsUsers.Add(eventUser);
+            this.data.SaveChanges();
+
+            return true;
+        }
     }
 }

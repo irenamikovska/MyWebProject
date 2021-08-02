@@ -16,7 +16,9 @@ namespace WalksInNature.Data
         public DbSet<Event> Events { get; init; }
         public DbSet<Guide> Guides { get; init; }
         public DbSet<Insurance> Insurances { get; init; }
-        
+        public DbSet<WalkUser> WalksUsers { get; set; }
+        public DbSet<EventUser> EventsUsers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder
@@ -35,9 +37,9 @@ namespace WalksInNature.Data
 
             builder
                 .Entity<Walk>()
-                .HasOne(x => x.User)
+                .HasOne(x => x.AddedByUser)
                 .WithMany(x => x.Walks)
-                .HasForeignKey(x => x.UserId)
+                .HasForeignKey(x => x.AddedByUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder
@@ -74,6 +76,27 @@ namespace WalksInNature.Data
                .WithMany(x => x.Insurances)
                .HasForeignKey(x => x.UserId)
                .OnDelete(DeleteBehavior.Restrict);
+            
+            builder
+                .Entity<WalkUser>()
+                .HasKey(x => new { x.WalkId, x.UserId, });
+            /*
+            builder.Entity<WalkUser>()
+                .HasOne(x => x.Walk)
+                .WithMany(a => a.Likes)
+                .HasForeignKey(b => b.WalkId)               
+                .HasPrincipalKey(c => c.Id)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<WalkUser>()
+                .HasOne(x => x.User)
+                .WithMany(a => a.Likes)
+                .HasForeignKey(b => b.UserId)               
+                .OnDelete(DeleteBehavior.Restrict);*/
+
+            builder.Entity<EventUser>()
+                .HasKey(e => new { e.EventId, e.UserId, });
+
 
             base.OnModelCreating(builder);
         }

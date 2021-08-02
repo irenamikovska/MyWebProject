@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using static WalksInNature.Data.Models.DataConstants.Walk;
 
 namespace WalksInNature.Data.Models
@@ -24,11 +25,13 @@ namespace WalksInNature.Data.Models
         public int LevelId { get; set; }
         public Level Level { get; init; }
 
-        [Required]        
+        [Required]
         public string Description { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; init; }
+        [Required]
+        public string AddedByUserId { get; set; }
+        public User AddedByUser { get; init; }
+        public ICollection<WalkUser> Likes { get; init; } = new List<WalkUser>();
 
     }
 }

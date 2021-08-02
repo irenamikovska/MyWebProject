@@ -48,12 +48,12 @@ namespace WalksInNature.Controllers
         public IActionResult Add(InsuranceFormModel input)
         {
                        
-            var startIns = DateTime.ParseExact(input.StartDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            var endIns = DateTime.ParseExact(input.EndDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            var duration = (endIns - startIns).Days;
+            //var startIns = input.StartDate;
+            //var endIns = DateTime.ParseExact(input.EndDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            var duration = (input.EndDate - input.StartDate).Days;
             
             
-            if(startIns < DateTime.UtcNow)
+            if(input.StartDate < DateTime.UtcNow)
             {
                 this.ModelState.AddModelError(nameof(input.StartDate), "Start date have to after current date!");
             }

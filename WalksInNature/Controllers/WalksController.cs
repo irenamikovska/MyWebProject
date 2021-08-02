@@ -13,15 +13,15 @@ namespace WalksInNature.Controllers
         private readonly IWalkService walkService;
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
-        
-        public WalksController(IWalkService walkService, IRegionService regionService, ILevelService levelService) 
+
+        public WalksController(IWalkService walkService, IRegionService regionService, ILevelService levelService)
         {
             this.walkService = walkService;
             this.regionService = regionService;
-            this.levelService = levelService;            
-        } 
-               
-        public IActionResult All([FromQuery]AllWalksQueryModel query)
+            this.levelService = levelService;
+        }
+
+        public IActionResult All([FromQuery] AllWalksQueryModel query)
         {
             var queryResult = this.walkService.All(
                 query.Region,
@@ -37,7 +37,7 @@ namespace WalksInNature.Controllers
             query.TotalWalks = queryResult.TotalWalks;
             query.Walks = queryResult.Walks;
 
-            return View(query);            
+            return View(query);
         }
 
 
@@ -48,6 +48,14 @@ namespace WalksInNature.Controllers
 
             return View(myWalks);
         }
+        /*
+        [Authorize]
+        public IActionResult Details(int walkId)
+        {
+            var walk = this.walkService.GetDetails(walkId);
+            return this.View(walk);
+        }
+        */
 
         [Authorize]
         public IActionResult Add() => View(new WalkFormModel 
@@ -97,13 +105,7 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult Edit(int id)
         {
-            var userId = this.User.GetId();
-            /*
-            if (!this.walkService.WalkIsByUser(id, userId) && !User.IsAdmin())
-            {
-                //return RedirectToAction(nameof(UsersController.Login), "Users");
-                return RedirectToAction(nameof(HomeController.Index), "Home");
-            }*/
+            var userId = this.User.GetId();            
 
             var walkToEdit = this.walkService.GetDetails(id);
 
@@ -171,5 +173,31 @@ namespace WalksInNature.Controllers
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]        
+
+        public IActionResult AddLike(int id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
+
+            var userId = this.User.GetId();
+
+            this.walkService.AddUserToWalk(userId, id);
+            
+            /*
+            if (!this.walkService.AddLikeToWalkByUser(userId, walkId))
+            {
+                //return RedirectToAction("/Walks/Details?walkId=" + walkId);
+
+                return RedirectToAction(nameof(Add));
+            }*/
+
+            return RedirectToAction(nameof(All));
+            //return this.RedirectToAction(nameof(this.Details), new { id });
+        }
+
+       
     }
 }

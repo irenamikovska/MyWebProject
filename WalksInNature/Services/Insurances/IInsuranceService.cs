@@ -6,7 +6,7 @@ namespace WalksInNature.Services.Insurances
 {
     public interface IInsuranceService
     {
-        string Book(string startDate, string endDate, int numberOfPeople, int limit, string beneficiary, string userId);
+        string Book(DateTime startDate, DateTime endDate, int numberOfPeople, int limit, string beneficiary, string userId);
 
         InsuranceDetailsServiceModel GetDetails(string insuranceId);
         IEnumerable<InsuranceServiceModel> InsurancesByUser(string userId);

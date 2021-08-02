@@ -18,30 +18,30 @@ namespace WalksInNature.Controllers
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
         public EventsController(
-            IEventService eventService, 
+            IEventService eventService,
             IGuideService guideService,
             IRegionService regionService,
-            ILevelService levelService) 
+            ILevelService levelService)
         {
             this.eventService = eventService;
             this.guideService = guideService;
             this.regionService = regionService;
             this.levelService = levelService;
-        } 
+        }
 
         public IActionResult All([FromQuery] AllEventsQueryModel query)
         {
             var queryResult = this.eventService.All(
-                query.Date,               
+                query.Date,
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
-                AllEventsQueryModel.EventsPerPage);                       
+                AllEventsQueryModel.EventsPerPage);
 
             var eventDates = this.eventService.AllEventDates();
 
             query.Dates = eventDates;
-            query.TotalEvents = queryResult.TotalEvents;            
+            query.TotalEvents = queryResult.TotalEvents;
             query.Events = queryResult.Events;
 
             return View(query);
@@ -69,13 +69,13 @@ namespace WalksInNature.Controllers
                 Levels = this.levelService.GetLevels()
             });
         }
-         
+
 
         [HttpPost]
         [Authorize]
         public IActionResult Add(EventFormModel input)
         {
-            var guideId = this.guideService.GetGuideId(this.User.GetId());                 
+            var guideId = this.guideService.GetGuideId(this.User.GetId());
 
             if (guideId == 0)
             {
@@ -96,7 +96,7 @@ namespace WalksInNature.Controllers
             if (!this.levelService.LevelExists(input.LevelId))
             {
                 this.ModelState.AddModelError(nameof(input.LevelId), "Level does not exist.");
-            }          
+            }
 
             if (!ModelState.IsValid)
             {
@@ -106,12 +106,12 @@ namespace WalksInNature.Controllers
                 return View(input);
             }
 
-            this.eventService.Create(input.Name, input.ImageUrl, 
+            this.eventService.Create(input.Name, input.ImageUrl,
                 input.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
                 input.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
-                input.StartPoint, input.RegionId, input.LevelId, 
+                input.StartPoint, input.RegionId, input.LevelId,
                 input.Description, guideId);
-                        
+
             return RedirectToAction(nameof(All));
         }
 
@@ -183,7 +183,7 @@ namespace WalksInNature.Controllers
             }
 
             this.eventService.Edit(
-                id, 
+                id,
                 eventToEdit.Name,
                 eventToEdit.ImageUrl,
                 eventToEdit.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
@@ -191,12 +191,27 @@ namespace WalksInNature.Controllers
                 eventToEdit.StartPoint,
                 eventToEdit.RegionId,
                 eventToEdit.LevelId,
-                eventToEdit.Description              
+                eventToEdit.Description
                );
 
             return RedirectToAction(nameof(All));
         }
 
+        [Authorize]
+        public IActionResult AddUser(int id)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.BadRequest();
+            }
+
+            var user = this.User.GetId();
+
+            this.eventService.AddUserToEvent(user, id);
+
+            return this.RedirectToAction(nameof(All));
+            //return this.RedirectToAction(nameof(this.Details), new { id });
+        }
 
     }
 }

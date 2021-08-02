@@ -10,14 +10,14 @@ namespace WalksInNature.Models.Insurances
 
         [Required]
         [Display(Name = "Start Date")]
-        //[DataType(DataType.Date)]
-        public string StartDate { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime StartDate { get; set; }
 
 
         [Required]
         [Display(Name = "End Date")]
-        //[DataType(DataType.Date)]        
-        public string EndDate { get; set; }
+        [DataType(DataType.Date)]        
+        public DateTime EndDate { get; set; }
         
         [Range(PersonsMinValue, PersonsMaxValue)]
         [Display(Name = "Number Of People")]
