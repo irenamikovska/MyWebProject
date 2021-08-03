@@ -22,5 +22,7 @@ namespace WalksInNature.Services.Events
 
         bool AddUserToEvent(string userId, int eventId);
 
+        void Delete(int id, int guideId);
+
     }
 }

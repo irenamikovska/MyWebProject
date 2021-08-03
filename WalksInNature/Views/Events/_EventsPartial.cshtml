@@ -12,8 +12,7 @@
                     <h6 class="card-title text-center">Region: @eventModel.Region</h6>
                     <h6 class="card-title text-center">Level: @eventModel.Level</h6>
                     <h6 class="card-title text-center">Participants: @eventModel.Participants</h6>
-                    <a asp-controller="Events" asp-action="Details" asp-route-id="@eventModel.Id" class="btn btn-info">More info</a>
-                    <a class="btn btn-warning m-1" asp-controller="Events" asp-action="AddUser" asp-route-id="@eventModel.Id">Join Event</a>
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@eventModel.Id" class="btn btn-info">More info</a>                   
 
                     @if (ViewBag.AllowEventEdit == true || User.IsAdmin())
                     {

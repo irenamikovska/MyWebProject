@@ -14,13 +14,13 @@
         @if (userIsGuide && !userIsAdmin)
         { 
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="MyEvents">My Events</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="MyEvents">MyEvents</a>
             </li>
         }
         else if(!userIsAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Guides" asp-action="Become">Become Guide</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Guides" asp-action="Become">BecomeGuide</a>
             </li>
         }
         

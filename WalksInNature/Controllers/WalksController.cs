@@ -48,14 +48,14 @@ namespace WalksInNature.Controllers
 
             return View(myWalks);
         }
-        /*
+       
         [Authorize]
-        public IActionResult Details(int walkId)
+        public IActionResult Details(int id)
         {
-            var walk = this.walkService.GetDetails(walkId);
+            var walk = this.walkService.GetDetails(id);
             return this.View(walk);
         }
-        */
+        
 
         [Authorize]
         public IActionResult Add() => View(new WalkFormModel 
@@ -173,10 +173,10 @@ namespace WalksInNature.Controllers
             return RedirectToAction(nameof(All));
         }
 
-        [Authorize]        
-
+        [Authorize]     
         public IActionResult AddLike(int id)
         {
+            
             if (!this.ModelState.IsValid)
             {
                 return this.BadRequest();
@@ -184,20 +184,21 @@ namespace WalksInNature.Controllers
 
             var userId = this.User.GetId();
 
-            this.walkService.AddUserToWalk(userId, id);
+            this.walkService.AddUserToWalk(userId, id);         
             
-            /*
-            if (!this.walkService.AddLikeToWalkByUser(userId, walkId))
-            {
-                //return RedirectToAction("/Walks/Details?walkId=" + walkId);
-
-                return RedirectToAction(nameof(Add));
-            }*/
-
             return RedirectToAction(nameof(All));
             //return this.RedirectToAction(nameof(this.Details), new { id });
         }
 
-       
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.GetId();
+
+            this.walkService.Delete(id, userId);
+
+            return RedirectToAction(nameof(All));            
+        }
+
     }
 }

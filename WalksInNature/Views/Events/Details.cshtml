@@ -1,0 +1,49 @@
+﻿@model EventDetailsServiceModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div>
+    <div class="form-group">
+        <label asp-for="Date"></label>
+        <input asp-for="Date" readonly class="form-control" name="Date" value="@Model.Date">
+    </div>
+    <div class="form-group">
+        <label asp-for="StartingHour"></label>
+        <input asp-for="StartingHour" readonly class="form-control" name="StartingHour" value="@Model.StartingHour">
+    </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" readonly class="form-control" name="Name" value="@Model.Name">
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" name="ImageUrl" value="@Model.ImageUrl">
+    </div>
+    <div class="form-group">
+        <label asp-for="StartPoint"></label>
+        <input asp-for="StartPoint" class="form-control" name="StartPoint" value="@Model.StartPoint">
+    </div>
+    <div class="form-group">
+        <label asp-for="Region"></label>
+        <input asp-for="Region" class="form-control" name="Region" value="@Model.Region">
+    </div>
+    <div class="form-group">
+        <label asp-for="Level"></label>
+        <input asp-for="Level" class="form-control" name="Level" value="@Model.Level">
+    </div>
+    <div class="form-group">
+        <label asp-for="StartPoint"></label>
+        <input asp-for="StartPoint" class="form-control" name="StartPoint" value="@Model.StartPoint">
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" name="Description" value="@Model.Description">
+    </div>
+
+    <div class="form-group text-center">
+        <a class="btn btn-warning m-1" asp-controller="Events" asp-action="AddUser" asp-route-id="@Model.Id">Join Event</a>
+    </div>
+</div>
+

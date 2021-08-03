@@ -56,6 +56,14 @@ namespace WalksInNature.Controllers
         }
 
         [Authorize]
+        public IActionResult Details(int id)
+        {
+            var eventDetails = this.eventService.GetDetails(id);
+            return this.View(eventDetails);
+        }
+
+
+        [Authorize]
         public IActionResult Add()
         {
             if (!this.guideService.IsGuide(this.User.GetId()))
@@ -212,6 +220,24 @@ namespace WalksInNature.Controllers
             return this.RedirectToAction(nameof(All));
             //return this.RedirectToAction(nameof(this.Details), new { id });
         }
+
+        [Authorize]
+        public IActionResult Delete(int id)
+        {
+            var userId = this.User.GetId();
+
+            var guideId = this.guideService.GetGuideId(this.User.GetId());
+
+            if (guideId == 0 && !User.IsAdmin())
+            {
+                return this.BadRequest();                
+            }
+
+            this.eventService.Delete(id, guideId);
+
+            return RedirectToAction(nameof(All));
+        }
+
 
     }
 }

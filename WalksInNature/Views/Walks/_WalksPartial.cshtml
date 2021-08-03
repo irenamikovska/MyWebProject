@@ -12,9 +12,7 @@
                     <h6 class="card-title text-center">Level: @walk.Level</h6>
                     <h6 class="card-title text-center">Likes: @walk.Likes</h6>
 
-                    <a asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id" class="btn btn-info">More info</a>
-
-                    <a class="btn btn-warning m-1" asp-controller="Walks" asp-action="AddLike" asp-route-id="@walk.Id">Add Like</a>
+                    <a asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id" class="btn btn-info">More info</a>                   
 
                     @if (ViewBag.AllowWalkEdit == true || User.IsAdmin())
                     {

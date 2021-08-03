@@ -175,5 +175,16 @@ namespace WalksInNature.Services.Events
 
             return true;
         }
+
+        public void Delete(int id, int guideId)
+        {
+            var eventToDelete = this.data.Events.Find(id);
+
+            if (eventToDelete.GuideId == guideId)
+            {
+                this.data.Events.Remove(eventToDelete);
+                this.data.SaveChanges();
+            }
+        }
     }
 }

@@ -21,32 +21,32 @@
                         @if (!User.IsAdmin())
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="Add">Add Walk</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="Add">AddWalk</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="All">All Walks</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="All">AllWalks</a>
                         </li>
                         @if (!User.IsAdmin())
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="MyWalks">My Walks</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="MyWalks">MyWalks</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Add">Add Event</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="Add">AddEvent</a>
                             </li>
                         }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="All">All Events</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="All">AllEvents</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="Add">AddInsurance</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="MyInsurances">MyInsList</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Useful">Useful</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="Add">Add Insurance</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="MyInsurances">My Ins List</a>
                         </li>
                     </ul>
                     <partial name="_LoginPartial" />

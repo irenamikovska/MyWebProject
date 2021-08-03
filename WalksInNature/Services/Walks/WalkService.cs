@@ -148,6 +148,18 @@ namespace WalksInNature.Services.Walks
             return true;
         }
 
+        public void Delete(int id, string userId) 
+        {
+            var walkToDelete = this.data.Walks.Find(id);
+
+            if (walkToDelete.AddedByUserId == userId)
+            {
+                this.data.Walks.Remove(walkToDelete);
+                this.data.SaveChanges();
+            }
+
+        }
+
         private static IEnumerable<WalkServiceModel> GetWalks(IQueryable<Walk> walkQuery)
            => walkQuery
                .Select(x => new WalkServiceModel

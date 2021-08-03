@@ -35,9 +35,7 @@
     </div>
 
     <div class="form-group text-center">
-        <div class="button-holder">
-            <a href="/Walks/AddUserToWalk?walkId=@Model.Id" class="btn btn-info btn-block text-uppercase">Like</a>
-        </div>
+        <a class="btn btn-warning m-1" asp-controller="Walks" asp-action="AddLike" asp-route-id="@Model.Id">Add Like</a>
     </div>
 </div>
 
@@ -46,6 +44,10 @@
 
 <!--
 
+    
+<div class="button-holder">
+            <a href="/Walks/AddUserToWalk?walkId=@Model.Id" class="btn btn-info btn-block text-uppercase">Like</a>
+        </div>
 
 
 <div class="row">
