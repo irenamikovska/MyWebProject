@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Linq;
 using WalksInNature.Data;
 using WalksInNature.Data.Models;
@@ -9,7 +12,13 @@ namespace WalksInNature.Services.Walks
     public class WalkService : IWalkService
     {
         private readonly WalksDbContext data;
-        public WalkService(WalksDbContext data) => this.data = data;
+        private readonly IMapper mapper;
+        public WalkService(WalksDbContext data, IMapper mapper)
+        { 
+            this.data = data;
+            this.mapper = mapper;
+        }
+        
 
         public WalkQueryServiceModel All(string region, string searchTerm, WalkSorting sorting, int currentPage, int walksPerPage)
         {
@@ -49,6 +58,14 @@ namespace WalksInNature.Services.Walks
                 Walks = walks
             };
         }
+
+        public IEnumerable<LatestWalkServiceModel> Latest()
+           => this.data
+               .Walks
+               .OrderByDescending(c => c.Id)
+               .ProjectTo<LatestWalkServiceModel>(this.mapper.ConfigurationProvider)
+               .Take(3)
+               .ToList();
 
         public int Create(string name, string imageUrl, string startPoint, 
             int regionId, int levelId, string description, string userId)

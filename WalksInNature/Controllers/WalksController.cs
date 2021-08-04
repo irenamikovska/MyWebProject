@@ -195,6 +195,11 @@ namespace WalksInNature.Controllers
         {
             var userId = this.User.GetId();
 
+            if (string.IsNullOrEmpty(userId) && !User.IsAdmin())
+            {
+                return this.BadRequest();
+            }
+
             this.walkService.Delete(id, userId);
 
             return RedirectToAction(nameof(All));            

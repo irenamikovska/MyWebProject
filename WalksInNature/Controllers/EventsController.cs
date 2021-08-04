@@ -17,6 +17,7 @@ namespace WalksInNature.Controllers
         private readonly IGuideService guideService;
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
+        
         public EventsController(
             IEventService eventService,
             IGuideService guideService,

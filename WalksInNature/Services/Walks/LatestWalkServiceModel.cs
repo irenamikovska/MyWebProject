@@ -1,10 +1,10 @@
-﻿namespace WalksInNature.Models.Home
+﻿namespace WalksInNature.Services.Walks
 {
-    public class WalkIndexViewModel
+    public class LatestWalkServiceModel
     {
         public int Id { get; init; }
         public string Name { get; init; }
         public string ImageUrl { get; init; }
-        public string Region { get; set; }        
+        public string Region { get; set; }
     }
 }

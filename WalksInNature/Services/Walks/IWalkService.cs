@@ -7,6 +7,7 @@ namespace WalksInNature.Services.Walks
     {
         WalkQueryServiceModel All(string region, string searchTerm, WalkSorting sorting, int currentPage, int walksPerPage);
 
+        IEnumerable<LatestWalkServiceModel> Latest();
         IEnumerable<string> AllWalkRegions();
 
         WalkDetailsServiceModel GetDetails(int walkId);
