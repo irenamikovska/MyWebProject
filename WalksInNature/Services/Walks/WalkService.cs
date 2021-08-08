@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 using WalksInNature.Data;
 using WalksInNature.Data.Models;
 using WalksInNature.Models.Walks;
+using WalksInNature.Services.Walks.Models;
 
 namespace WalksInNature.Services.Walks
 {
@@ -17,12 +17,18 @@ namespace WalksInNature.Services.Walks
         { 
             this.data = data;
             this.mapper = mapper;
-        }
-        
+        }        
 
-        public WalkQueryServiceModel All(string region, string searchTerm, WalkSorting sorting, int currentPage, int walksPerPage)
+        public WalkQueryServiceModel All(
+                    string region = null, 
+                    string searchTerm = null, 
+                    WalkSorting sorting = WalkSorting.DateCreated, 
+                    int currentPage = 1, 
+                    int walksPerPage = int.MaxValue,
+                    bool publicOnly = true)
         {
-            var walksQuery = this.data.Walks.AsQueryable();
+            var walksQuery = this.data.Walks
+                .Where(x => !publicOnly || x.IsPublic);
 
             if (!string.IsNullOrWhiteSpace(region))
             {
@@ -62,7 +68,8 @@ namespace WalksInNature.Services.Walks
         public IEnumerable<LatestWalkServiceModel> Latest()
            => this.data
                .Walks
-               .OrderByDescending(c => c.Id)
+               .Where(x => x.IsPublic)
+               .OrderByDescending(x => x.Id)
                .ProjectTo<LatestWalkServiceModel>(this.mapper.ConfigurationProvider)
                .Take(3)
                .ToList();
@@ -78,13 +85,23 @@ namespace WalksInNature.Services.Walks
                 RegionId = regionId,
                 LevelId = levelId,
                 Description = description,
-                AddedByUserId = userId
+                AddedByUserId = userId,
+                IsPublic = false
             };
 
             this.data.Walks.Add(walkToAdd);
             this.data.SaveChanges();
 
             return walkToAdd.Id;
+        }
+
+        public void ChangeStatus(int walkId)
+        {
+            var walk = this.data.Walks.Find(walkId);
+
+            walk.IsPublic = !walk.IsPublic;
+
+            this.data.SaveChanges();
         }
 
         public IEnumerable<string> AllWalkRegions()
@@ -118,6 +135,8 @@ namespace WalksInNature.Services.Walks
 
             return walk;
         }
+
+
         public bool AddUserToWalk(string userId, int walkId)
         {
             var userWithLike = this.data.WalksUsers.Any(x => x.UserId == userId && x.WalkId == walkId);
@@ -144,7 +163,15 @@ namespace WalksInNature.Services.Walks
                 .Walks
                 .Where(x => x.AddedByUserId == userId));       
 
-        public bool Edit(int id, string name, string imageUrl, string startPoint, int regionId, int levelId, string description)
+        public bool Edit(
+            int id, 
+            string name, 
+            string imageUrl, 
+            string startPoint, 
+            int regionId, 
+            int levelId,            
+            string description,
+            bool isPublic)
         {
             var walkData = this.data.Walks.Find(id);
 
@@ -159,6 +186,7 @@ namespace WalksInNature.Services.Walks
             walkData.RegionId = regionId;
             walkData.LevelId = levelId;
             walkData.Description = description;
+            walkData.IsPublic = isPublic;
 
             this.data.SaveChanges();
 
@@ -177,19 +205,10 @@ namespace WalksInNature.Services.Walks
 
         }
 
-        private static IEnumerable<WalkServiceModel> GetWalks(IQueryable<Walk> walkQuery)
+        private IEnumerable<WalkServiceModel> GetWalks(IQueryable<Walk> walkQuery)
            => walkQuery
-               .Select(x => new WalkServiceModel
-               {
-                   Id = x.Id,
-                   Name = x.Name,                   
-                   ImageUrl = x.ImageUrl,
-                   Region = x.Region.Name,
-                   Level = x.Level.Name,
-                   UserId = x.AddedByUserId,
-                   Likes = x.Likes.Count()
-               })
-               .ToList();
+                .ProjectTo<WalkServiceModel>(this.mapper.ConfigurationProvider)               
+                .ToList();
 
         
     }

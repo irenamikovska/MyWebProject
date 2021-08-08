@@ -1,6 +1,6 @@
-﻿namespace WalksInNature.Services.Walks
+﻿namespace WalksInNature.Services.Walks.Models
 {
-    public class LatestWalkServiceModel
+    public class LatestWalkServiceModel : IWalkModel
     {
         public int Id { get; init; }
         public string Name { get; init; }

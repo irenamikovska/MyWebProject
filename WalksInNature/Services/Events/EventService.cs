@@ -1,22 +1,36 @@
-﻿using System;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using WalksInNature.Data;
 using WalksInNature.Data.Models;
 using WalksInNature.Models.Events;
+using WalksInNature.Services.Events.Models;
 
 namespace WalksInNature.Services.Events
 {
     public class EventService : IEventService
     {
         private readonly WalksDbContext data;
-        public EventService(WalksDbContext data) => this.data = data;
-
-        public EventQueryServiceModel All(string date, string searchTerm, 
-            EventSorting sorting, int currentPage, int eventsPerPage)
+        private readonly IMapper mapper;
+        public EventService(WalksDbContext data, IMapper mapper)
         {
-            var eventsQuery = this.data.Events.AsQueryable();
+            this.data = data;
+            this.mapper = mapper;
+        }      
+
+        public EventQueryServiceModel All(
+               string date = null, 
+               string searchTerm = null, 
+               EventSorting sorting = EventSorting.DateCreated, 
+               int currentPage = 1,
+               int eventsPerPage = int.MaxValue,
+               bool publicOnly = true)
+        {
+            var eventsQuery = this.data.Events
+                .Where(x => !publicOnly || x.IsPublic);
 
             if (!string.IsNullOrWhiteSpace(date))
             {
@@ -57,21 +71,7 @@ namespace WalksInNature.Services.Events
            => this.data
                .Events
                .Where(x => x.Id == id)
-               .Select(x => new EventDetailsServiceModel
-               {
-                   Id = x.Id,
-                   Name = x.Name,
-                   ImageUrl = x.ImageUrl,
-                   StartPoint = x.StartPoint,
-                   Region = x.Region.Name,
-                   Level = x.Level.Name,
-                   Date = x.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                   StartingHour = x.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
-                   Description = x.Description,
-                   GuideId = x.GuideId,                   
-                   UserId = x.Guide.UserId,
-                   Participants = x.Users.Count()
-               })
+               .ProjectTo<EventDetailsServiceModel>(this.mapper.ConfigurationProvider)
                .FirstOrDefault();
 
 
@@ -88,7 +88,8 @@ namespace WalksInNature.Services.Events
                 RegionId = regionId,
                 LevelId = levelId,
                 Description = description,
-                GuideId = guideId
+                GuideId = guideId,
+                IsPublic = false
             };
 
             this.data.Events.Add(eventToAdd);
@@ -98,7 +99,7 @@ namespace WalksInNature.Services.Events
         }
 
         public bool Edit(int id, string name, string imageUrl, string date, string startingHour,
-            string startPoint, int regionId, int levelId, string description)
+            string startPoint, int regionId, int levelId, string description, bool isPublic)
         {
             var eventData = this.data.Events.Find(id);
 
@@ -115,6 +116,7 @@ namespace WalksInNature.Services.Events
             eventData.RegionId = regionId;
             eventData.LevelId = levelId;
             eventData.Description = description;
+            eventData.IsPublic = isPublic;
            
             this.data.SaveChanges();
 
@@ -125,11 +127,26 @@ namespace WalksInNature.Services.Events
             => GetEvents(this.data
                 .Events
                 .Where(e => e.Guide.UserId == userId));
+        
+        // ToDo
+        public IEnumerable<EventServiceModel> EventsByUser(string userId)
+           => GetEvents(this.data
+               .Events
+               .Where(e => e.Guide.UserId == userId));
 
         public bool EventIsByGuide(int eventId, int guideId)
                 => this.data
                     .Events
                     .Any(x => x.Id == eventId && x.GuideId == guideId);
+
+        public void ChangeStatus(int eventId)
+        {
+            var eventToPublish = this.data.Events.Find(eventId);
+
+            eventToPublish.IsPublic = !eventToPublish.IsPublic;
+
+            this.data.SaveChanges();
+        }
 
         public IEnumerable<string> AllEventDates()
             => this.data.Events
@@ -139,22 +156,11 @@ namespace WalksInNature.Services.Events
                 .ToList();
                
 
-        private static IEnumerable<EventServiceModel> GetEvents(IQueryable<Event> eventQuery)
+        private IEnumerable<EventServiceModel> GetEvents(IQueryable<Event> eventQuery)
             => eventQuery
-                .Select(x => new EventServiceModel
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Date = x.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    StartingHour = x.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
-                    ImageUrl = x.ImageUrl,
-                    Region = x.Region.Name,
-                    Level = x.Level.Name,
-                    GuideId = x.GuideId,
-                    Participants = x.Users.Count()
-                })
+                .ProjectTo<EventServiceModel>(this.mapper.ConfigurationProvider)
                 .ToList();
-
+       
         public bool AddUserToEvent(string userId, int eventId)
         {
             var userWithEvent = this.data.EventsUsers.Any(x => x.UserId == userId && x.EventId == eventId);

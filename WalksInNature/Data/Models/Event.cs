@@ -29,12 +29,15 @@ namespace WalksInNature.Data.Models
         public DateTime Date { get; set; }
         public DateTime StartingHour { get; set; }
 
+        public bool IsPublic { get; set; }
+
         [Required]       
         public string Description { get; set; }
 
         public int GuideId { get; set; }
-        public Guide Guide { get; init; }  
+        public Guide Guide { get; init; }
         
+
         public virtual ICollection<EventUser> Users { get; set; } = new HashSet<EventUser>();
 
     }

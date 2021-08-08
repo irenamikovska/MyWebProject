@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Globalization;
 using WalksInNature.Infrastructure;
 using WalksInNature.Models.Insurances;
 using WalksInNature.Services.Insurances;
@@ -27,7 +26,6 @@ namespace WalksInNature.Controllers
             return View(myInsurances);
         }
 
-
         [Authorize]
         public IActionResult Details(string insuranceId)
         {
@@ -37,11 +35,8 @@ namespace WalksInNature.Controllers
             return this.View(insuranceDetails);
         }
 
-
-
         [Authorize]
         public IActionResult Add() => View();
-
 
         [HttpPost]
         [Authorize]
@@ -89,11 +84,8 @@ namespace WalksInNature.Controllers
                 userId
                 );
             
-            return RedirectToAction(nameof(MyInsurances));
-           
-        }
-
-       
+            return RedirectToAction(nameof(MyInsurances));           
+        }       
 
     }
 }

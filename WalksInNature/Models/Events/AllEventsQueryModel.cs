@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using WalksInNature.Services.Events;
+using WalksInNature.Services.Events.Models;
 
 namespace WalksInNature.Models.Events
 {

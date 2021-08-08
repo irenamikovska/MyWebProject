@@ -2,11 +2,12 @@
 using System.ComponentModel.DataAnnotations;
 using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
+using WalksInNature.Services.Walks.Models;
 using static WalksInNature.Data.Models.DataConstants.Walk;
 
 namespace WalksInNature.Models.Walks
 {
-    public class WalkFormModel
+    public class WalkFormModel : IWalkModel
     {
         [Required]       
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage="The {0} should be between {2} and {1} characters")]

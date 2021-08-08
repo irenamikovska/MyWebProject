@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WalksInNature.Services.Events.Models;
 using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
 using static WalksInNature.Data.Models.DataConstants.Event;
 
 namespace WalksInNature.Models.Events
 {
-    public class EventFormModel
+    public class EventFormModel : IEventModel
     {
         
         [Required]       
@@ -45,6 +46,7 @@ namespace WalksInNature.Models.Events
         public string Description { get; init; }
 
         public int GuideId { get; set; }
+        
         public IEnumerable<RegionServiceModel> Regions { get; set; }
         public IEnumerable<LevelServiceModel> Levels { get; set; }
 

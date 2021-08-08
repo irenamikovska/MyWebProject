@@ -12,18 +12,24 @@
         var userIsAdmin = User.IsAdmin();
 
         @if (userIsGuide && !userIsAdmin)
-        { 
+        {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="MyEvents">MyEvents</a>
             </li>
         }
-        else if(!userIsAdmin)
+        else if (!userIsAdmin)
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="Guides" asp-action="Become">BecomeGuide</a>
             </li>
         }
-        
+        else if (userIsAdmin)
+        {
+<li class="nav-item">
+    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Walks" asp-action="All">AdminWalks</a>
+    <a class="nav-link text-dark" asp-area="Admin" asp-controller="Events" asp-action="All">AdminEvents</a>
+</li>
+        }
         <li class="nav-item">
             <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
         </li>

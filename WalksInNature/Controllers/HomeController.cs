@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WalksInNature.Services.Walks;
+using WalksInNature.Services.Walks.Models;
 
 namespace WalksInNature.Controllers
 {
     public class HomeController : Controller
     {
         private readonly IWalkService walkService;       
-        private readonly IMemoryCache cache;
+        private readonly IMemoryCache cache;       
         public HomeController(IWalkService walkService, IMemoryCache cache)
         {
             this.walkService = walkService;
@@ -36,17 +37,7 @@ namespace WalksInNature.Controllers
             }
 
             return View(latestWalks);
-
-            /*
-            var totalStatistics = this.statistics.Total();
-
-            return View(new IndexViewModel 
-            {
-                TotalWalks = totalStatistics.TotalWalks,
-                TotalUsers = totalStatistics.TotalUsers,
-                TotalEvents = totalStatistics.TotalEvents,
-                Walks = walks
-            });*/
+            
         }
 
         public IActionResult Useful() => View();

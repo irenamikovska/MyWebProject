@@ -1,4 +1,4 @@
-﻿namespace WalksInNature.Services.Walks
+﻿namespace WalksInNature.Services.Walks.Models
 {
     public class WalkDetailsServiceModel : WalkServiceModel
     {

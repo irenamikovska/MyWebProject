@@ -11,9 +11,9 @@ namespace WalksInNature.Services.Statistics
 
         public StatisticsServiceModel Total()
         {
-            var totalWalks = this.data.Walks.Count();
+            var totalWalks = this.data.Walks.Count(x => x.IsPublic);
             var totalUsers = this.data.Users.Count();
-            var totalEvents = this.data.Events.Count();
+            var totalEvents = this.data.Events.Count(x => x.IsPublic);
 
             return new StatisticsServiceModel
             {

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WalksInNature.Infrastructure;
 using WalksInNature.Models.Walks;
 using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
 using WalksInNature.Services.Walks;
+
 
 namespace WalksInNature.Controllers
 {
@@ -13,23 +15,27 @@ namespace WalksInNature.Controllers
         private readonly IWalkService walkService;
         private readonly IRegionService regionService;
         private readonly ILevelService levelService;
-
-        public WalksController(IWalkService walkService, IRegionService regionService, ILevelService levelService)
+        private readonly IMapper mapper;
+        public WalksController(
+            IWalkService walkService, 
+            IRegionService regionService, 
+            ILevelService levelService,
+            IMapper mapper)
         {
             this.walkService = walkService;
             this.regionService = regionService;
             this.levelService = levelService;
+            this.mapper = mapper;
         }
 
         public IActionResult All([FromQuery] AllWalksQueryModel query)
         {
             var queryResult = this.walkService.All(
-                query.Region,
-                query.SearchTerm,
-                query.Sorting,
-                query.CurrentPage,
-                AllWalksQueryModel.WalksPerPage);
-
+                    query.Region,
+                    query.SearchTerm,
+                    query.Sorting,
+                    query.CurrentPage,
+                    AllWalksQueryModel.WalksPerPage);
 
             var walkRegions = this.walkService.AllWalkRegions();
 
@@ -40,7 +46,6 @@ namespace WalksInNature.Controllers
             return View(query);
         }
 
-
         [Authorize]
         public IActionResult MyWalks()
         {
@@ -50,13 +55,18 @@ namespace WalksInNature.Controllers
         }
        
         [Authorize]
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, string information)
         {
             var walk = this.walkService.GetDetails(id);
+
+            if (information != walk.GetWalkInformation())
+            {
+                return BadRequest();
+            }
+
             return this.View(walk);
         }
         
-
         [Authorize]
         public IActionResult Add() => View(new WalkFormModel 
         {
@@ -89,7 +99,7 @@ namespace WalksInNature.Controllers
                 return View(input);
             }
              
-            this.walkService.Create(       
+            var walkId = this.walkService.Create(       
                 input.Name,
                 input.ImageUrl,
                 input.StartPoint,
@@ -99,7 +109,7 @@ namespace WalksInNature.Controllers
                 userId
             );
                     
-            return RedirectToAction(nameof(All));
+            return RedirectToAction(nameof(Details), new { id = walkId, information = input.GetWalkInformation() });
         }
 
         [Authorize]
@@ -113,19 +123,13 @@ namespace WalksInNature.Controllers
             {
                 return Unauthorized();
             }
+                     
+            var walkForm = this.mapper.Map<WalkFormModel>(walkToEdit);
 
-            return View(new WalkFormModel
-            {
-                Name = walkToEdit.Name,
-                ImageUrl = walkToEdit.ImageUrl,
-                StartPoint = walkToEdit.StartPoint,
-                RegionId = walkToEdit.RegionId,
-                LevelId = walkToEdit.LevelId,               
-                Description = walkToEdit.Description,
-                UserId = walkToEdit.UserId,
-                Regions = this.regionService.GetRegions(),
-                Levels = this.levelService.GetLevels()
-            });
+            walkForm.Regions = this.regionService.GetRegions();
+            walkForm.Levels = this.levelService.GetLevels();
+
+            return View(walkForm);
         }
 
         [HttpPost]
@@ -160,17 +164,22 @@ namespace WalksInNature.Controllers
                 return BadRequest();
             }
 
-            this.walkService.Edit(
+            var editedWalk = this.walkService.Edit(
                 id,
                 walk.Name,
                 walk.ImageUrl,
                 walk.StartPoint,
                 walk.RegionId,
                 walk.LevelId,
-                walk.Description
-               );
+                walk.Description,
+                this.User.IsAdmin());
 
-            return RedirectToAction(nameof(All));
+            if (!editedWalk)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction(nameof(Details), new { id, information = walk.GetWalkInformation() });
         }
 
         [Authorize]     
@@ -204,6 +213,5 @@ namespace WalksInNature.Controllers
 
             return RedirectToAction(nameof(All));            
         }
-
     }
 }

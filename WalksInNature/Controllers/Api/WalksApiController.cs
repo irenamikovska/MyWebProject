@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WalksInNature.Models.Api.Walks;
 using WalksInNature.Services.Walks;
+using WalksInNature.Services.Walks.Models;
 
 namespace WalksInNature.Controllers.Api
 {

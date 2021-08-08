@@ -90,6 +90,16 @@ namespace WalksInNature
                         name: "Area",
                         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
+                    endpoints.MapControllerRoute(
+                        name: "Walk Details",
+                        pattern: "/Walks/Details/{id}/{information}",
+                        defaults: new { controller = "Walks", action = "Details" });
+
+                    endpoints.MapControllerRoute(
+                        name: "Event Details",
+                        pattern: "/Events/Details/{id}/{information}",
+                        defaults: new { controller = "Events", action = "Details"});
+
                     endpoints.MapDefaultControllerRoute();                   
                     endpoints.MapRazorPages();
                 });

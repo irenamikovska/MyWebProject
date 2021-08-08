@@ -25,6 +25,8 @@ namespace WalksInNature.Data.Models
         public int LevelId { get; set; }
         public Level Level { get; init; }
 
+        public bool IsPublic { get; set; }
+
         [Required]
         public string Description { get; set; }
 

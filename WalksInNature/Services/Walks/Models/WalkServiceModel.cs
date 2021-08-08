@@ -1,6 +1,6 @@
-﻿namespace WalksInNature.Services.Walks
+﻿namespace WalksInNature.Services.Walks.Models
 {
-    public class WalkServiceModel
+    public class WalkServiceModel : IWalkModel
     {
         public int Id { get; init; }
         public string Name { get; init; }
@@ -9,6 +9,7 @@
         public string Level { get; set; }
         public string UserId { get; set; }
         public int Likes { get; set; }
+        public bool IsPublic { get; init; }
 
     }
 }

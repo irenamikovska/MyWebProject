@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WalkServiceModel>
+
+@{
+    ViewBag.Title = "Walks Administration";
+}
+
+<h1>All Walks</h1>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Region</th>
+            <th scope="col">Level</th>
+            <th scope="col">Approved</th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var walk in Model)
+        {
+            <tr>
+                <td scope="col">@walk.Id</td>
+                <td scope="col">@walk.Name</td>
+                <td scope="col">@walk.Region</td>
+                <td scope="col">@walk.Level</td>
+                <td scope="col">@(walk.IsPublic ? "Yes" : "No")</td>
+                <td scope="col">
+                    <a asp-area="" asp-controller="Walks" asp-action="Delete" asp-route-id="@walk.Id" class="btn btn-danger float-right ml-3">Delete</a>
+                    <a asp-area="" asp-controller="Walks" asp-action="Edit" asp-route-id="@walk.Id" class="btn btn-warning float-right ml-3">Edit</a>
+                    <a asp-area="Admin" asp-controller="Walks" asp-action="ChangeStatus" asp-route-id="@walk.Id" class="btn btn-info float-right ml-3">@(walk.IsPublic ? "Hide" : "Show")</a>
+                    <a asp-area="" asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id" asp-route-information="@walk.GetWalkInformation()" class="btn btn-info float-right ml-3">View</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

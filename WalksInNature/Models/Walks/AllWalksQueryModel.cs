@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using WalksInNature.Services.Walks;
+using WalksInNature.Services.Walks.Models;
 
 namespace WalksInNature.Models.Walks
 {

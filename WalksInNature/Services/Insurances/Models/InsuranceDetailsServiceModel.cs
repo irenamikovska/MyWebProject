@@ -1,5 +1,4 @@
-﻿
-namespace WalksInNature.Services.Insurances.Models
+﻿namespace WalksInNature.Services.Insurances.Models
 {
     public class InsuranceDetailsServiceModel
     {
