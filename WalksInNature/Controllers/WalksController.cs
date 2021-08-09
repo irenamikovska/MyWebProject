@@ -7,6 +7,8 @@ using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
 using WalksInNature.Services.Walks;
 
+using static WalksInNature.WebConstants;
+
 
 namespace WalksInNature.Controllers
 {
@@ -108,7 +110,9 @@ namespace WalksInNature.Controllers
                 input.Description,
                 userId
             );
-                    
+
+            TempData[GlobalMessageKey] = "You walk was added and is awaiting for approval!";
+
             return RedirectToAction(nameof(Details), new { id = walkId, information = input.GetWalkInformation() });
         }
 
@@ -179,6 +183,8 @@ namespace WalksInNature.Controllers
                 return BadRequest();
             }
 
+            TempData[GlobalMessageKey] = $"You walk was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
+
             return RedirectToAction(nameof(Details), new { id, information = walk.GetWalkInformation() });
         }
 
@@ -202,15 +208,12 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var userId = this.User.GetId();
-
-            if (string.IsNullOrEmpty(userId) && !User.IsAdmin())
+          
+            if (User.IsAdmin())
             {
-                return this.BadRequest();
+                this.walkService.Delete(id);
             }
-
-            this.walkService.Delete(id, userId);
-
+           
             return RedirectToAction(nameof(All));            
         }
     }

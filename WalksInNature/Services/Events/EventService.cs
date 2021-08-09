@@ -182,6 +182,25 @@ namespace WalksInNature.Services.Events
             return true;
         }
 
+        public bool RemoveUserByEvent(string userId, int eventId)
+        {
+            var userEvent = this.data
+                .EventsUsers
+                .Where(x => x.UserId == userId && x.EventId == eventId)
+                .FirstOrDefault();
+
+            if (userEvent == null)
+            {
+                throw new ArgumentException(string.Format("User with that ID: {0} does not participate in event with ID: {1}", userId, eventId));
+            }
+
+           
+            this.data.EventsUsers.Remove(userEvent);
+            this.data.SaveChanges();
+
+            return true;
+        }
+
         public void Delete(int id, int guideId)
         {
             var eventToDelete = this.data.Events.Find(id);

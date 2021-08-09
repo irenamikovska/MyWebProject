@@ -23,5 +23,13 @@ namespace WalksInNature.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(All));
         }
+
+        public IActionResult Delete(int id)
+        {
+            
+            this.walkService.Delete(id);
+
+            return RedirectToAction(nameof(All));
+        }
     }
 }

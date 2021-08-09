@@ -1,4 +1,10 @@
-﻿<section class="py-5">
+﻿@model InsuranceDetailsServiceModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<section class="py-5">
     <div class="container">
         <h1 style="margin: 2%; text-align: center;">Insurance: @Model.StartDate - @Model.EndDate</h1>
         <div>

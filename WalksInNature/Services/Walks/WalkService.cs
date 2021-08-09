@@ -193,11 +193,11 @@ namespace WalksInNature.Services.Walks
             return true;
         }
 
-        public void Delete(int id, string userId) 
+        public void Delete(int id) 
         {
             var walkToDelete = this.data.Walks.Find(id);
 
-            if (walkToDelete.AddedByUserId == userId)
+            if (walkToDelete != null)
             {
                 this.data.Walks.Remove(walkToDelete);
                 this.data.SaveChanges();

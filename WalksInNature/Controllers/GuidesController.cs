@@ -4,6 +4,8 @@ using WalksInNature.Infrastructure;
 using WalksInNature.Models.Guides;
 using WalksInNature.Services.Guides;
 
+using static WalksInNature.WebConstants;
+
 namespace WalksInNature.Controllers
 {
     public class GuidesController : Controller
@@ -34,7 +36,9 @@ namespace WalksInNature.Controllers
             }
            
             this.guideService.Create(input.Name, input.PhoneNumber, userId);
-           
+
+            TempData[GlobalMessageKey] = "Thank you for becomming a guide!";
+
             return RedirectToAction("All", "Events");
         }
     }

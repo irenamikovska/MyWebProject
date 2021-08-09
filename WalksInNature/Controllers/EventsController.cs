@@ -10,6 +10,8 @@ using WalksInNature.Services.Guides;
 using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
 
+using static WalksInNature.WebConstants;
+
 namespace WalksInNature.Controllers
 {
     public class EventsController : Controller
@@ -142,7 +144,9 @@ namespace WalksInNature.Controllers
                     input.LevelId,
                     input.Description,
                     guideId);
-                        
+
+            TempData[GlobalMessageKey] = "You event was added and is awaiting for approval!";
+
             return RedirectToAction(nameof(Details), new { id = eventId, information = input.GetEventInformation() });
 
         }
@@ -225,6 +229,8 @@ namespace WalksInNature.Controllers
                 return BadRequest();
             }
 
+            TempData[GlobalMessageKey] = $"You event was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
+
             return RedirectToAction(nameof(Details), new { id, information = eventToEdit.GetEventInformation() });
         }
 
@@ -240,8 +246,22 @@ namespace WalksInNature.Controllers
 
             this.eventService.AddUserToEvent(user, id);
 
-            return this.RedirectToAction(nameof(All));
-            //return this.RedirectToAction(nameof(this.Details), new { id });
+            TempData[GlobalMessageKey] = $"You joined an event successfully!";
+            
+            return RedirectToAction(nameof(All));
+                      
+        }
+
+        [Authorize]
+        public IActionResult RemoveUser(int id)
+        {
+            var userId = this.User.GetId();
+            
+            this.eventService.RemoveUserByEvent(userId, id);
+
+            TempData[GlobalMessageKey] = $"You left an event successfully!";
+
+            return RedirectToAction(nameof(All));           
         }
 
         [Authorize]

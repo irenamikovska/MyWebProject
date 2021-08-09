@@ -55,19 +55,19 @@ namespace WalksInNature.Services.Insurances
                .FirstOrDefault();
        
 
-        public string Book(DateTime startDate, DateTime endDate, int numberOfPeople, int limit, string beneficiary, string userId)
-        {         
-
-            //var start = DateTime.ParseExact(startDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            //var end = DateTime.ParseExact(endDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            var duration = (endDate - startDate).Days;
+        public string Book(string startDate, string endDate, int numberOfPeople, int limit, string beneficiary, string userId)
+        {
+            
+            var start = DateTime.ParseExact(startDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            var end = DateTime.ParseExact(endDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
+            var duration = (end - start).Days;
             var pricePerPerson = CalulatePrice(duration, limit);
             var totalPrice = numberOfPeople * pricePerPerson;                        
 
             var insuranceToBook = new Insurance
             {
-                StartDate = startDate,
-                EndDate = endDate,
+                StartDate = start,
+                EndDate = end,
                 Duration = duration,
                 NumberOfPeople = numberOfPeople,
                 Limit = limit,

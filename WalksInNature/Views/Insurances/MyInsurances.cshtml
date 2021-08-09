@@ -1,8 +1,19 @@
-﻿<section class="py-5">
+﻿@model IEnumerable<InsuranceServiceModel>
+
+@{
+    ViewBag.Title = "My Insurances";
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any booked insurances!</h2>
+}
+
+<section class="py-5">
     <div class="container">
         <h1 style="margin: 2%; text-align: center;">My insurances</h1>
         <div style="padding: 5%;">
-            <table class="table">
+            <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
                         <th scope="col">StartDate</th>
@@ -13,17 +24,15 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model)
+                    @foreach (var insurance in Model)
                     {
                         <tr>
-                            <td>@item.StartDate</td>
-                            <td>@item.EndDate</td>
-                            <td>@item.NumberOfPeople</td>
-                            <td>@item.TotalPrice</td>
-                            <td>
-                                <div class="button-holder">
-                                    <a href="/Insurances/Details?insuranceId=@item.Id" class="btn btn-info text-uppercase">Details</a>
-                                </div>
+                            <td scope="col">@insurance.StartDate</td>
+                            <td scope="col">@insurance.EndDate</td>
+                            <td scope="col">@insurance.NumberOfPeople</td>
+                            <td scope="col">@insurance.TotalPrice</td>
+                            <td scope="col">
+                                <a asp-controller="Insurances" asp-action="Details" asp-route-id="@insurance.Id" class="btn btn-info">View</a>                                
                             </td>
                         </tr>
                     }
@@ -32,3 +41,4 @@
         </div>
     </div>
 </section>
+

@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 using WalksInNature.Infrastructure;
 using WalksInNature.Models.Insurances;
 using WalksInNature.Services.Insurances;
+
+using static WalksInNature.WebConstants;
 
 namespace WalksInNature.Controllers
 {
@@ -27,10 +30,10 @@ namespace WalksInNature.Controllers
         }
 
         [Authorize]
-        public IActionResult Details(string insuranceId)
+        public IActionResult Details(string id)
         {
            
-            var insuranceDetails = this.insuranceService.GetDetails(insuranceId);                
+            var insuranceDetails = this.insuranceService.GetDetails(id);                
 
             return this.View(insuranceDetails);
         }
@@ -42,16 +45,13 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult Add(InsuranceFormModel input)
         {
-                       
-            //var startIns = input.StartDate;
-            //var endIns = DateTime.ParseExact(input.EndDate, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            var duration = (input.EndDate - input.StartDate).Days;
-            
-            
+               
             if(input.StartDate < DateTime.UtcNow)
             {
                 this.ModelState.AddModelError(nameof(input.StartDate), "Start date have to after current date!");
             }
+
+            var duration = (input.EndDate - input.StartDate).Days;
 
             if (duration < 0) 
             {
@@ -76,14 +76,16 @@ namespace WalksInNature.Controllers
             var userId = this.User.GetId();
 
             this.insuranceService.Book(
-                input.StartDate,                
-                input.EndDate,                
+                input.StartDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),                
+                input.EndDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),                
                 input.NumberOfPeople,
                 input.Limit,                
                 input.Beneficiary,
                 userId
                 );
-            
+
+            TempData[GlobalMessageKey] = "You insurance was booked!";
+
             return RedirectToAction(nameof(MyInsurances));           
         }       
 
