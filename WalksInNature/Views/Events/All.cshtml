@@ -4,17 +4,25 @@
     ViewBag.Title = "All Events";
 }
 
+<h3 class="text-center">
+    <span class="display-4">Let's go together!</span>
+</h3>
+
+<hr />
+
+<div class="mb-5"></div>
+
 <form method="get">
     <div class="row">
 
         <div class="form-group col-md-4">
             <div class="form-group">
-                <label asp-for="Date"></label>
-                <select asp-for="Date" class="form-control">
+                <label asp-for="GuideName"></label>
+                <select asp-for="GuideName" class="form-control">
                     <option value="">All</option>
-                    @foreach (var date in Model.Dates)
+                    @foreach (var guide in Model.Guides)
                     {
-                        <option value="@date">@date</option>
+                        <option value="@guide">@guide</option>
                     }
                 </select>
             </div>
@@ -32,6 +40,7 @@
                     <option value="0" selected>Date Created</option>
                     <option value="1">Name</option>
                     <option value="2">Region</option>
+                    <option value="3">Date</option>
                 </select>
             </div>
         </div>
@@ -55,7 +64,7 @@
            asp-controller="Events"
            asp-action="All"
            asp-route-currentPage="@previousPage"
-           asp-route-date="@Model.Date"
+           asp-route-date="@Model.GuideName"
            asp-route-searchTerm="@Model.SearchTerm"
            asp-route-sorting="@((int)Model.Sorting)"><<</a>
     </div>
@@ -65,7 +74,7 @@
            asp-controller="Events"
            asp-action="All"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
-           asp-route-date="@Model.Date"
+           asp-route-date="@Model.GuideName"
            asp-route-searchTerm="@Model.SearchTerm"
            asp-route-sorting="@((int)Model.Sorting)">>></a>
     </div>
@@ -76,4 +85,4 @@
     <h2 class="text-center">No events found by the given criteria!</h2>
 }
 
-<partial name="_EventsPartial" model="@Model.Events"/>
+<partial name="_EventsPartial" model="@Model.Events" />

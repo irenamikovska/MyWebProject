@@ -13,8 +13,8 @@ namespace WalksInNature.Models.Events
         public IEnumerable<EventServiceModel> Events { get; set; }
 
         // for filtering by region
-        public string Date { get; init; }         
-        public IEnumerable<string> Dates { get; set; }
+        public string GuideName { get; init; }            
+        public IEnumerable<string> Guides { get; set; }
 
         // for sorting
         public EventSorting Sorting { get; init; }

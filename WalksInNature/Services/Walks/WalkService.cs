@@ -46,6 +46,7 @@ namespace WalksInNature.Services.Walks
             {
                 WalkSorting.Name => walksQuery.OrderBy(x => x.Name),
                 WalkSorting.Level => walksQuery.OrderByDescending(x => x.Level.Id),
+                WalkSorting.Likes => walksQuery.OrderByDescending(x => x.Likes.Count),
                 WalkSorting.DateCreated or _ => walksQuery.OrderByDescending(x => x.Id)
             };
 

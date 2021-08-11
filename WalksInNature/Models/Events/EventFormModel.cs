@@ -37,9 +37,8 @@ namespace WalksInNature.Models.Events
         public DateTime Date { get; init; }
 
         [Required]
-        [DataType(DataType.Time)]
-        [Display(Name = "Starting Time")]
-        public DateTime StartingHour { get; set; }
+        [Display(Name = "Start Hour")]
+        public string StartHour { get; set; }
 
         [Required]
         [StringLength(int.MaxValue, MinimumLength = DescriptionMinLength, ErrorMessage = "The {0} should be at least {2} characters")]

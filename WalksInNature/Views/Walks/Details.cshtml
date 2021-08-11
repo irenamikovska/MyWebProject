@@ -4,82 +4,33 @@
     ViewBag.Title = "Details";
 }
 
-<div>
-    <div class="form-group">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" readonly class="form-control" name="Name" value="@Model.Name">
-    </div>
-    <div class="form-group">
-        <label asp-for="ImageUrl"></label>
-        <input asp-for="ImageUrl" class="form-control" name="ImageUrl" value="@Model.ImageUrl">
-    </div>
-    <div class="form-group">
-        <label asp-for="StartPoint"></label>
-        <input asp-for="StartPoint" class="form-control" name="StartPoint" value="@Model.StartPoint">
-    </div>
-    <div class="form-group">
-        <label asp-for="Region"></label>
-        <input asp-for="Region" class="form-control" name="Region" value="@Model.Region">
-    </div>
-    <div class="form-group">
-        <label asp-for="Level"></label>
-        <input asp-for="Level" class="form-control" name="Level" value="@Model.Level">
-    </div>
-    <div class="form-group">
-        <label asp-for="StartPoint"></label>
-        <input asp-for="StartPoint" class="form-control" name="StartPoint" value="@Model.StartPoint">
-    </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input asp-for="Description" class="form-control" name="Description" value="@Model.Description">
-    </div>
+<h3 class="display-4 text-center">@Model.Name Details</h3>
+<hr />
 
-    <div class="form-group text-center">
-        <a class="btn btn-warning m-1" asp-controller="Walks" asp-action="AddLike" asp-route-id="@Model.Id">Add Like</a>
-    </div>
-</div>
-
-
-
-
-<!--
-
-    
-<div class="button-holder">
-            <a href="/Walks/AddUserToWalk?walkId=@Model.Id" class="btn btn-info btn-block text-uppercase">Like</a>
-        </div>
-
-
-<div class="row">
-    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
-        <h2 class="heading-margin text-center">@ViewBag.Title</h2>
-        <div>
-            <div class="form-group">
-                <label asp-for="Name"></label>
-                <input asp-for="Name" readonly class="form-control" name="Name" value="@Model.Name">
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl"></label>
-                <input asp-for="ImageUrl" class="form-control" name ="ImageUrl" value="@Model.ImageUrl">
-            </div>
-            <div class="form-group">
-                <label asp-for="StartPoint"></label>
-                <input asp-for="StartPoint" class="form-control" name="StartPoint" value="@Model.StartPoint">
-            </div>
-            <div class="form-group">
-                <label asp-for="Description"></label>
-                <textarea asp-for="Description" rows="4" class="form-control" name="Description" value="@Model.Description"></textarea>
-            </div>
-
-            <div class="form-group text-center">
-                <div class="button-holder">
-                    <a href="/Walks/AddUserToWalk?walkId=@Model.Id" class="btn btn-info btn-block text-uppercase">Like</a>
+<div class="row justify-content-center">
+    <div class="card-deck col-8">
+        <div class="card info-card">
+            <div class="card-body text-center">
+                <h5>Likes: @Model.Likes</h5>
+                <hr />
+                <img class="card-main-img card-img-top mb-3" src="@Model.ImageUrl" asp-append-version="true" alt="@Model.Name" />
+                <div class="container-md-md row mb-3 ml-0 mr-0 justify-content-center">
+                    <div class="container-md-md ml-0 mr-0">
+                        <div class="m-1">
+                            <h5>@Model.Name</h5>
+                            <h5>Start point: @Model.StartPoint</h5>
+                            <h5>Region: @Model.Region</h5>
+                            <h5>Level: @Model.Level</h5>
+                            <h5>Description: @Model.Description</h5>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-info mr-2" asp-controller="Walks" asp-action="All">Back To List</a>
+                    <a class="btn btn-warning m-1" asp-controller="Walks" asp-action="AddLike" asp-route-id="@Model.Id">Add Like</a>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
-
-    -->

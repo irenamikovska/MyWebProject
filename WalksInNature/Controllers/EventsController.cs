@@ -38,15 +38,15 @@ namespace WalksInNature.Controllers
         public IActionResult All([FromQuery] AllEventsQueryModel query)
         {
             var queryResult = this.eventService.All(
-                query.Date,
+                query.GuideName,
                 query.SearchTerm,
                 query.Sorting,
                 query.CurrentPage,
                 AllEventsQueryModel.EventsPerPage);
 
-            var eventDates = this.eventService.AllEventDates();
+            var eventGuides = this.eventService.AllEventGuides();
 
-            query.Dates = eventDates;
+            query.Guides = eventGuides;
             query.TotalEvents = queryResult.TotalEvents;
             query.Events = queryResult.Events;
 
@@ -138,7 +138,7 @@ namespace WalksInNature.Controllers
                     input.Name,
                     input.ImageUrl,
                     input.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                    input.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
+                    input.StartHour,
                     input.StartPoint,
                     input.RegionId,
                     input.LevelId,
@@ -216,7 +216,7 @@ namespace WalksInNature.Controllers
                 eventToEdit.Name,
                 eventToEdit.ImageUrl,
                 eventToEdit.Date.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                eventToEdit.StartingHour.ToString("hh:mm", CultureInfo.InvariantCulture),
+                eventToEdit.StartHour,
                 eventToEdit.StartPoint,
                 eventToEdit.RegionId,
                 eventToEdit.LevelId,

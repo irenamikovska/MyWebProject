@@ -27,7 +27,7 @@ namespace WalksInNature.Data.Models
         public Level Level { get; set; }
 
         public DateTime Date { get; set; }
-        public DateTime StartingHour { get; set; }
+        public TimeSpan StartHour { get; set; }
 
         public bool IsPublic { get; set; }
 
@@ -35,8 +35,7 @@ namespace WalksInNature.Data.Models
         public string Description { get; set; }
 
         public int GuideId { get; set; }
-        public Guide Guide { get; init; }
-        
+        public Guide Guide { get; init; }        
 
         public virtual ICollection<EventUser> Users { get; set; } = new HashSet<EventUser>();
 

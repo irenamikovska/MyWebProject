@@ -8,7 +8,7 @@
                 <img class="card-img-top" src="@eventModel.ImageUrl" alt="@eventModel.Date">
                 <div class="card-body text-center">
                     <h5 class="card-title text-center">@eventModel.Name</h5>
-                    <h5 class="card-title text-center">@eventModel.Date at @eventModel.StartingHour</h5>
+                    <h5 class="card-title text-center">@eventModel.DateFormated</h5>
                     <h6 class="card-title text-center">Guide: @eventModel.GuideName</h6>
                     <h6 class="card-title text-center">Participants: @eventModel.Participants</h6>
                     <a asp-controller="Events" asp-action="Details" asp-route-id="@eventModel.Id" asp-route-information="@eventModel.GetEventInformation()" class="btn btn-info">More info</a>                   

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WalksInNature.Models.Events;
 using WalksInNature.Services.Events.Models;
 
@@ -6,13 +7,13 @@ namespace WalksInNature.Services.Events
 {
     public interface IEventService
     {
-        EventQueryServiceModel All(string date = null,
+        EventQueryServiceModel All(string guideName = null,
                string searchTerm = null,
                EventSorting sorting = EventSorting.DateCreated,
                int currentPage = 1,
                int eventsPerPage = int.MaxValue,
                bool publicOnly = true);
-        IEnumerable<string> AllEventDates();
+        IEnumerable<string> AllEventGuides();
 
         EventDetailsServiceModel GetDetails(int eventId);
 
@@ -22,10 +23,10 @@ namespace WalksInNature.Services.Events
 
         bool EventIsByGuide(int eventId, int guideId);
         
-        int Create(string name, string imageUrl, string date, string startingHour,
+        int Create(string name, string imageUrl, string date, string startHour,
             string startPoint, int regionId, int levelId, string description, int guideId);
 
-        bool Edit(int id, string name, string imageUrl, string date, string startingHour,
+        bool Edit(int id, string name, string imageUrl, string date, string startHour,
             string startPoint, int regionId, int levelId, string description, bool isPublic);
 
         void ChangeStatus(int eventId);

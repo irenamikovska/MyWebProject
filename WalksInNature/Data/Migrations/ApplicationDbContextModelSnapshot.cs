@@ -189,13 +189,13 @@ namespace WalksInNature.Data.Migrations
                     b.Property<int>("RegionId")
                         .HasColumnType("int");
 
+                    b.Property<TimeSpan>("StartHour")
+                        .HasColumnType("time");
+
                     b.Property<string>("StartPoint")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<DateTime>("StartingHour")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

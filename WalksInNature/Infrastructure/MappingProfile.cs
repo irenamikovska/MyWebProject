@@ -18,7 +18,9 @@ namespace WalksInNature.Infrastructure
             this.CreateMap<Level, LevelServiceModel>();
 
             this.CreateMap<Walk, LatestWalkServiceModel>();
+
             this.CreateMap<WalkDetailsServiceModel, WalkFormModel>();
+
             this.CreateMap<Walk, WalkServiceModel>()
                 .ForMember(x => x.Region, cfg => cfg.MapFrom(x => x.Region.Name))
                 .ForMember(x => x.Level, cfg => cfg.MapFrom(x => x.Level.Name))
@@ -26,8 +28,15 @@ namespace WalksInNature.Infrastructure
                 .ForMember(x => x.Likes, cfg => cfg.MapFrom(x => x.Likes.Count));
 
             this.CreateMap<EventDetailsServiceModel, EventFormModel>();
+
             this.CreateMap<Event, EventDetailsServiceModel>()
-                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Guide.UserId));
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.Guide.UserId))
+                .ForMember(x => x.Region, cfg => cfg.MapFrom(x => x.Region.Name))
+                .ForMember(x => x.Level, cfg => cfg.MapFrom(x => x.Level.Name))
+                .ForMember(x => x.GuideName, cfg => cfg.MapFrom(x => x.Guide.Name))
+                .ForMember(x => x.GuidePhoneNumber, cfg => cfg.MapFrom(x => x.Guide.PhoneNumber))
+                .ForMember(x => x.Participants, cfg => cfg.MapFrom(x => x.Users.Count));
+               
             this.CreateMap<Event, EventServiceModel>()
                 .ForMember(x => x.Region, cfg => cfg.MapFrom(x => x.Region.Name))
                 .ForMember(x => x.Level, cfg => cfg.MapFrom(x => x.Level.Name))

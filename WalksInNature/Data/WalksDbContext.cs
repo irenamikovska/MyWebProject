@@ -79,20 +79,7 @@ namespace WalksInNature.Data
             
             builder
                 .Entity<WalkUser>()
-                .HasKey(x => new { x.WalkId, x.UserId, });
-            /*
-            builder.Entity<WalkUser>()
-                .HasOne(x => x.Walk)
-                .WithMany(a => a.Likes)
-                .HasForeignKey(b => b.WalkId)               
-                .HasPrincipalKey(c => c.Id)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<WalkUser>()
-                .HasOne(x => x.User)
-                .WithMany(a => a.Likes)
-                .HasForeignKey(b => b.UserId)               
-                .OnDelete(DeleteBehavior.Restrict);*/
+                .HasKey(x => new { x.WalkId, x.UserId, });           
 
             builder.Entity<EventUser>()
                 .HasKey(e => new { e.EventId, e.UserId, });

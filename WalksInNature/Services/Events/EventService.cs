@@ -22,7 +22,7 @@ namespace WalksInNature.Services.Events
         }      
 
         public EventQueryServiceModel All(
-               string date = null, 
+               string guideName = null, 
                string searchTerm = null, 
                EventSorting sorting = EventSorting.DateCreated, 
                int currentPage = 1,
@@ -32,9 +32,9 @@ namespace WalksInNature.Services.Events
             var eventsQuery = this.data.Events
                 .Where(x => !publicOnly || x.IsPublic);
 
-            if (!string.IsNullOrWhiteSpace(date))
+            if (!string.IsNullOrWhiteSpace(guideName))
             {
-                eventsQuery = eventsQuery.Where(x => x.Date.ToString() == date);
+                eventsQuery = eventsQuery.Where(x => x.Guide.Name == guideName);
             }
 
             if (!string.IsNullOrWhiteSpace(searchTerm))
@@ -48,6 +48,7 @@ namespace WalksInNature.Services.Events
             {
                 EventSorting.Name => eventsQuery.OrderBy(x => x.Name),
                 EventSorting.Region => eventsQuery.OrderBy(x => x.Region.Id),
+                EventSorting.Date => eventsQuery.OrderBy(x => x.Date),
                 EventSorting.DateCreated or _ => eventsQuery.OrderByDescending(x => x.Id)
             };
 
@@ -75,7 +76,7 @@ namespace WalksInNature.Services.Events
                .FirstOrDefault();
 
 
-        public int Create(string name, string imageUrl, string date, string startingHour, 
+        public int Create(string name, string imageUrl, string date, string startHour, 
             string startPoint, int regionId, int levelId, string description, int guideId)
         {
             var eventToAdd = new Event
@@ -83,7 +84,7 @@ namespace WalksInNature.Services.Events
                 Name = name,
                 ImageUrl = imageUrl,
                 Date = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture),
-                StartingHour = DateTime.ParseExact(startingHour, "hh:mm", CultureInfo.InvariantCulture),
+                StartHour = TimeSpan.ParseExact(startHour, "c", CultureInfo.InvariantCulture),
                 StartPoint = startPoint,
                 RegionId = regionId,
                 LevelId = levelId,
@@ -98,7 +99,7 @@ namespace WalksInNature.Services.Events
             return eventToAdd.Id;
         }
 
-        public bool Edit(int id, string name, string imageUrl, string date, string startingHour,
+        public bool Edit(int id, string name, string imageUrl, string date, string startHour,
             string startPoint, int regionId, int levelId, string description, bool isPublic)
         {
             var eventData = this.data.Events.Find(id);
@@ -111,7 +112,7 @@ namespace WalksInNature.Services.Events
             eventData.Name = name;
             eventData.ImageUrl = imageUrl;
             eventData.Date = DateTime.ParseExact(date, "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            eventData.StartingHour = DateTime.ParseExact(startingHour, "hh:mm", CultureInfo.InvariantCulture);
+            eventData.StartHour = TimeSpan.ParseExact(startHour, "c", CultureInfo.InvariantCulture, TimeSpanStyles.None);
             eventData.StartPoint = startPoint;
             eventData.RegionId = regionId;
             eventData.LevelId = levelId;
@@ -148,9 +149,9 @@ namespace WalksInNature.Services.Events
             this.data.SaveChanges();
         }
 
-        public IEnumerable<string> AllEventDates()
+        public IEnumerable<string> AllEventGuides()
             => this.data.Events
-                .Select(x => x.Date.ToString())
+                .Select(x => x.Guide.Name)
                 .Distinct()
                 .OrderBy(d => d)
                 .ToList();

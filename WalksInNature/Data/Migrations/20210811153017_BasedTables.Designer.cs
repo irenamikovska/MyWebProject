@@ -10,8 +10,8 @@ using WalksInNature.Data;
 namespace WalksInNature.Data.Migrations
 {
     [DbContext(typeof(WalksDbContext))]
-    [Migration("20210802194715_WalkEventGuideInsuranceTables")]
-    partial class WalkEventGuideInsuranceTables
+    [Migration("20210811153017_BasedTables")]
+    partial class BasedTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -177,6 +177,9 @@ namespace WalksInNature.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
                     b.Property<int>("LevelId")
                         .HasColumnType("int");
 
@@ -188,13 +191,13 @@ namespace WalksInNature.Data.Migrations
                     b.Property<int>("RegionId")
                         .HasColumnType("int");
 
+                    b.Property<TimeSpan>("StartHour")
+                        .HasColumnType("time");
+
                     b.Property<string>("StartPoint")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
-
-                    b.Property<DateTime>("StartingHour")
-                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -419,6 +422,9 @@ namespace WalksInNature.Data.Migrations
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
 
                     b.Property<int>("LevelId")
                         .HasColumnType("int");

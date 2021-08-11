@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WalksInNature.Data.Migrations
 {
-    public partial class WalkEventGuideInsuranceTables : Migration
+    public partial class BasedTables : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -106,7 +106,8 @@ namespace WalksInNature.Data.Migrations
                     RegionId = table.Column<int>(type: "int", nullable: false),
                     LevelId = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    StartingHour = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartHour = table.Column<TimeSpan>(type: "time", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GuideId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -144,6 +145,7 @@ namespace WalksInNature.Data.Migrations
                     StartPoint = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     RegionId = table.Column<int>(type: "int", nullable: false),
                     LevelId = table.Column<int>(type: "int", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AddedByUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },

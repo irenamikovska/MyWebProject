@@ -11,6 +11,8 @@
 
         public string Description { get; init; }
 
+        public string GuidePhoneNumber { get; set; }
+
         public string UserId { get; init; }
     }
 }
