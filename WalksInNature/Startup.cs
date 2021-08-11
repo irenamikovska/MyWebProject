@@ -91,9 +91,9 @@ namespace WalksInNature
                         pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
                     endpoints.MapControllerRoute(
-                        name: "Walk Details",
-                        pattern: "/Walks/Details/{id}/{information}",
-                        defaults: new { controller = "Walks", action = "Details" });
+                       name: "Walks Details",
+                       pattern: "/Walks/Details/{id}/{information}",
+                       defaults: new { controller = "Walks", action = "Details" });
 
                     endpoints.MapControllerRoute(
                         name: "Event Details",

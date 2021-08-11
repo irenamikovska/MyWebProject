@@ -6,6 +6,8 @@ using System.Linq;
 using WalksInNature.Services.Walks;
 using WalksInNature.Services.Walks.Models;
 
+using static WalksInNature.WebConstants.Cache;
+
 namespace WalksInNature.Controllers
 {
     public class HomeController : Controller
@@ -20,9 +22,7 @@ namespace WalksInNature.Controllers
 
         public IActionResult Index()
         {
-            const string latestWalksCacheKey = "LatestWalksCacheKey";
-
-            var latestWalks = this.cache.Get<List<LatestWalkServiceModel>>(latestWalksCacheKey);
+            var latestWalks = this.cache.Get<List<LatestWalkServiceModel>>(LatestWalksCacheKey);
 
             if (latestWalks == null)
             {
@@ -33,7 +33,7 @@ namespace WalksInNature.Controllers
                 var cacheOptions = new MemoryCacheEntryOptions()
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(15));
 
-                this.cache.Set(latestWalksCacheKey, latestWalks, cacheOptions);
+                this.cache.Set(LatestWalksCacheKey, latestWalks, cacheOptions);
             }
 
             return View(latestWalks);

@@ -11,27 +11,27 @@ namespace WalksInNature.Models.Walks
     {
         [Required]       
         [StringLength(NameMaxLength, MinimumLength = NameMinLength, ErrorMessage="The {0} should be between {2} and {1} characters")]
-        public string Name { get; init; }
+        public string Name { get; set; }
 
         [Required]
         [Display(Name = "Image URL")]
         [Url]
-        public string ImageUrl { get; init; }
+        public string ImageUrl { get; set; }
 
         [Required]
         [StringLength(StartPointMaxLength, MinimumLength = StartPointMinLength, ErrorMessage = "The {0} should be between {2} and {1} characters")]
         [Display(Name = "Start Point")]
-        public string StartPoint { get; init; }
+        public string StartPoint { get; set; }
 
         [Display(Name = "Region")]
-        public int RegionId { get; init; }
+        public int RegionId { get; set; }
 
         [Display(Name = "Level")]
-        public int LevelId { get; init; }     
+        public int LevelId { get; set; }     
         
         [Required]
         [StringLength(int.MaxValue, MinimumLength = DescriptionMinLength, ErrorMessage = "The {0} should be at least {2} characters")]
-        public string Description { get; init; }
+        public string Description { get; set; }
 
         public string UserId { get; set; }
         public IEnumerable<RegionServiceModel> Regions { get; set; }
