@@ -74,7 +74,7 @@ My Events Page(logged-in guide-user)
 
 Book Insurance Page(logged-in users)
 
-![image](https://user-images.githubusercontent.com/86654801/129203623-8f347868-8f4b-45cf-9981-f7d8d0a11fe4.png)
+![image](https://user-images.githubusercontent.com/86654801/129213140-b50fddf0-1c3b-4266-a2cd-061bb7c1c301.png)
 
 My Insurances Page (logged-in users)
 
