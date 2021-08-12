@@ -4,34 +4,39 @@
     ViewBag.Title = "Details";
 }
 
-<section class="py-5">
-    <div class="container">
-        <h1 style="margin: 2%; text-align: center;">Insurance: @Model.StartDate - @Model.EndDate</h1>
-        <div>
-            <div class="form-group">
-                <label for="duration">Duration</label>
-                <input type="number" readonly class="form-control" id="duration" name="Duration" value="@Model.Duration">
-            </div>
-            <div class="form-group">
-                <label for="numberOfPeople">Number of people</label>
-                <input type="number" readonly class="form-control" id="numberOfPeople" name="NumberOfPeople" value="@Model.NumberOfPeople">
-            </div>
-            <div class="form-group">
-                <label for="limit">Limit of coverage per person</label>
-                <input type="number" readonly class="form-control" id="limit" name="Limit" value="@Model.Limit">
-            </div>
-            <div class="form-group">
-                <label for="price">Price per person</label>
-                <input type="number" readonly class="form-control" id="price" name="Price" value="@Model.PricePerPerson">
-            </div>
-            <div class="form-group">
-                <label for="totalPrice">Total price</label>
-                <input type="number" readonly class="form-control" id="toatlPrice" name="TotalPrice" value="@Model.TotalPrice">
-            </div>
-            <div class="form-group">
-                <label for="refNumber">Reference Number</label>
-                <input type="text" readonly class="form-control" id="refNumber" name="RefNumber" value="@Model.RefNumber">
-            </div>
+<h3 class="text-center">
+    <span class="display-4">Insurance details:</span>
+</h3>
+<hr />
+
+<div class="card">
+    <h5 class="card-header text-center">Insurance Ref.Number: @Model.RefNumber</h5>
+    <div class="card-body">
+        <h5 class="card-title text-center">Period of insurance:</h5>
+        <p class="card-text text-center">@Model.StartDateFormated (00:00) - @Model.EndDateFormated (23:59)</p>
+      
+        <h5 class="card-title text-center">Duration of insurance: </h5>
+        <p class="card-text text-center">@Model.Duration days</p>
+
+        <h5 class="card-title text-center">Limit/Coverage of insurance: </h5>
+        <p class="card-text text-center">@Model.Limit BGN</p>
+
+        <h5 class="card-title text-center">Number of beneficiaries of insurance: </h5>
+        <p class="card-text text-center">@Model.NumberOfPeople persons</p>
+
+        <h5 class="card-title text-center">Insurance price per person: </h5>
+        <p class="card-text text-center">@Model.PricePerPerson BGN</p>
+
+        <h5 class="card-title text-center">Total price of insurance: </h5>
+        <p class="card-text text-center">@Model.TotalPrice BGN</p>
+
+        <h5 class="card-title text-center">Beneficiary: </h5>
+        <p class="card-text text-center">@Model.Beneficiary</p>
+
+        <div class="mb-2 text-center">
+            <a class="btn btn-info m-1" asp-controller="Insurances" asp-action="MyInsurances">Back to List</a>
         </div>
+
     </div>
-</section>
+</div>
+

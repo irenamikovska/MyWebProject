@@ -1,5 +1,5 @@
-﻿@model IEnumerable<InsuranceServiceModel>
-
+﻿@model IEnumerable<InsuranceServiceModel> 
+   
 @{
     ViewBag.Title = "My Insurances";
 }
@@ -9,30 +9,42 @@
     <h2 class="text-center">You do not have any booked insurances!</h2>
 }
 
+<h3 class="text-center">
+    <span class="display-4">My Insurances </span>
+</h3>
+<hr />
+
 <section class="py-5">
     <div class="container">
-        <h1 style="margin: 2%; text-align: center;">My insurances</h1>
         <div style="padding: 5%;">
             <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col">StartDate</th>
-                        <th scope="col">EndDate</th>
-                        <th scope="col">Number of people</th>
-                        <th scope="col">TotalPrice</th>
-                        <th scope="col">Details</th>
+                        <th scope="col" class="text-center">StartDate</th>
+                        <th scope="col" class="text-center">EndDate</th>
+                        <th scope="col" class="text-center">Number of people</th>
+                        <th scope="col" class="text-center">TotalPrice</th>
+                        <th scope="col" class="text-center">Details</th>
+                        <th scope="col" class="text-center">Edit</th>
+                        <th scope="col" class="text-center">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var insurance in Model)
                     {
                         <tr>
-                            <td scope="col">@insurance.StartDate</td>
-                            <td scope="col">@insurance.EndDate</td>
-                            <td scope="col">@insurance.NumberOfPeople</td>
-                            <td scope="col">@insurance.TotalPrice</td>
-                            <td scope="col">
-                                <a asp-controller="Insurances" asp-action="Details" asp-route-id="@insurance.Id" class="btn btn-info">View</a>                                
+                            <td scope="col" class="text-center">@insurance.StartDateFormated</td>
+                            <td scope="col" class="text-center">@insurance.EndDateFormated</td>
+                            <td scope="col" class="text-center">@insurance.NumberOfPeople</td>
+                            <td scope="col" class="text-center">@insurance.TotalPrice</td>
+                            <td scope="col" class="text-center">
+                                <a asp-controller="Insurances" asp-action="Details" asp-route-id="@insurance.Id" class="btn btn-info">View</a>
+                            </td>
+                            <td scope="col" class="text-center">
+                                <a asp-controller="Insurances" asp-action="Edit" asp-route-id="@insurance.Id" class="btn btn-warning">Edit</a>
+                            </td>
+                            <td scope="col" class="text-center">
+                                <a asp-controller="Insurances" asp-action="Delete" asp-route-id="@insurance.Id" class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                     }

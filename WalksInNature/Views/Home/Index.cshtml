@@ -37,7 +37,7 @@
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
                 <img class="d-block w-100" src="@walk.ImageUrl" alt="@walk.Name @walk.Region">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-primary" asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id">@walk.Name</a></h5>
+                    <h5><a class="btn btn-info" asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id">@walk.Name</a></h5>
                 </div>
             </div>
         }

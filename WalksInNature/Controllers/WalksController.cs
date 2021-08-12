@@ -111,7 +111,7 @@ namespace WalksInNature.Controllers
                 userId
             );
 
-            TempData[GlobalMessageKey] = "You walk was added and is awaiting for approval!";
+            TempData[GlobalMessageKey] = "Your walk was added and is awaiting for approval!";
 
             return RedirectToAction(nameof(Details), new { id = walkId, information = input.GetWalkInformation() });
         }
@@ -183,7 +183,7 @@ namespace WalksInNature.Controllers
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = $"You walk was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
+            TempData[GlobalMessageKey] = $"Your walk was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
 
             return RedirectToAction(nameof(Details), new { id, information = walk.GetWalkInformation() });
         }
@@ -202,18 +202,20 @@ namespace WalksInNature.Controllers
             this.walkService.AddUserToWalk(userId, id);         
             
             return RedirectToAction(nameof(All));
-            //return this.RedirectToAction(nameof(this.Details), new { id });
+          
         }
 
         [Authorize]
         public IActionResult Delete(int id)
         {
           
-            if (User.IsAdmin())
+            if (!User.IsAdmin())
             {
-                this.walkService.Delete(id);
+                return BadRequest();
             }
-           
+
+            this.walkService.Delete(id);
+
             return RedirectToAction(nameof(All));            
         }
     }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Globalization;
@@ -13,11 +14,13 @@ namespace WalksInNature.Controllers
     public class InsurancesController : Controller
     {
         private readonly IInsuranceService insuranceService;
-        
-        public InsurancesController(IInsuranceService insuranceService)
+        private readonly IMapper mapper;
+        public InsurancesController(IInsuranceService insuranceService, IMapper mapper)
         {
-            this.insuranceService = insuranceService;            
+            this.insuranceService = insuranceService;
+            this.mapper = mapper;
         }
+              
 
         [Authorize]
         public IActionResult MyInsurances()
@@ -27,12 +30,11 @@ namespace WalksInNature.Controllers
             var myInsurances = this.insuranceService.InsurancesByUser(userId);
 
             return View(myInsurances);
-        }
+        }       
 
         [Authorize]
         public IActionResult Details(string id)
-        {
-           
+        {           
             var insuranceDetails = this.insuranceService.GetDetails(id);                
 
             return this.View(insuranceDetails);
@@ -46,7 +48,7 @@ namespace WalksInNature.Controllers
         public IActionResult Add(InsuranceFormModel input)
         {
                
-            if(input.StartDate < DateTime.UtcNow)
+            if(input.StartDate.Date < DateTime.UtcNow)
             {
                 this.ModelState.AddModelError(nameof(input.StartDate), "Start date have to after current date!");
             }
@@ -67,11 +69,11 @@ namespace WalksInNature.Controllers
             {
                 this.ModelState.AddModelError(nameof(input.Limit), "Limit can be 2000, 5000 or 10000!");
             }
-            
+            /*
             if (!ModelState.IsValid)
             {
                 return View(input);
-            }
+            }*/
 
             var userId = this.User.GetId();
 
@@ -84,10 +86,115 @@ namespace WalksInNature.Controllers
                 userId
                 );
 
-            TempData[GlobalMessageKey] = "You insurance was booked!";
+            TempData[GlobalMessageKey] = "Your insurance was booked!";
 
             return RedirectToAction(nameof(MyInsurances));           
-        }       
+        }
+       
+        [Authorize]
+        public IActionResult Edit(string id)
+        {
+            var userId = this.User.GetId();
+
+            var insurance = this.insuranceService.GetDetails(id);
+           
+            if (insurance.UserId != userId)
+            {
+                return Unauthorized();
+            }
+                        
+            var insuranceForm = this.mapper.Map<InsuranceFormModel>(insurance);
+
+            return View(insuranceForm);
+
+        }
+        
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult Edit(string id, InsuranceFormModel insurance)
+        {
+            
+            if (insurance.StartDate.Date < DateTime.UtcNow)
+            {
+                this.ModelState.AddModelError(nameof(insurance.StartDate), "Start date have to after current date!");
+            }
+
+            var duration = (insurance.EndDate - insurance.StartDate).Days;
+
+            if (duration < 0)
+            {
+                this.ModelState.AddModelError(nameof(insurance.EndDate), "End date have to be after start date!");
+            }
+
+            if (duration > 360)
+            {
+                this.ModelState.AddModelError(nameof(insurance.EndDate), "End date have to be not more 360 days!");
+            }
+
+            if (insurance.Limit != 2000 || insurance.Limit != 5000 || insurance.Limit != 10000)
+            {
+                this.ModelState.AddModelError(nameof(insurance.Limit), "Limit can be 2000, 5000 or 10000!");
+            }
+                /*      
+            if (!ModelState.IsValid)
+            {
+                return View(insurance);
+            }*/
+
+            var insuranceToEdit = this.insuranceService.GetDetails(id);
+
+            var userId = this.User.GetId();
+
+            if (insuranceToEdit.UserId != userId)
+            {
+                return BadRequest();
+            }
+
+            var editedInsurance = this.insuranceService.Edit(
+                id,
+                insurance.StartDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                insurance.EndDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
+                insurance.NumberOfPeople,
+                insurance.Limit,
+                insurance.Beneficiary);                
+                
+
+            if (!editedInsurance)
+            {
+                return BadRequest();
+            }
+
+            TempData[GlobalMessageKey] = $"Your insurance was edited!";
+
+            return RedirectToAction(nameof(Details), new { id });
+        }
+
+        [Authorize]
+        public IActionResult Delete(string id)
+        {
+            var userId = this.User.GetId();
+
+            var insuranceToDelete = this.insuranceService.GetDetails(id);
+
+            if (insuranceToDelete.UserId != userId && !User.IsAdmin())
+            {                
+                return this.Unauthorized();                
+            }
+
+            if (insuranceToDelete.EndDate > DateTime.UtcNow)
+            {
+                TempData[GlobalMessageKey] = $"You can not delete this insurance as it is not expired yet!";
+
+                return RedirectToAction(nameof(Details), new { id });
+            }
+
+
+            this.insuranceService.Delete(id);
+
+            return RedirectToAction(nameof(MyInsurances));
+           
+        }
 
     }
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using WalksInNature.Data.Models;
 using WalksInNature.Models.Events;
+using WalksInNature.Models.Insurances;
 using WalksInNature.Models.Walks;
 using WalksInNature.Services.Events.Models;
+using WalksInNature.Services.Insurances.Models;
 using WalksInNature.Services.Levels;
 using WalksInNature.Services.Regions;
 using WalksInNature.Services.Walks.Models;
@@ -43,6 +45,9 @@ namespace WalksInNature.Infrastructure
                 .ForMember(x => x.GuideName, cfg => cfg.MapFrom(x => x.Guide.Name))
                 .ForMember(x => x.Participants, cfg => cfg.MapFrom(x => x.Users.Count));
 
+            this.CreateMap<InsuranceDetailsServiceModel, InsuranceFormModel>();         
+              
+               
         }
     }
 }

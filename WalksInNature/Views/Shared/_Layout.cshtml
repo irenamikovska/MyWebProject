@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using WalksInNature.Data.Models
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,7 +23,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (!User.IsAdmin())
+                        @if (!User.IsAdmin() && SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="Add">AddWalk</a>
@@ -27,7 +32,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="All">AllWalks</a>
                         </li>
-                        @if (!User.IsAdmin())
+                        @if (!User.IsAdmin() && SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Walks" asp-action="MyWalks">MyWalks</a>
@@ -39,16 +44,19 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="All">AllEvents</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="Add">AddInsurance</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="MyInsurances">MyInsList</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Useful">Useful</a>
-                        </li>
-                    </ul>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="Add">AddInsurance</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="MyInsurances">MyInsList</a>
+                            </li>
+                        }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Useful">Useful</a>
+                            </li>
+                        </ul>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
@@ -68,7 +76,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.UtcNow.Year - Walks in Nature 
+            &copy; @DateTime.UtcNow.Year - Walks in Nature
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

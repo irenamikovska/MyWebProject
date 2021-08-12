@@ -164,15 +164,7 @@ namespace WalksInNature.Services.Walks
                 .Walks
                 .Where(x => x.AddedByUserId == userId));       
 
-        public bool Edit(
-            int id, 
-            string name, 
-            string imageUrl, 
-            string startPoint, 
-            int regionId, 
-            int levelId,            
-            string description,
-            bool isPublic)
+        public bool Edit(int id, string name, string imageUrl, string startPoint, int regionId, int levelId, string description, bool isPublic)
         {
             var walkData = this.data.Walks.Find(id);
 
@@ -203,7 +195,6 @@ namespace WalksInNature.Services.Walks
                 this.data.Walks.Remove(walkToDelete);
                 this.data.SaveChanges();
             }
-
         }
 
         private IEnumerable<WalkServiceModel> GetWalks(IQueryable<Walk> walkQuery)
