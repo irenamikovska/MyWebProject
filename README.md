@@ -40,47 +40,47 @@ Used techologies and tools:
 
 Screen shots:
 
-Home Page
+Home Page (logged-out users)
 
 ![image](https://user-images.githubusercontent.com/86654801/129200408-632f2300-938f-4960-9ecf-c754d06430b4.png)
 
-All Walks
+All Walks Page (logged-out users)
 
-![image](https://user-images.githubusercontent.com/86654801/129201119-b185821c-d5ce-403e-94c7-9399d6cfa3cb.png)
+![image](https://user-images.githubusercontent.com/86654801/129210131-a28af660-ba64-496b-a646-894f3f821709.png)
 
-All Events
+All Events Page(logged-out users)
 
-![image](https://user-images.githubusercontent.com/86654801/129202981-dd98ecf5-a9b4-485e-b3a2-5822fa2ebc49.png)
+![image](https://user-images.githubusercontent.com/86654801/129210460-05326828-692d-4512-82e1-4302bfc49eb5.png)
 
-Page Useful
+Useful Page (logged-out users)
 
 ![image](https://user-images.githubusercontent.com/86654801/129203966-6e56e04e-7cde-46b7-ac4e-aaffffdc7507.png)
 
-Walk Details
+Walk Details Page (logged-in users)
 
 ![image](https://user-images.githubusercontent.com/86654801/129202074-18e5db41-e267-4716-a957-df84a39c3340.png)
 
-My Walks
+My Walks Page (logged-in users)
 
 ![image](https://user-images.githubusercontent.com/86654801/129206058-77964cae-c107-4be5-84bb-4e31618c1733.png)
 
-Event Details
+Event Details Page (logged-in users)
 
 ![image](https://user-images.githubusercontent.com/86654801/129203159-41eaafb0-ddf3-46a1-8580-7a79b3ce4454.png)
 
-My Events
+My Events Page(logged-in guide-user)
 
 ![image](https://user-images.githubusercontent.com/86654801/129203409-d098c36c-198d-4ca0-81bf-e5b6c74969bd.png)
 
-Book Insurance
+Book Insurance Page(logged-in users)
 
 ![image](https://user-images.githubusercontent.com/86654801/129203623-8f347868-8f4b-45cf-9981-f7d8d0a11fe4.png)
 
-My Insurances
+My Insurances Page (logged-in users)
 
 ![image](https://user-images.githubusercontent.com/86654801/129206419-86ab629a-02b2-4730-989c-9cd23ab5af53.png)
 
-Admin Panel for All Walks
+Admin Panel for All Walks (logged-in administrator-user)
 
 ![image](https://user-images.githubusercontent.com/86654801/129204568-68fa1ac7-22c7-4759-92ca-f95f6b9cffad.png)
 
