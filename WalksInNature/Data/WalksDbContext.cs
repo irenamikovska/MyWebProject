@@ -18,7 +18,8 @@ namespace WalksInNature.Data
         public DbSet<Insurance> Insurances { get; init; }
         public DbSet<WalkUser> WalksUsers { get; set; }
         public DbSet<EventUser> EventsUsers { get; set; }
-
+        public DbSet<ContactForm> ContactForms { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder

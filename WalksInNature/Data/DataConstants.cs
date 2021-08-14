@@ -59,5 +59,17 @@
             public const int BeneficiaryMaxLength = 800;
                        
         }
+
+        public class ContactForm
+        {
+            public const int NameMinLength = 2;
+            public const int NameMaxLength = 25;
+
+            public const int SubjectMinLength = 2;
+            public const int SubjectMaxLength = 25;
+
+            public const int MessageMinLength = 6;
+            public const int MessageMaxLength = 30;
+        }
     }
 }

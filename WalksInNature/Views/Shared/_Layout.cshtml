@@ -76,7 +76,17 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; @DateTime.UtcNow.Year - Walks in Nature
+            <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li>&copy; @DateTime.UtcNow.Year - Walks in Nature - </li>
+                       
+                        <li class="nav-item">
+                            <a class="nav-link text-dark pb-0 pt-0" asp-area="" asp-controller="Contacts" asp-action="Index">Contact Us</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

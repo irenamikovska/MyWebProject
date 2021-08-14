@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using WalksInNature.Data;
 using WalksInNature.Data.Models;
 using WalksInNature.Infrastructure;
+using WalksInNature.Services.Contacts;
 using WalksInNature.Services.Events;
 using WalksInNature.Services.Guides;
 using WalksInNature.Services.Insurances;
@@ -61,6 +62,7 @@ namespace WalksInNature
             services.AddTransient<IRegionService, RegionService>();
             services.AddTransient<ILevelService, LevelService>();
             services.AddTransient<IInsuranceService, InsuranceService>();
+            services.AddTransient<IContactService, ContactService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
