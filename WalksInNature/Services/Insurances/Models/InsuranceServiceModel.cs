@@ -12,6 +12,7 @@ namespace WalksInNature.Services.Insurances.Models
         public int NumberOfPeople { get; set; }
         public decimal TotalPrice { get; set; }
         public string UserId { get; set; }
+        public bool IsPaid { get; set; }
 
     }
 }

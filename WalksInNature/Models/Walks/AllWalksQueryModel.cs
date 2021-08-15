@@ -22,6 +22,7 @@ namespace WalksInNature.Models.Walks
         // for paging
 
         public const int WalksPerPage = 3;
+        public const int WalksPerPageAdm = 10;
         public int CurrentPage { get; init; } = 1;
         public int TotalWalks { get; set; }
     }

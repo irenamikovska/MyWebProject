@@ -130,6 +130,7 @@ namespace WalksInNature.Services.Walks
                        Level = x.Level.Name,
                        Description = x.Description,
                        UserId = x.AddedByUserId,
+                       IsPublic = x.IsPublic,
                        Likes = x.Likes.Count()
                    })
                    .FirstOrDefault();
@@ -186,11 +187,22 @@ namespace WalksInNature.Services.Walks
             return true;
         }
 
-        public void Delete(int id) 
+        public void DeleteByAdmin(int id) 
         {
             var walkToDelete = this.data.Walks.Find(id);
 
             if (walkToDelete != null)
+            {
+                this.data.Walks.Remove(walkToDelete);
+                this.data.SaveChanges();
+            }
+        }
+                
+        public void DeleteByUser(int id, string userId)
+        {
+            var walkToDelete = this.data.Walks.Find(id);
+
+            if (walkToDelete != null || walkToDelete.AddedByUser.Id == userId)
             {
                 this.data.Walks.Remove(walkToDelete);
                 this.data.SaveChanges();

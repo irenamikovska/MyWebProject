@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WalksInNature.Models.Walks;
 using WalksInNature.Services.Walks;
 
 namespace WalksInNature.Areas.Admin.Controllers
@@ -6,15 +7,25 @@ namespace WalksInNature.Areas.Admin.Controllers
     public class WalksController : AdminController
     {
         private readonly IWalkService walkService;
-        public WalksController(IWalkService walkService) => this.walkService = walkService;
+        public WalksController(IWalkService walkService) => this.walkService = walkService;        
 
-        public IActionResult All()
+        public IActionResult All([FromQuery] AllWalksQueryModel query)
         {
-            var walks = this.walkService
-                .All(publicOnly: false)
-                .Walks;
+            var queryResult = this.walkService.All(
+                    query.Region,
+                    query.SearchTerm,
+                    query.Sorting,
+                    query.CurrentPage,
+                    AllWalksQueryModel.WalksPerPageAdm,
+                    publicOnly: false);
 
-            return View(walks);
+            var walkRegions = this.walkService.AllWalkRegions();
+
+            query.Regions = walkRegions;
+            query.TotalWalks = queryResult.TotalWalks;
+            query.Walks = queryResult.Walks;
+
+            return View(query);
         }
 
         public IActionResult ChangeStatus(int id)
@@ -27,9 +38,10 @@ namespace WalksInNature.Areas.Admin.Controllers
         public IActionResult Delete(int id)
         {
             
-            this.walkService.Delete(id);
+            this.walkService.DeleteByAdmin(id);
 
             return RedirectToAction(nameof(All));
         }
+        
     }
 }

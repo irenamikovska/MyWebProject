@@ -54,9 +54,19 @@
                 </div>
             </div>
             <div class="mb-2 text-center">
-                <a class="btn btn-info m-1" asp-controller="Events" asp-action="All">Back to List</a>
-                <a class="btn btn-warning m-1" asp-controller="Events" asp-action="AddUser" asp-route-id="@Model.Id">Join Event</a>
-                <a class="btn btn-danger m-1" asp-controller="Events" asp-action="RemoveUser" asp-route-id="@Model.Id">Leave Event</a>
+                @if(!User.IsAdmin())
+                {
+                    <a class="btn btn-info m-1" asp-controller="Events" asp-action="All">Back to List</a>
+                }
+                else if(User.IsAdmin())
+                {
+                    <a class="btn btn-info m-1" asp-area="Admin" asp-controller="Events" asp-action="All">Back to List</a>
+                }
+                @if(!User.IsAdmin())
+                {
+                    <a class="btn btn-warning m-1" asp-controller="Events" asp-action="AddUser" asp-route-id="@Model.Id">Join Event</a>
+                    <a class="btn btn-danger m-1" asp-controller="Events" asp-action="RemoveUser" asp-route-id="@Model.Id">Leave Event</a>
+                }
             </div>
         </div>
 

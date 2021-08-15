@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using WalksInNature.Infrastructure;
 using WalksInNature.Models.Walks;
 using WalksInNature.Services.Levels;
@@ -208,15 +209,17 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult Delete(int id)
         {
-          
-            if (!User.IsAdmin())
+            var userId = this.User.GetId();
+
+            if (String.IsNullOrEmpty(userId) && !User.IsAdmin())
             {
-                return BadRequest();
+                return this.BadRequest();
             }
 
-            this.walkService.Delete(id);
+            this.walkService.DeleteByUser(id, userId);
 
-            return RedirectToAction(nameof(All));            
+            return RedirectToAction(nameof(All));
         }
+
     }
 }

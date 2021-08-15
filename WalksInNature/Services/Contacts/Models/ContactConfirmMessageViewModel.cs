@@ -1,4 +1,4 @@
-﻿namespace WalksInNature.Services.Contacts
+﻿namespace WalksInNature.Services.Contacts.Models
 {
     public class ContactConfirmMessageViewModel
     {

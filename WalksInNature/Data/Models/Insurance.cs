@@ -23,5 +23,7 @@ namespace WalksInNature.Data.Models
         [Required]
         public string UserId { get; set; }
         public User User { get; init; }
+        public bool IsPaid { get; set; }
+
     }
 }

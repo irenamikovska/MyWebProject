@@ -21,7 +21,6 @@ namespace WalksInNature.Controllers
             this.mapper = mapper;
         }
               
-
         [Authorize]
         public IActionResult MyInsurances()
         {
@@ -69,12 +68,7 @@ namespace WalksInNature.Controllers
             {
                 this.ModelState.AddModelError(nameof(input.Limit), "Limit can be 2000, 5000 or 10000!");
             }
-            /*
-            if (!ModelState.IsValid)
-            {
-                return View(input);
-            }*/
-
+           
             var userId = this.User.GetId();
 
             this.insuranceService.Book(
@@ -82,7 +76,7 @@ namespace WalksInNature.Controllers
                 input.EndDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),                
                 input.NumberOfPeople,
                 input.Limit,                
-                input.Beneficiary,
+                input.Beneficiary,                
                 userId
                 );
 
@@ -98,74 +92,39 @@ namespace WalksInNature.Controllers
 
             var insurance = this.insuranceService.GetDetails(id);
            
-            if (insurance.UserId != userId)
+            if (insurance.UserId != userId && !User.IsAdmin())
             {
                 return Unauthorized();
             }
                         
-            var insuranceForm = this.mapper.Map<InsuranceFormModel>(insurance);
+            var insuranceForm = this.mapper.Map<InsuranceEditFormModel>(insurance);
 
             return View(insuranceForm);
-
         }
-        
-
+       
         [HttpPost]
         [Authorize]
-        public IActionResult Edit(string id, InsuranceFormModel insurance)
+        public IActionResult Edit(string id, InsuranceEditFormModel insurance)
         {
-            
-            if (insurance.StartDate.Date < DateTime.UtcNow)
-            {
-                this.ModelState.AddModelError(nameof(insurance.StartDate), "Start date have to after current date!");
-            }
-
-            var duration = (insurance.EndDate - insurance.StartDate).Days;
-
-            if (duration < 0)
-            {
-                this.ModelState.AddModelError(nameof(insurance.EndDate), "End date have to be after start date!");
-            }
-
-            if (duration > 360)
-            {
-                this.ModelState.AddModelError(nameof(insurance.EndDate), "End date have to be not more 360 days!");
-            }
-
-            if (insurance.Limit != 2000 || insurance.Limit != 5000 || insurance.Limit != 10000)
-            {
-                this.ModelState.AddModelError(nameof(insurance.Limit), "Limit can be 2000, 5000 or 10000!");
-            }
-                /*      
-            if (!ModelState.IsValid)
-            {
-                return View(insurance);
-            }*/
-
-            var insuranceToEdit = this.insuranceService.GetDetails(id);
-
             var userId = this.User.GetId();
 
-            if (insuranceToEdit.UserId != userId)
+            var insuranceToEdit = this.insuranceService.GetDetails(id);                       
+            
+            if (insuranceToEdit.UserId != userId && !User.IsAdmin())
             {
                 return BadRequest();
             }
 
-            var editedInsurance = this.insuranceService.Edit(
-                id,
-                insurance.StartDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                insurance.EndDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),
-                insurance.NumberOfPeople,
-                insurance.Limit,
-                insurance.Beneficiary);                
-                
+            var editedInsurance = this.insuranceService
+                .Edit(id, insurance.Beneficiary);
+
 
             if (!editedInsurance)
             {
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = $"Your insurance was edited!";
+            TempData[GlobalMessageKey] = $"The insurance was edited!";
 
             return RedirectToAction(nameof(Details), new { id });
         }
@@ -189,12 +148,11 @@ namespace WalksInNature.Controllers
                 return RedirectToAction(nameof(Details), new { id });
             }
 
-
-            this.insuranceService.Delete(id);
+            this.insuranceService.DeleteByUser(id, userId);
 
             return RedirectToAction(nameof(MyInsurances));
            
         }
-
+        
     }
 }

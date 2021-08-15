@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-
 namespace WalksInNature.Services.Events.Models
 {
     public class EventQueryServiceModel

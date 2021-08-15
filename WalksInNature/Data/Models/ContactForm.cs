@@ -24,5 +24,7 @@ namespace WalksInNature.Data.Models
         [Required]        
         [MaxLength(MessageMaxLength)]
         public string Message { get; set; }
+
+        public bool IsReplied { get; set; }
     }
 }

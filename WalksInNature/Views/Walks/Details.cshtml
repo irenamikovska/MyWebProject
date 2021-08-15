@@ -22,13 +22,23 @@
                             <h5>Region: @Model.Region</h5>
                             <h5>Level: @Model.Level</h5>
                             <h5>Description: @Model.Description</h5>
-                            
+                            <h5>Is Public: @Model.IsPublic</h5>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a class="btn btn-info mr-2" asp-controller="Walks" asp-action="All">Back To List</a>
-                    <a class="btn btn-warning m-1" asp-controller="Walks" asp-action="AddLike" asp-route-id="@Model.Id">Add Like</a>
+                    @if (!User.IsAdmin())
+                    {
+                        <a class="btn btn-info mr-2" asp-controller="Walks" asp-action="All">Back To List</a>
+                    }
+                    else if (User.IsAdmin())
+                    {
+                        <a class="btn btn-info mr-2" asp-area="Admin" asp-controller="Walks" asp-action="All">Back To List</a>
+                    }
+                    @if (!User.IsAdmin())
+                    {
+                        <a class="btn btn-warning m-1" asp-controller="Walks" asp-action="AddLike" asp-route-id="@Model.Id">Add Like</a>
+                    }
                 </div>
             </div>
         </div>

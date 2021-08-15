@@ -269,18 +269,17 @@ namespace WalksInNature.Controllers
         {
             var userId = this.User.GetId();
 
-            var guideId = this.guideService.GetGuideId(this.User.GetId());
+            var guideId = this.guideService.GetGuideId(this.User.GetId());           
 
             if (guideId == 0 && !User.IsAdmin())
             {
                 return this.BadRequest();                
             }
 
-            this.eventService.Delete(id, guideId);
+            this.eventService.DeleteByGuide(id, guideId);
 
             return RedirectToAction(nameof(All));
         }
-
 
     }
 }

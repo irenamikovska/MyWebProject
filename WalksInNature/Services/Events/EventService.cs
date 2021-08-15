@@ -156,11 +156,7 @@ namespace WalksInNature.Services.Events
                 .OrderBy(d => d)
                 .ToList();
                
-
-        private IEnumerable<EventServiceModel> GetEvents(IQueryable<Event> eventQuery)
-            => eventQuery
-                .ProjectTo<EventServiceModel>(this.mapper.ConfigurationProvider)
-                .ToList();
+              
        
         public bool AddUserToEvent(string userId, int eventId)
         {
@@ -201,16 +197,31 @@ namespace WalksInNature.Services.Events
 
             return true;
         }
-
-        public void Delete(int id, int guideId)
+        public void DeleteByAdmin(int id)
         {
             var eventToDelete = this.data.Events.Find(id);
 
-            if (eventToDelete.GuideId == guideId)
+            if (eventToDelete != null)
+            {
+                this.data.Events.Remove(eventToDelete);
+                this.data.SaveChanges();
+            }                      
+
+        }
+        public void DeleteByGuide(int id, int guideId)
+        {
+            var eventToDelete = this.data.Events.Find(id);
+
+            if (eventToDelete != null && eventToDelete.GuideId == guideId)
             {
                 this.data.Events.Remove(eventToDelete);
                 this.data.SaveChanges();
             }
         }
+
+        private IEnumerable<EventServiceModel> GetEvents(IQueryable<Event> eventQuery)
+            => eventQuery
+                .ProjectTo<EventServiceModel>(this.mapper.ConfigurationProvider)
+                .ToList();
     }
 }

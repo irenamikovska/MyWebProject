@@ -30,7 +30,9 @@ namespace WalksInNature.Services.Walks
         bool Edit(int id, string name, string imageUrl, string startPoint,
             int regionId, int levelId, string description, bool isPublic);
 
-        void Delete(int id);
+        void DeleteByAdmin(int id);
+
+        void DeleteByUser(int id, string userId);
     }
 }
 
