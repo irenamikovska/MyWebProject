@@ -5,8 +5,8 @@
 Admin user: admin@walks.com, Password: admin123
 
 **Users features:**
+- view all walks, all events and useful page (logged-out users).
 - register as regular user or as guide, log and logout.
-- view all walks, all events and useful page.
 - create an walk (after validation of admin it become public), update it (if it is owner) and like any walk.
 - view a details for each event, join and leave an event.
 - book an insurance, update (only one field) and delete it (if it is expired).
