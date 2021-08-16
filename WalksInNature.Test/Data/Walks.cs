@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using WalksInNature.Data.Models;
 
+using static WalksInNature.Test.Data.DataConstants;
+
 namespace WalksInNature.Test.Data
 {
     public static class Walks
@@ -26,13 +28,13 @@ namespace WalksInNature.Test.Data
                 .Select(i => new Walk
                 {
                     Id = i,
-                    Name = $"Walk {i}",
+                    Name = $"Walk Name {i}",
                     ImageUrl = $"Walk ImageUrl {i}",
                     StartPoint = $"Walk StartPoint {i}",
                     RegionId = 1,
                     LevelId = 1,
-                    Description = $"Walk Description {i}",
                     IsPublic = isPublic,
+                    Description = $"Walk Description {i}",
                     AddedByUser = sameUser ? user : new User
                     {
                         Id = $"Author Id {i}",
@@ -42,6 +44,32 @@ namespace WalksInNature.Test.Data
                 .ToList();
 
             return walks;
+        }
+
+        public static Walk GetWalk(int id = 1, bool IsPublic = true)
+        {
+            var user = new User
+            {
+                Id = TestUser.Identifier,
+                UserName = TestUser.Username,
+            };
+
+            return new Walk
+            {
+                Id = id,               
+                IsPublic = IsPublic,
+                AddedByUserId = user.Id,
+                Region = new Region
+                {
+                    Id = 1,
+                    Name = "TestRegion"
+                },
+                Level = new Level
+                {
+                    Id = 1,
+                    Name = "TestLevel"
+                }   
+            };
         }
     }
 }  

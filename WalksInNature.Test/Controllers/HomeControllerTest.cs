@@ -7,7 +7,7 @@ using System;
 
 using static WalksInNature.Test.Data.Walks;
 using static WalksInNature.WebConstants.Cache;
-
+using FluentAssertions;
 
 namespace WalksInNature.Test.Controllers
 {      
@@ -28,7 +28,8 @@ namespace WalksInNature.Test.Controllers
                 .AndAlso()
                 .ShouldReturn()
                 .View(view => view
-                    .WithModelOfType<List<LatestWalkServiceModel>>());                   
+                    .WithModelOfType<List<LatestWalkServiceModel>>());   
+                            
 
         [Fact]
         public void ErrorShouldReturnView()
