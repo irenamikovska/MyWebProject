@@ -13,7 +13,8 @@
 
         public string GuidePhoneNumber { get; set; }
 
-        public string UserId { get; init; }
+        public string UserId { get; set; }
+
     }
 }
 

@@ -54,9 +54,11 @@ namespace WalksInNature.Controllers
         }
 
         [Authorize]
-        public IActionResult MyEvents()
+        public IActionResult MyGuideEvents()
         {
-            var myEvents = this.eventService.EventsByGuide(this.User.GetId());
+            var userId = this.User.GetId();
+
+            var myEvents = this.eventService.EventsByGuide(userId);
 
             return View(myEvents);
         }
@@ -64,7 +66,9 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult MyUserEvents()
         {
-            var myEvents = this.eventService.EventsByUser(this.User.GetId());
+            var userId = this.User.GetId();           
+
+            var myEvents = this.eventService.EventsByUser(userId);
 
             return View(myEvents);
         }
@@ -263,13 +267,14 @@ namespace WalksInNature.Controllers
 
             return RedirectToAction(nameof(All));           
         }
+               
 
         [Authorize]
         public IActionResult Delete(int id)
         {
             var userId = this.User.GetId();
 
-            var guideId = this.guideService.GetGuideId(this.User.GetId());           
+            var guideId = this.guideService.GetGuideId(userId);           
 
             if (guideId == 0 && !User.IsAdmin())
             {

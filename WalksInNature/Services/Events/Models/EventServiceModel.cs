@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Globalization;
+using System.Collections.Generic;
+
 
 namespace WalksInNature.Services.Events.Models
 {
@@ -18,6 +19,7 @@ namespace WalksInNature.Services.Events.Models
         public string GuideName { get; set; }
         public int Participants { get; set; }
         public bool IsPublic { get; init; }
+       
     }
 }
 

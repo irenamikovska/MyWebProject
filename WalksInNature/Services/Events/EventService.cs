@@ -128,13 +128,27 @@ namespace WalksInNature.Services.Events
             => GetEvents(this.data
                 .Events
                 .Where(e => e.Guide.UserId == userId));
-        
-        // ToDo
-        public IEnumerable<EventServiceModel> EventsByUser(string userId)
-           => GetEvents(this.data
-               .Events
-               .Where(e => e.Guide.UserId == userId));
 
+       
+        public IEnumerable<EventServiceModel> EventsByUser(string userId)
+        {
+           
+            var events = this.data.EventsUsers
+                .Where(x => x.UserId == userId)
+                .Select(e => new EventServiceModel 
+                    {                         
+                        Id = e.EventId,
+                        Name = e.Event.Name,
+                        ImageUrl = e.Event.ImageUrl,
+                        Date = e.Event.Date,
+                        GuideName = e.Event.Guide.Name,
+                        Participants = e.Event.Users.Count
+                    })
+                .ToList();
+                      
+            return events;
+        }
+        
         public bool EventIsByGuide(int eventId, int guideId)
                 => this.data
                     .Events
@@ -197,6 +211,7 @@ namespace WalksInNature.Services.Events
 
             return true;
         }
+        
         public void DeleteByAdmin(int id)
         {
             var eventToDelete = this.data.Events.Find(id);

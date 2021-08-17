@@ -11,8 +11,11 @@
                     <h5 class="card-title text-center">@eventModel.DateFormated</h5>
                     <h6 class="card-title text-center">Guide: @eventModel.GuideName</h6>
                     <h6 class="card-title text-center">Participants: @eventModel.Participants</h6>
-                    <a asp-controller="Events" asp-action="Details" asp-route-id="@eventModel.Id" asp-route-information="@eventModel.GetEventInformation()" class="btn btn-info">More info</a>                   
-
+                    @if (ViewBag.AllowEventStatus == true)
+                    {
+                        <h6 class="card-title text-center">Status: @(eventModel.IsPublic ? "Approved" : "NoApproved")</h6>
+                    }
+                    <a asp-controller="Events" asp-action="Details" asp-route-id="@eventModel.Id" asp-route-information="@eventModel.GetEventInformation()" class="btn btn-info">More Info</a>
                     @if (ViewBag.AllowEventEdit == true || User.IsAdmin())
                     {
                         <a asp-controller="Events" asp-action="Edit" asp-route-id="@eventModel.Id" class="btn btn-warning">Edit</a>

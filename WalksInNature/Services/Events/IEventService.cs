@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WalksInNature.Models.Events;
 using WalksInNature.Services.Events.Models;
 
@@ -29,7 +28,7 @@ namespace WalksInNature.Services.Events
         bool Edit(int id, string name, string imageUrl, string date, string startHour,
             string startPoint, int regionId, int levelId, string description, bool isPublic);
 
-        void ChangeStatus(int eventId);
+        void ChangeStatus(int eventId);       
         bool AddUserToEvent(string userId, int eventId);
         bool RemoveUserByEvent(string userId, int eventId);
         void DeleteByAdmin(int id);

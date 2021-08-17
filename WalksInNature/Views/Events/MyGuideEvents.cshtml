@@ -1,0 +1,19 @@
+﻿@model IEnumerable<EventServiceModel>
+
+@{
+    ViewBag.Title = "My Events";
+    ViewBag.AllowEventEdit = true;
+    ViewBag.AllowEventStatus = true;
+}
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any events yet!</h2>
+}
+
+<h3 class="text-center">
+    <span class="display-4">My Events</span>
+</h3>
+<hr />
+
+<partial name="_EventsPartial" model="@Model" />

@@ -13,7 +13,7 @@ using static WalksInNature.Test.Data.Contacts;
 namespace WalksInNature.Test.Pipeline.Admin
 {
     public class ContactsControllerTest
-    {
+    {/*
         [Fact]
         public void ChangeStatusShouldChangeMessageAndRedirectToAll()
               => MyPipeline
@@ -33,5 +33,6 @@ namespace WalksInNature.Test.Pipeline.Admin
                        .ShouldReturn()
                        .Redirect(redirect => redirect
                           .To<ContactsController>(c => c.All(With.Any<AllMessagesQueryModel>())));
-    }
+   */
+        }
 }

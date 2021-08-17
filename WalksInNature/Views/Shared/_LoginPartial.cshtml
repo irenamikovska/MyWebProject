@@ -14,7 +14,7 @@
         @if (userIsGuide && !userIsAdmin)
         {
             <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="MyEvents">MyEvents</a>
+                <a class="nav-link text-dark" asp-area="" asp-controller="Events" asp-action="MyGuideEvents">MyEvents</a>
             </li>
         }
         else if (!userIsAdmin)

@@ -2,8 +2,7 @@
 {
     public interface IEventModel
     {
-        string Name { get; }  
+        string Name { get; }          
         
-        //string GuideName { get; }
     }
 }

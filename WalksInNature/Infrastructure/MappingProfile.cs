@@ -46,6 +46,7 @@ namespace WalksInNature.Infrastructure
                 .ForMember(x => x.GuideName, cfg => cfg.MapFrom(x => x.Guide.Name))
                 .ForMember(x => x.Participants, cfg => cfg.MapFrom(x => x.Users.Count));
 
+            
             this.CreateMap<InsuranceDetailsServiceModel, InsuranceEditFormModel>();
 
             this.CreateMap<Insurance, InsuranceServiceModel>();
