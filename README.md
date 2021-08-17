@@ -34,7 +34,7 @@ It is implemented a filtration, searching, sorting and paging for a list of all 
 - Microsoft SQL Server 5.0
 - xUnit
 - Moq
-- MyTested.AspNetCore.Mvc
+- MyTested.AspNetCore.Mvc 5.0
 - AJAX
 - Bootstrap
 - HTML 5
@@ -102,6 +102,8 @@ It is implemented a filtration, searching, sorting and paging for a list of all 
 
 ![image](https://user-images.githubusercontent.com/86654801/129520696-e649acd0-7168-472e-9010-4bce8770913c.png)
 
+**Testing**
 
+![image](https://user-images.githubusercontent.com/86654801/129763352-deb7df29-0923-4704-963e-30b22c177e8f.png)
 
 
