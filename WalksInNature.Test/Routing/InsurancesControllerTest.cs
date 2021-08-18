@@ -7,6 +7,21 @@ namespace WalksInNature.Test.Routing
 {
     public class InsurancesControllerTest
     {
+        
+        [Fact]
+        public void GetMyInsurancesShouldBeMapped()
+           => MyRouting
+               .Configuration()
+               .ShouldMap("/Insurances/MyInsurances")
+               .To<InsurancesController>(x => x.MyInsurances());
+
+        [Fact]
+        public void GetDetailsShouldBeMapped()
+           => MyRouting
+               .Configuration()
+               .ShouldMap("/Insurances/Details/SomeGuid")
+               .To<InsurancesController>(x => x.Details("SomeGuid"));
+
         [Fact]
         public void GetAddShouldBeMapped()
             => MyRouting
@@ -15,7 +30,7 @@ namespace WalksInNature.Test.Routing
                 .To<InsurancesController>(x => x.Add());
 
         [Fact]
-        public void PostAddShouldBeMapped()
+        public void PostAddShouldBeMappedWithCorrectModel()
             => MyRouting
                 .Configuration()
                 .ShouldMap(request => request
@@ -24,20 +39,28 @@ namespace WalksInNature.Test.Routing
                     .To<InsurancesController>(x => x.Add(With.Any<InsuranceFormModel>()));
 
         [Fact]
-        public void GetMyInsurancesShouldBeMapped()
+        public void GetEditShouldBeMapped()
             => MyRouting
                 .Configuration()
-                .ShouldMap("/Insurances/MyInsurances")
-                .To<InsurancesController>(x => x.MyInsurances());
+                .ShouldMap("/Insurances/Edit/SomeGuid")
+                .To<InsurancesController>(x => x.Edit("SomeGuid"));
 
-        [Theory]
-        [InlineData("SomeStringId")]
-        public void GetDetailsShouldBeMapped(string someStringId)
-           => MyRouting
-               .Configuration()
-               .ShouldMap("/Insurances/Details/SomeStringId")
-               .To<InsurancesController>(x => x.Details(someStringId));
+        [Fact]
+        public void PostEditShouldBeMapped()
+            => MyRouting
+                .Configuration()
+                .ShouldMap(request => request
+                    .WithPath("/Insurances/Edit/SomeGuid")
+                    .WithMethod(HttpMethod.Post))
+                    .To<InsurancesController>(x => x.Edit("SomeGuid"));
 
-        
+
+        [Fact]
+        public void GetDeleteShouldBeMapped()
+            => MyRouting
+                .Configuration()
+                .ShouldMap("/Insurances/Delete/SomeGuid")
+                .To<InsurancesController>(x => x.Delete("SomeGuid"));
+
     }
 }

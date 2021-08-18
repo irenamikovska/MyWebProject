@@ -9,20 +9,16 @@
 </h3>
 <hr />
 
-<div class="text-center">
-    
+<div class="text-center">    
     <form method="post">
-
         <div class="form-group">
             <label asp-for="Beneficiary"></label>
             <textarea asp-for="Beneficiary" rows="4" class="form-control" placeholder="Ana Petrova Todorova 6802054030, Ivan Ivanov Ivanov 7004205070, ..."></textarea>
             <span asp-validation-for="Beneficiary" class="small text-danger"></span>
         </div>
-
         <input class="btn btn-info mt-3" type="submit" value="Save" />
     </form>
 </div>
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

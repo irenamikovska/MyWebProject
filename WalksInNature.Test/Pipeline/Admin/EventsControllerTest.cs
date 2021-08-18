@@ -8,12 +8,15 @@ using WalksInNature.Data.Models;
 using WalksInNature.Models.Events;
 
 using static WalksInNature.Test.Data.Events;
-
+using static WalksInNature.Test.Data.Regions;
+using static WalksInNature.Test.Data.Levels;
+using System.Collections.Generic;
 
 namespace WalksInNature.Test.Pipeline.Admin
 {
     public class EventsControllerTest
     {
+
         [Fact]
         public void ChangeStatusShouldChangeEventAndRedirectToAll()
                => MyPipeline
@@ -51,3 +54,4 @@ namespace WalksInNature.Test.Pipeline.Admin
                         .To<EventsController>(c => c.All(With.Any<AllEventsQueryModel>())));
     }
 }
+

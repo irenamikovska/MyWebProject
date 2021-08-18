@@ -10,12 +10,12 @@ namespace WalksInNature.Data.Models
         [MaxLength(FullNameMaxLength)]
         public string FullName { get; set; }
 
-        public IEnumerable<Walk> Walks { get; init; } = new List<Walk>();
+        public ICollection<Walk> Walks { get; init; } = new HashSet<Walk>();
         
-        public IEnumerable<Insurance> Insurances { get; init; } = new List<Insurance>();
+        public ICollection<Insurance> Insurances { get; init; } = new HashSet<Insurance>();
 
-        public ICollection<WalkUser> Likes { get; init; } = new List<WalkUser>();
+        public ICollection<WalkUser> Likes { get; init; } = new HashSet<WalkUser>();
 
-        public virtual ICollection<EventUser> Events { get; set; } = new HashSet<EventUser>();
+        public ICollection<EventUser> Events { get; set; } = new HashSet<EventUser>();
     }
 }

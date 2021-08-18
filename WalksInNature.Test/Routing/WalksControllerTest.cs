@@ -9,19 +9,26 @@ namespace WalksInNature.Test.Routing
     {
 
         [Fact]
-        public void GetAllShouldBeMapped()
+        public void GetAllShouldBeMappedWithCorrectModel()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Walks/All/")
                 .To<WalksController>(x => x.All(With.Any<AllWalksQueryModel>()));
-                
-        [Theory]
-        [InlineData("SomeName")]
-        public void GetDetailsShouldBeMapped(string someName)
+
+        [Fact]
+        public void GetMyWalksShouldBeMapped()
+            => MyRouting
+                .Configuration()
+                .ShouldMap("/Walks/MyWalks")
+                .To<WalksController>(x => x.MyWalks());
+
+
+        [Fact]
+        public void GetDetailsShouldBeMapped()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Walks/Details/1/SomeName")
-                .To<WalksController>(x => x.Details(1, someName));
+                .To<WalksController>(x => x.Details(1, "SomeName"));
         
         [Fact]
         public void GetAddShouldBeMapped()
@@ -31,7 +38,7 @@ namespace WalksInNature.Test.Routing
                 .To<WalksController>(x => x.Add());
 
         [Fact]
-        public void PostAddShouldBeMapped()
+        public void PostAddShouldBeMappedWithCorrectModel()
             => MyRouting
                 .Configuration()
                 .ShouldMap(request => request
@@ -54,13 +61,7 @@ namespace WalksInNature.Test.Routing
                    .WithPath("/Walks/Edit/1")
                    .WithMethod(HttpMethod.Post))                  
                .To<WalksController>(x => x.Edit(1));
-        
-        [Fact]
-        public void GetMyWalksShouldBeMapped()
-            => MyRouting
-                .Configuration()
-                .ShouldMap("/Walks/MyWalks")
-                .To<WalksController>(x => x.MyWalks());       
+         
 
         [Fact]
         public void AddLikeShouldBeMapped()

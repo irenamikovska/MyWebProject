@@ -8,29 +8,42 @@ namespace WalksInNature.Test.Routing
     public class EventsControllerTest
     {
         [Fact]
-        public void GetAllShouldBeMapped()
+        public void GetAllShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Events/All/")
                 .To<EventsController>(x => x.All(With.Any<AllEventsQueryModel>()));
 
-        [Theory]
-        [InlineData("SomeName")]
-        public void GetDetailsShouldBeMapped(string someName)
+        [Fact]
+        public void GetMyGuideEventsShouldBeMappedCorrectly()
+            => MyRouting
+                .Configuration()
+                .ShouldMap("/Events/MyGuideEvents")
+                .To<EventsController>(x => x.MyGuideEvents());
+
+        [Fact]
+        public void GetMyUserEventsShouldBeMappedCorrectly()
+            => MyRouting
+                .Configuration()
+                .ShouldMap("/Events/MyUserEvents")
+                .To<EventsController>(x => x.MyUserEvents());
+
+        [Fact]
+        public void GetDetailsShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Events/Details/1/SomeName")
-                .To<EventsController>(x => x.Details(1, someName));
+                .To<EventsController>(x => x.Details(1, "SomeName"));
 
         [Fact]
-        public void GetAddShouldBeMapped()
+        public void GetAddShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Events/Add")
                 .To<EventsController>(x => x.Add());
 
         [Fact]
-        public void PostAddShouldBeMapped()
+        public void PostAddShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap(request => request
@@ -39,7 +52,7 @@ namespace WalksInNature.Test.Routing
                     .To<EventsController>(x => x.Add(With.Any<EventFormModel>()));
 
         [Fact]
-        public void GetEditShouldBeMapped()
+        public void GetEditShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Events/Edit/1")
@@ -54,29 +67,23 @@ namespace WalksInNature.Test.Routing
                    .WithMethod(HttpMethod.Post))
                .To<EventsController>(x => x.Edit(1));
 
-        [Fact]
-        public void GetMyEventsShouldBeMapped()
-            => MyRouting
-                .Configuration()
-                .ShouldMap("/Events/MyEvents")
-                .To<EventsController>(x => x.MyEvents());
 
         [Fact]
-        public void AddUserToEventShouldBeMapped()
+        public void AddUserToEventShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Events/AddUser/1")
                 .To<EventsController>(x => x.AddUser(1));
 
         [Fact]
-        public void RemoveUserByEventShouldBeMapped()
+        public void RemoveUserByEventShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Events/RemoveUser/1")
                 .To<EventsController>(x => x.RemoveUser(1));
 
         [Fact]
-        public void GetDeleteShouldBeMapped()
+        public void GetDeleteShouldBeMappedCorrectly()
             => MyRouting
                 .Configuration()
                 .ShouldMap("/Events/Delete/1")

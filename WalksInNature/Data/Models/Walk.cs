@@ -33,7 +33,7 @@ namespace WalksInNature.Data.Models
         [Required]
         public string AddedByUserId { get; set; }
         public User AddedByUser { get; init; }
-        public ICollection<WalkUser> Likes { get; init; } = new List<WalkUser>();
+        public ICollection<WalkUser> Likes { get; init; } = new HashSet<WalkUser>();
 
     }
 }

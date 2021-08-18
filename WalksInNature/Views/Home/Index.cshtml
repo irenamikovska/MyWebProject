@@ -27,7 +27,6 @@
 
 <div class="mb-3"></div>
 
-
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         @for (int i = 0; i < Model.Count; i++)
@@ -35,9 +34,9 @@
             var walk = Model[i];
 
             <div class="carousel-item @(i == 0 ? "active" : string.Empty)">
-                <img class="d-block w-100" src="@walk.ImageUrl" alt="@walk.Name @walk.Region">
+                <img class="d-block w-100" src="@walk.ImageUrl" alt="@walk.Name">
                 <div class="carousel-caption d-none d-md-block">
-                    <h5><a class="btn btn-info" asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id">@walk.Name</a></h5>
+                    <h5><a class="btn btn-info" asp-controller="Walks" asp-action="Details" asp-route-id="@walk.Id" asp-route-information="@walk.GetWalkInformation()">@walk.Name</a></h5>
                 </div>
             </div>
         }
@@ -51,7 +50,6 @@
        <span class="sr-only">Next</span>
    </a>
 </div>
-
 
 <div class="mb-3"></div>
 

@@ -169,8 +169,7 @@ namespace WalksInNature.Services.Events
                 .Distinct()
                 .OrderBy(d => d)
                 .ToList();
-               
-              
+                           
        
         public bool AddUserToEvent(string userId, int eventId)
         {

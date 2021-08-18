@@ -1,17 +1,17 @@
 ﻿@model IEnumerable<EventServiceModel>
 
 @{
-    ViewBag.Title = "My Events";  
-}
-
-@if (!Model.Any())
-{
-    <h2 class="text-center">You do not have any events yet!</h2>
+    ViewBag.Title = "My Events";
 }
 
 <h3 class="text-center">
     <span class="display-4">My Events</span>
 </h3>
 <hr />
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any events yet!</h2>
+}
 
 <partial name="_EventsPartial" model="@Model" />

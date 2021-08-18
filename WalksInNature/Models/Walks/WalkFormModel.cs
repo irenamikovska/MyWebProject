@@ -23,9 +23,11 @@ namespace WalksInNature.Models.Walks
         [Display(Name = "Start Point")]
         public string StartPoint { get; set; }
 
+        [Range(1, 100)]
         [Display(Name = "Region")]
         public int RegionId { get; set; }
 
+        [Range(1, 10)]
         [Display(Name = "Level")]
         public int LevelId { get; set; }     
         

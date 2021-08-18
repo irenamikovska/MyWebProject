@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WalksInNature.Models.Contacts;
 using WalksInNature.Services.Contacts;
 
+using static WalksInNature.Areas.Admin.AdminConstants;
+
 namespace WalksInNature.Areas.Admin.Controllers
 {
+    [Area(AreaName)]
+    [Authorize(Roles = AdministratorRoleName)]
     public class ContactsController : AdminController
     {
         private readonly IContactService contactService;

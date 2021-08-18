@@ -7,7 +7,6 @@
 <div class="row">
     <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <h2 class="heading-margin text-center">@ViewBag.Title</h2>
-
         <form method="post">
             <div class="form-group">
                 <label asp-for="Name"></label>
@@ -19,7 +18,6 @@
                 <input asp-for="PhoneNumber" class="form-control" placeholder="+359-888-888-888">
                 <span asp-validation-for="PhoneNumber" class="small text-danger"></span>
             </div>
-
             <input class="btn btn-info mt-3" type="submit" value="Save" />
         </form>
     </div>

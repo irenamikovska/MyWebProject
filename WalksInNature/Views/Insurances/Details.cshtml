@@ -8,34 +8,25 @@
     <span class="display-4">Insurance details:</span>
 </h3>
 <hr />
-
 <div class="card">
     <h5 class="card-header text-center">Insurance Ref.Number: @Model.RefNumber</h5>
     <div class="card-body">
         <h5 class="card-title text-center">Period of insurance:</h5>
         <p class="card-text text-center">@Model.StartDateFormated (00:00) - @Model.EndDateFormated (23:59)</p>
-
         <h5 class="card-title text-center">Duration of insurance: </h5>
         <p class="card-text text-center">@Model.Duration days</p>
-
         <h5 class="card-title text-center">Limit/Coverage of insurance: </h5>
         <p class="card-text text-center">@Model.Limit BGN</p>
-
         <h5 class="card-title text-center">Number of beneficiaries of insurance: </h5>
         <p class="card-text text-center">@Model.NumberOfPeople persons</p>
-
         <h5 class="card-title text-center">Insurance price per person: </h5>
         <p class="card-text text-center">@Model.PricePerPerson BGN</p>
-
         <h5 class="card-title text-center">Total price of insurance: </h5>
         <p class="card-text text-center">@Model.TotalPrice BGN</p>
-
         <h5 class="card-title text-center">Beneficiary: </h5>
         <p class="card-text text-center">@Model.Beneficiary</p>
-
         <h5 class="card-title text-center">Status: </h5>
         <p class="card-text text-center">@(Model.IsPaid ? "Paid" : "NotPaid")</p>
-
         <div class="mb-2 text-center">
             @if (!User.IsAdmin())
             {
@@ -46,7 +37,6 @@
                 <a class="btn btn-info m-1" asp-area="Admin" asp-controller="Insurances" asp-action="All">Back to List</a>
             }
         </div>
-
     </div>
 </div>
 

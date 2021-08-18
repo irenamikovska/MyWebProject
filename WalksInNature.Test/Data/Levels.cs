@@ -7,7 +7,7 @@ namespace WalksInNature.Test.Data
     public class Levels
     {
         public static IEnumerable<Level> GetLevels(int count = 3)
-               => Enumerable.Range(0, count).Select(i => new Level()
+               => Enumerable.Range(1, count).Select(i => new Level()
                {
 
                });

@@ -10,7 +10,7 @@ namespace WalksInNature.Test.Data
     public static class Walks
     {
         public static IEnumerable<Walk> TenPublicWalks
-            => Enumerable.Range(0, 10).Select(i => new Walk
+            => Enumerable.Range(1, 10).Select(i => new Walk
             {
                 IsPublic = true
             });

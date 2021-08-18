@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
 using static WalksInNature.Areas.Admin.AdminConstants;
 
 namespace WalksInNature.Areas.Admin.Controllers

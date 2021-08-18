@@ -1,5 +1,4 @@
 ﻿namespace WalksInNature.Services.Events.Models
-
 {
     public class EventDetailsServiceModel : EventServiceModel
     {

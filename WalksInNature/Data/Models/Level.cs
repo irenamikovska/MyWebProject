@@ -11,7 +11,7 @@ namespace WalksInNature.Data.Models
         [Required]
         [MaxLength(NameMaxLength)]
         public string Name { get; set; }
-        public IEnumerable<Walk> Walks { get; set; }
-        public IEnumerable<Event> Events { get; set; }
+        public ICollection<Walk> Walks { get; set; } = new HashSet<Walk>();
+        public ICollection<Event> Events { get; set; } = new HashSet<Event>();
     }
 }

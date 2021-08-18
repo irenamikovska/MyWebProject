@@ -24,7 +24,7 @@ namespace WalksInNature.Test.Controllers
            => MyController<EventsController>
                 .Instance(controller => controller
                      .WithUser())                        
-               .Calling(c => c.MyEvents())
+               .Calling(c => c.MyGuideEvents())
                .ShouldHave()
                .ActionAttributes(attrs => attrs
                    .RestrictingForAuthorizedRequests())

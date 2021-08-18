@@ -74,37 +74,7 @@ namespace WalksInNature.Services.Walks
                .ProjectTo<LatestWalkServiceModel>(this.mapper.ConfigurationProvider)
                .Take(3)
                .ToList();
-
-        public int Create(string name, string imageUrl, string startPoint, 
-            int regionId, int levelId, string description, string userId)
-        {
-            var walkToAdd = new Walk
-            {
-                Name = name,
-                ImageUrl = imageUrl,
-                StartPoint = startPoint,
-                RegionId = regionId,
-                LevelId = levelId,
-                Description = description,
-                AddedByUserId = userId,
-                IsPublic = false
-            };
-
-            this.data.Walks.Add(walkToAdd);
-            this.data.SaveChanges();
-
-            return walkToAdd.Id;
-        }
-
-        public void ChangeStatus(int walkId)
-        {
-            var walk = this.data.Walks.Find(walkId);
-
-            walk.IsPublic = !walk.IsPublic;
-
-            this.data.SaveChanges();
-        }
-
+          
         public IEnumerable<string> AllWalkRegions()
             => this.data
                 .Walks
@@ -138,6 +108,53 @@ namespace WalksInNature.Services.Walks
             return walk;
         }
 
+        public IEnumerable<WalkServiceModel> WalksByUser(string userId)
+            => GetWalks(this.data
+                .Walks
+                .Where(x => x.AddedByUserId == userId));
+
+        public int Create(string name, string imageUrl, string startPoint,
+            int regionId, int levelId, string description, string userId)
+        {
+            var walkToAdd = new Walk
+            {
+                Name = name,
+                ImageUrl = imageUrl,
+                StartPoint = startPoint,
+                RegionId = regionId,
+                LevelId = levelId,
+                Description = description,
+                AddedByUserId = userId,
+                IsPublic = false
+            };
+
+            this.data.Walks.Add(walkToAdd);
+            this.data.SaveChanges();
+
+            return walkToAdd.Id;
+        }
+
+        public bool Edit(int id, string name, string imageUrl, string startPoint, int regionId, int levelId, string description, bool isPublic)
+        {
+            var walkData = this.data.Walks.Find(id);
+
+            if (walkData == null)
+            {
+                return false;
+            }
+
+            walkData.Name = name;
+            walkData.ImageUrl = imageUrl;
+            walkData.StartPoint = startPoint;
+            walkData.RegionId = regionId;
+            walkData.LevelId = levelId;
+            walkData.Description = description;
+            walkData.IsPublic = isPublic;
+
+            this.data.SaveChanges();
+
+            return true;
+        }
 
         public bool AddUserToWalk(string userId, int walkId)
         {
@@ -160,33 +177,15 @@ namespace WalksInNature.Services.Walks
             return true;
         }
 
-        public IEnumerable<WalkServiceModel> WalksByUser(string userId)
-            => GetWalks(this.data
-                .Walks
-                .Where(x => x.AddedByUserId == userId));       
-
-        public bool Edit(int id, string name, string imageUrl, string startPoint, int regionId, int levelId, string description, bool isPublic)
+        public void ChangeStatus(int walkId)
         {
-            var walkData = this.data.Walks.Find(id);
+            var walk = this.data.Walks.Find(walkId);
 
-            if (walkData == null)
-            {
-                return false;
-            }
-
-            walkData.Name = name;
-            walkData.ImageUrl = imageUrl;           
-            walkData.StartPoint = startPoint;
-            walkData.RegionId = regionId;
-            walkData.LevelId = levelId;
-            walkData.Description = description;
-            walkData.IsPublic = isPublic;
+            walk.IsPublic = !walk.IsPublic;
 
             this.data.SaveChanges();
-
-            return true;
         }
-
+         
         public void DeleteByAdmin(int id) 
         {
             var walkToDelete = this.data.Walks.Find(id);

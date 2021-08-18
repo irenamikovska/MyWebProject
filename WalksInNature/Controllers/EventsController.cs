@@ -119,6 +119,10 @@ namespace WalksInNature.Controllers
                 this.ModelState.AddModelError(nameof(input.Date), "Date have to be after current date.");
             }
 
+            if (Convert.ToByte(input.StartHour.Substring(0, 2)) > 23 && Convert.ToByte(input.StartHour.Substring(3, 2)) > 59)
+            {
+                this.ModelState.AddModelError(nameof(input.StartHour), "Hour have to be between 00:00 and 23:59.");
+            }
 
             if (!this.regionService.RegionExists(input.RegionId))
             {
@@ -160,16 +164,22 @@ namespace WalksInNature.Controllers
         {
             var userId = this.User.GetId();
 
+            var guideId = this.guideService.GetGuideId(userId);
+
             if (!this.guideService.IsGuide(userId) && !User.IsAdmin())
             {
+                TempData[GlobalMessageKey] = "You have to be a guide in order to edit an event!";
+
                 return RedirectToAction(nameof(GuidesController.Become), "Guides");
             }
 
             var eventToEdit = this.eventService.GetDetails(id);
 
-            if (eventToEdit.UserId != userId && !User.IsAdmin())
+            if (eventToEdit.GuideId != guideId && !User.IsAdmin())
             {
-                return Unauthorized();
+                TempData[GlobalMessageKey] = "You have not permission to edit this event!";
+
+                return RedirectToAction(nameof(Details), new { id = id, information = eventToEdit.GetEventInformation() });
             }
                        
             var eventForm = this.mapper.Map<EventFormModel>(eventToEdit);
@@ -189,6 +199,7 @@ namespace WalksInNature.Controllers
 
             if (guideId == 0 && !User.IsAdmin())
             {
+                TempData[GlobalMessageKey] = "You have to be a guide in order to edit an event!";
                 return RedirectToAction(nameof(GuidesController.Become), "Guides");
             }
 
@@ -212,7 +223,9 @@ namespace WalksInNature.Controllers
 
             if (!this.eventService.EventIsByGuide(id, guideId) && !User.IsAdmin())
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "You have not permission to edit this event!";
+
+                return RedirectToAction(nameof(Details), new { id = id, information = eventToEdit.GetEventInformation() });
             }
 
             var editedEvent = this.eventService.Edit(
@@ -274,11 +287,22 @@ namespace WalksInNature.Controllers
         {
             var userId = this.User.GetId();
 
-            var guideId = this.guideService.GetGuideId(userId);           
+            var guideId = this.guideService.GetGuideId(userId);
 
-            if (guideId == 0 && !User.IsAdmin())
+            var eventToDelete = this.eventService.GetDetails(id);
+
+            if (!this.eventService.EventIsByGuide(id, guideId) && !User.IsAdmin())
             {
-                return this.BadRequest();                
+                TempData[GlobalMessageKey] = $"You have not permission to delete this event!";
+
+                return RedirectToAction(nameof(Details), new { id, information = eventToDelete.GetEventInformation() });
+            }                      
+
+            if (eventToDelete.IsPublic == true)
+            {
+                TempData[GlobalMessageKey] = $"Your event can not be deleted as it is with status Approved. Please contact admin!";
+
+                return RedirectToAction(nameof(Details), new { id, information = eventToDelete.GetEventInformation() });
             }
 
             this.eventService.DeleteByGuide(id, guideId);

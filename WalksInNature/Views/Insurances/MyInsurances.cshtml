@@ -1,18 +1,18 @@
-﻿@model IEnumerable<InsuranceServiceModel> 
-   
+﻿@model IEnumerable<InsuranceServiceModel>
+
 @{
     ViewBag.Title = "My Insurances";
-}
-
-@if (!Model.Any())
-{
-    <h2 class="text-center">You do not have any booked insurances!</h2>
 }
 
 <h3 class="text-center">
     <span class="display-4">My Insurances </span>
 </h3>
 <hr />
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any booked insurances!</h2>
+}
 
 <section class="py-5">
     <div class="container">
@@ -33,22 +33,22 @@
                 <tbody>
                     @foreach (var insurance in Model)
                     {
-                    <tr>
-                        <td scope="col" class="text-center">@insurance.StartDateFormated</td>
-                        <td scope="col" class="text-center">@insurance.EndDateFormated</td>
-                        <td scope="col" class="text-center">@insurance.NumberOfPeople</td>
-                        <td scope="col" class="text-center">@insurance.TotalPrice</td>
-                        <td scope="col" class="text-center">@(insurance.IsPaid ? "Paid" : "NotPaid")</td>
-                        <td scope="col" class="text-center">
-                            <a asp-controller="Insurances" asp-action="Details" asp-route-id="@insurance.Id" class="btn btn-info">View</a>
-                        </td>
-                        <td scope="col" class="text-center">
-                            <a asp-controller="Insurances" asp-action="Edit" asp-route-id="@insurance.Id" class="btn btn-warning">Edit</a>
-                        </td>
-                        <td scope="col" class="text-center">
-                            <a asp-controller="Insurances" asp-action="Delete" asp-route-id="@insurance.Id" class="btn btn-danger">Delete</a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td scope="col" class="text-center">@insurance.StartDateFormated</td>
+                            <td scope="col" class="text-center">@insurance.EndDateFormated</td>
+                            <td scope="col" class="text-center">@insurance.NumberOfPeople</td>
+                            <td scope="col" class="text-center">@insurance.TotalPrice</td>
+                            <td scope="col" class="text-center">@(insurance.IsPaid ? "Paid" : "NotPaid")</td>
+                            <td scope="col" class="text-center">
+                                <a asp-controller="Insurances" asp-action="Details" asp-route-id="@insurance.Id" class="btn btn-info">View</a>
+                            </td>
+                            <td scope="col" class="text-center">
+                                <a asp-controller="Insurances" asp-action="Edit" asp-route-id="@insurance.Id" class="btn btn-warning">Edit</a>
+                            </td>
+                            <td scope="col" class="text-center">
+                                <a asp-controller="Insurances" asp-action="Delete" asp-route-id="@insurance.Id" class="btn btn-danger">Delete</a>
+                            </td>
+                        </tr>
                     }
                 </tbody>
             </table>

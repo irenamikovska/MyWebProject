@@ -46,8 +46,9 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult Add(InsuranceFormModel input)
         {
-               
-            if(input.StartDate.Date < DateTime.UtcNow)
+            var userId = this.User.GetId();
+
+            if (input.StartDate < DateTime.UtcNow)
             {
                 this.ModelState.AddModelError(nameof(input.StartDate), "Start date have to after current date!");
             }
@@ -68,8 +69,15 @@ namespace WalksInNature.Controllers
             {
                 this.ModelState.AddModelError(nameof(input.Limit), "Limit can be 2000, 5000 or 10000!");
             }
-           
-            var userId = this.User.GetId();
+
+            if (!ModelState.IsValid)
+            {
+                TempData[GlobalMessageKey] = "Your insurance was an error!";
+
+                return RedirectToAction(nameof(MyInsurances));
+
+                //return View(input);
+            }           
 
             this.insuranceService.Book(
                 input.StartDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),                
@@ -112,12 +120,12 @@ namespace WalksInNature.Controllers
             
             if (insuranceToEdit.UserId != userId && !User.IsAdmin())
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "You have not permission to edit this insurance!";
+
+                return RedirectToAction(nameof(Details), new { id });
             }
 
-            var editedInsurance = this.insuranceService
-                .Edit(id, insurance.Beneficiary);
-
+            var editedInsurance = this.insuranceService.Edit(id, insurance.Beneficiary);
 
             if (!editedInsurance)
             {

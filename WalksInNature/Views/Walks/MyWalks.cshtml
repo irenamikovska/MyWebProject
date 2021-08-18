@@ -2,19 +2,19 @@
 
 @{
     ViewBag.Title = "My Walks";
-    ViewBag.AllowWalkEdit = true;    
+    ViewBag.AllowWalkEdit = true;
     ViewBag.AllowWalkStatus = true;
-}
-
-@if (!Model.Any())
-{
-    <h2 class="text-center">You do not have any walks yet!</h2>
 }
 
 <h3 class="text-center">
     <span class="display-4">My Walks</span>
 </h3>
 <hr />
+
+@if (!Model.Any())
+{
+    <h2 class="text-center">You do not have any walks yet!</h2>
+}
 
 <partial name="_WalksPartial" model="@Model" />
 

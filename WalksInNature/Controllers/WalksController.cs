@@ -166,7 +166,9 @@ namespace WalksInNature.Controllers
 
             if (walkToEdit.UserId != userId && !User.IsAdmin())
             {
-                return BadRequest();
+                TempData[GlobalMessageKey] = "You have not permission to edit this walk!";
+
+                return RedirectToAction(nameof(Details), new { id = id, information = walkToEdit.GetWalkInformation() });
             }
 
             var editedWalk = this.walkService.Edit(
@@ -209,11 +211,20 @@ namespace WalksInNature.Controllers
         [Authorize]
         public IActionResult Delete(int id)
         {
-            var userId = this.User.GetId();
+            var userId = this.User.GetId();           
 
             if (String.IsNullOrEmpty(userId) && !User.IsAdmin())
             {
-                return this.BadRequest();
+                return this.Unauthorized();
+            }
+
+            var walkToDelete = this.walkService.GetDetails(id);
+
+            if (walkToDelete.IsPublic == true)
+            {
+                TempData[GlobalMessageKey] = $"Your walk can not be delete if it is with status Approved. Please contact admin!";
+
+                return RedirectToAction(nameof(Details), new { id, information = walkToDelete.GetWalkInformation() });
             }
 
             this.walkService.DeleteByUser(id, userId);

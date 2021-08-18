@@ -8,7 +8,7 @@ namespace WalksInNature.Test.Data
     public class Users
     {
         public static IEnumerable<User> GetUsers(int count = 5)
-            => Enumerable.Range(0, count).Select(i => new User()
+            => Enumerable.Range(1, count).Select(i => new User()
             {
 
             });

@@ -18,17 +18,17 @@ namespace WalksInNature.Services.Walks
         IEnumerable<string> AllWalkRegions();
 
         WalkDetailsServiceModel GetDetails(int walkId);
-
-        bool AddUserToWalk(string userId, int walkId);
+                
         IEnumerable<WalkServiceModel> WalksByUser(string userId);        
 
         int Create(string name, string imageUrl, string startPoint,
             int regionId, int levelId, string description, string userId);
-
-        void ChangeStatus(int walkId);
-
+        
         bool Edit(int id, string name, string imageUrl, string startPoint,
             int regionId, int levelId, string description, bool isPublic);
+        
+        bool AddUserToWalk(string userId, int walkId);
+        void ChangeStatus(int walkId);
 
         void DeleteByAdmin(int id);
 

@@ -13,7 +13,7 @@
                     <h6 class="card-title text-center">Participants: @eventModel.Participants</h6>
                     @if (ViewBag.AllowEventStatus == true)
                     {
-                        <h6 class="card-title text-center">Status: @(eventModel.IsPublic ? "Approved" : "NoApproved")</h6>
+                        <h6 class="card-title text-center">Status: @(eventModel.IsPublic ? "Approved" : "NotApproved")</h6>
                     }
                     <a asp-controller="Events" asp-action="Details" asp-route-id="@eventModel.Id" asp-route-information="@eventModel.GetEventInformation()" class="btn btn-info">More Info</a>
                     @if (ViewBag.AllowEventEdit == true || User.IsAdmin())

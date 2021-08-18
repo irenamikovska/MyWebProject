@@ -30,9 +30,7 @@ namespace WalksInNature.Test.Pipeline
 
         [Theory]
         [InlineData("Guide", "+3598505808")]
-        public void PostBecomeShouldBeForAuthorizedUsersAndReturnRedirectWithValidModel(
-            string guideName,
-            string phoneNumber)
+        public void PostBecomeShouldBeForAuthorizedUsersAndReturnRedirectWithValidModel(string guideName, string phoneNumber)
             => MyPipeline
                 .Configuration()
                 .ShouldMap(request => request
@@ -58,10 +56,9 @@ namespace WalksInNature.Test.Pipeline
                 .ValidModelState()
                 .Data(data => data
                     .WithSet<Guide>(guides => guides
-                        .Any(d =>
-                            d.Name == guideName &&
-                            d.PhoneNumber == phoneNumber &&
-                            d.UserId == TestUser.Identifier)))
+                        .Any(d =>  d.Name == guideName &&
+                                   d.PhoneNumber == phoneNumber &&
+                                   d.UserId == TestUser.Identifier)))
                 .TempData(tempData => tempData
                     .ContainingEntryWithKey(GlobalMessageKey))
                 .AndAlso()

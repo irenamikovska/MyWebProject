@@ -19,6 +19,6 @@ namespace WalksInNature.Data.Models
         [Required]
         public string UserId { get; set; }
         public User User { get; set; }
-        public IEnumerable<Event> Events { get; init; } = new List<Event>();
+        public ICollection<Event> Events { get; init; } = new HashSet<Event>();
     }
 }

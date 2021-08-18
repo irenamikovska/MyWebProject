@@ -59,7 +59,6 @@
                                 </li>
                             }
                         }
-
                         @if (!User.IsAdmin() && SignInManager.IsSignedIn(User))
                         {
                             <li class="nav-item">
@@ -69,11 +68,9 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Insurances" asp-action="MyInsurances">MyInsList</a>
                             </li>
                         }
-
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Useful">Useful</a>
                         </li>
-
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

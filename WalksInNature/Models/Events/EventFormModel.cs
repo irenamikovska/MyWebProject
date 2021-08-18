@@ -25,9 +25,11 @@ namespace WalksInNature.Models.Events
         [Display(Name = "Start point")]
         public string StartPoint { get; init; }
 
+        [Range(1, 100)]
         [Display(Name = "Region")]
         public int RegionId { get; init; }
 
+        [Range(1, 10)]
         [Display(Name = "Level")]
         public int LevelId { get; init; }   
         
@@ -37,7 +39,8 @@ namespace WalksInNature.Models.Events
         public DateTime Date { get; init; }
 
         [Required]
-        [Display(Name = "Start Hour")]
+        [Display(Name = "Start Hour")]       
+        [RegularExpression("[0-9]{2}:[0-9]{2}", ErrorMessage = "The hour should be in format HH:mm")]
         public string StartHour { get; set; }
 
         [Required]

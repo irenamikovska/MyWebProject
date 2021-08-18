@@ -22,6 +22,7 @@ namespace WalksInNature.Models.Events
         // for paging
 
         public const int EventsPerPage = 3;
+
         public const int EventsPerPageAdm = 10;
         public int CurrentPage { get; init; } = 1;
         public int TotalEvents { get; set; }
