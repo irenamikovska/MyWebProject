@@ -7,15 +7,16 @@ Admin user: admin@walks.com, Password: admin123
 **Users features:**
 - view all walks, all events and useful page (logged-out users).
 - register as regular user or as guide, log and logout.
-- create an walk (after validation of admin it become public), update it (if it is owner) and like any walk.
+- create an walk (after validation of admin it become public), update it (if it is owner) and delete (if it is not public).
+- like any walk.
 - view a details for each event, join and leave an event.
 - book an insurance, update (only one field) and delete it (if it is expired).
-- view a list with its walks, joined events, insurances and details for each of them.
+- view a list with its walks, joined events, its insurances and details for each of them.
 - send a message to administrator via contact form.
 
 **Guide features:**
 - register as guide, log and logout.	
-- create an event (after validation of admin it become public), update and delete it (if it is owner).
+- create an event (after validation of admin it become public), update and delete it (if it is owner and event is not public).
 - view a list with its events with information for a current status. 
 - has all features as regular user.
 
@@ -104,6 +105,7 @@ It is implemented a filtration, searching, sorting and paging for a list of all 
 
 **Testing**
 
-![image](https://user-images.githubusercontent.com/86654801/129763352-deb7df29-0923-4704-963e-30b22c177e8f.png)
+![image](https://user-images.githubusercontent.com/86654801/129943149-09a6bbbe-5c5e-4363-a85f-b0ddfdcfce6e.png)
+
 
 
