@@ -7,12 +7,10 @@ namespace WalksInNature.Models.Insurances
 {
     public class InsuranceFormModel
     {
-
         [Required]
-        [Display(Name = "End Date")]
-        [DataType(DataType.Date)]
+        [Display(Name = "Start Date")]
+        [DataType(DataType.Date)]       
         public DateTime StartDate { get; init; }
-
 
         [Required]
         [Display(Name = "End Date")]

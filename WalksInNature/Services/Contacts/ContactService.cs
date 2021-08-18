@@ -78,18 +78,9 @@ namespace WalksInNature.Services.Contacts
             => this.data
                .ContactForms
                .Where(x => x.Id == messageId)
-               .Select(x => new ContactDetailsServiceModel
-               {
-                   Id = x.Id,
-                   Name = x.Name,
-                   Email = x.Email,
-                   Subject = x.Subject,
-                   Message = x.Message,
-                   CreatedOn = x.CreatedOn,
-                   IsReplied = x.IsReplied
-               })
+               .ProjectTo<ContactDetailsServiceModel>(this.mapper.ConfigurationProvider)
                .FirstOrDefault();
-
+        
         public int EntryContactForm(ContactFormModel inputModel)
         {
             var contactFormEntry = new ContactForm

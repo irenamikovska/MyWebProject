@@ -15,7 +15,7 @@ namespace WalksInNature.Test.Data
                 IsPublic = true
             });
 
-        public static List<Walk> GetWalks(int count, bool isPublic = true, bool sameUser = true)
+        public static List<Walk> GetWalks(int count = 5, bool isPublic = false, bool sameUser = true)
         {
             var user = new User
             {
@@ -33,7 +33,7 @@ namespace WalksInNature.Test.Data
                     StartPoint = $"Walk StartPoint {i}",
                     RegionId = 1,
                     LevelId = 1,
-                    IsPublic = isPublic,
+                    IsPublic = isPublic ? false : true,
                     Description = $"Walk Description {i}",
                     AddedByUser = sameUser ? user : new User
                     {
@@ -46,7 +46,7 @@ namespace WalksInNature.Test.Data
             return walks;
         }
 
-        public static Walk GetWalk(int id = 1, bool IsPublic = true)
+        public static Walk GetWalk(int id = 1, bool IsPublic = false)
         {
             var user = new User
             {
@@ -57,7 +57,7 @@ namespace WalksInNature.Test.Data
             return new Walk
             {
                 Id = id,               
-                IsPublic = IsPublic,
+                IsPublic = IsPublic ? false : true,
                 AddedByUserId = user.Id,
                 Region = new Region
                 {

@@ -30,6 +30,12 @@ namespace WalksInNature.Infrastructure
                 .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.AddedByUserId))
                 .ForMember(x => x.Likes, cfg => cfg.MapFrom(x => x.Likes.Count));
 
+            this.CreateMap<Walk, WalkDetailsServiceModel>()
+                .ForMember(x => x.Region, cfg => cfg.MapFrom(x => x.Region.Name))
+                .ForMember(x => x.Level, cfg => cfg.MapFrom(x => x.Level.Name))
+                .ForMember(x => x.UserId, cfg => cfg.MapFrom(x => x.AddedByUserId))
+                .ForMember(x => x.Likes, cfg => cfg.MapFrom(x => x.Likes.Count));
+
             this.CreateMap<EventDetailsServiceModel, EventFormModel>();
 
             this.CreateMap<Event, EventDetailsServiceModel>()
@@ -51,8 +57,14 @@ namespace WalksInNature.Infrastructure
 
             this.CreateMap<Insurance, InsuranceServiceModel>();
 
+            this.CreateMap<Insurance, InsuranceDetailsServiceModel>()
+                .ForMember(x => x.RefNumber, cfg => cfg.MapFrom(x => x.Id.Substring(0, 8)));
+               
+
             this.CreateMap<ContactForm, ContactServiceModel>();
-                
+
+            this.CreateMap<ContactForm, ContactDetailsServiceModel>();
+
         }
     }
 }

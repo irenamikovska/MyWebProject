@@ -47,7 +47,7 @@ namespace WalksInNature.Controllers
         public IActionResult Add(InsuranceFormModel input)
         {
             var userId = this.User.GetId();
-
+           
             if (input.StartDate < DateTime.UtcNow)
             {
                 this.ModelState.AddModelError(nameof(input.StartDate), "Start date have to after current date!");
@@ -64,20 +64,12 @@ namespace WalksInNature.Controllers
             {
                 this.ModelState.AddModelError(nameof(input.EndDate), "End date have to be not more 360 days!");
             }
-
+            
             if (input.Limit != 2000 || input.Limit != 5000 || input.Limit != 10000)
             {
                 this.ModelState.AddModelError(nameof(input.Limit), "Limit can be 2000, 5000 or 10000!");
             }
-
-            if (!ModelState.IsValid)
-            {
-                TempData[GlobalMessageKey] = "Your insurance was an error!";
-
-                return RedirectToAction(nameof(MyInsurances));
-
-                //return View(input);
-            }           
+          
 
             this.insuranceService.Book(
                 input.StartDate.ToString("dd.MM.yyyy", CultureInfo.InvariantCulture),                

@@ -17,7 +17,7 @@ namespace WalksInNature.Test.Data
         {
             var guide = new Guide()
             {
-                UserId = userId
+                UserId = userId               
             };
 
             return guide;

@@ -88,21 +88,7 @@ namespace WalksInNature.Services.Walks
             var walk = this.data
                    .Walks
                    .Where(x => x.Id == walkId)
-                   .Select(x => new WalkDetailsServiceModel
-                   {
-                       Id = x.Id,
-                       Name = x.Name,
-                       ImageUrl = x.ImageUrl,
-                       StartPoint = x.StartPoint,
-                       RegionId = x.RegionId,
-                       Region = x.Region.Name,
-                       LevelId = x.LevelId,
-                       Level = x.Level.Name,
-                       Description = x.Description,
-                       UserId = x.AddedByUserId,
-                       IsPublic = x.IsPublic,
-                       Likes = x.Likes.Count()
-                   })
+                   .ProjectTo<WalkDetailsServiceModel>(this.mapper.ConfigurationProvider)                  
                    .FirstOrDefault();
 
             return walk;

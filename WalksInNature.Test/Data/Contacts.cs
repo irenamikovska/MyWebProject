@@ -8,7 +8,7 @@ namespace WalksInNature.Test.Data
     public class Contacts
     {
         public static IEnumerable<ContactForm> GetContacts(int count = 5)
-          => Enumerable.Range(0, count).Select(i => new ContactForm()
+          => Enumerable.Range(1, count).Select(i => new ContactForm()
           {
 
           });

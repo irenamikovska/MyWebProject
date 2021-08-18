@@ -24,7 +24,7 @@ namespace WalksInNature.Test.Controllers
                 .View();
 
         [Theory]
-        [InlineData("Guide", "+359888505808")]
+        [InlineData("Guide", "+359-888-505-808")]
         public void PostBecomeShouldBeForAuthorizedUsersAndReturnRedirectWithValidModel(
             string guideName, string phoneNumber)
             => MyController<GuidesController>

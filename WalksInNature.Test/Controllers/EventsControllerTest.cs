@@ -62,28 +62,6 @@ namespace WalksInNature.Test.Controllers
                         .WithModelOfType<EventFormModel>());
 
         [Fact]
-        public void PostAddShouldReturnViewWhenFormIsWithWrongFields()
-            => MyController<EventsController>
-                .Instance(controller => controller
-                        .WithUser()
-                        .WithData(GetGuide()))
-                 .Calling(c => c.Add(new EventFormModel
-                 {
-
-                 }))
-                .ShouldHave()
-               .ActionAttributes(attributes => attributes
-                   .RestrictingForAuthorizedRequests()
-                    .RestrictingForHttpMethod(HttpMethod.Post))
-                .InvalidModelState()
-                .Data(data => data
-                     .WithSet<Event>(set => set.Should().BeEmpty()))
-                 .AndAlso()
-                 .ShouldReturn()
-                 .View(view => view
-                      .WithModelOfType<EventFormModel>());
-
-        [Fact]
         public void PostAddShouldReturnRedirectWhenUserIsNotGuide()
           => MyController<EventsController>
               .Instance(controller => controller
@@ -171,9 +149,7 @@ namespace WalksInNature.Test.Controllers
                     .RestrictingForAuthorizedRequests())
                 .AndAlso()
                 .ShouldReturn()
-                .Redirect(redirect => redirect
-                   .To<EventsController>(c => c
-                   .All(With.Any<AllEventsQueryModel>())));
+                .Redirect( );
 
     }
 }

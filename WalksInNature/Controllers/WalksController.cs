@@ -186,7 +186,7 @@ namespace WalksInNature.Controllers
                 return BadRequest();
             }
 
-            TempData[GlobalMessageKey] = $"Your walk was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
+            TempData[GlobalMessageKey] = $"The walk was edited{(this.User.IsAdmin() ? string.Empty : " and is awaiting for approval")}!";
 
             return RedirectToAction(nameof(Details), new { id, information = walk.GetWalkInformation() });
         }

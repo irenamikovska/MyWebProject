@@ -100,21 +100,7 @@ namespace WalksInNature.Services.Insurances
             => this.data
                .Insurances
                .Where(x => x.Id == insuranceId)
-               .Select(x => new InsuranceDetailsServiceModel
-               {
-                   Id = x.Id,
-                   StartDate = x.StartDate,
-                   EndDate = x.EndDate,
-                   Duration = x.Duration,
-                   Limit = x.Limit,
-                   NumberOfPeople = x.NumberOfPeople,
-                   PricePerPerson = x.PricePerPerson,
-                   TotalPrice = x.TotalPrice,
-                   RefNumber = x.Id.Substring(0, 8),
-                   Beneficiary = x.Beneficiary,
-                   UserId = x.UserId,
-                   IsPaid = x.IsPaid
-               })
+               .ProjectTo<InsuranceDetailsServiceModel>(this.mapper.ConfigurationProvider)              
                .FirstOrDefault();
        
 

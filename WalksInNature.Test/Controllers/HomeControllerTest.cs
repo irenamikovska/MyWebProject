@@ -28,8 +28,9 @@ namespace WalksInNature.Test.Controllers
                 .AndAlso()
                 .ShouldReturn()
                 .View(view => view
-                    .WithModelOfType<List<LatestWalkServiceModel>>());
-               
+                    .WithModelOfType<List<LatestWalkServiceModel>>()
+                .Passing(model => model.Should().HaveCount(3)));
+
 
 
         [Fact]
