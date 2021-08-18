@@ -10,12 +10,13 @@ Admin user: admin@walks.com, Password: admin123
 - create an walk (after validation of admin it become public), update it (if it is owner) and like any walk.
 - view a details for each event, join and leave an event.
 - book an insurance, update (only one field) and delete it (if it is expired).
-- view a list with its walks, insurances and details for each of them.
+- view a list with its walks, joined events, insurances and details for each of them.
 - send a message to administrator via contact form.
 
 **Guide features:**
 - register as guide, log and logout.	
 - create an event (after validation of admin it become public), update and delete it (if it is owner).
+- view a list with its events with information for a current status. 
 - has all features as regular user.
 
 **Administrator features:**
@@ -33,7 +34,7 @@ It is implemented a filtration, searching, sorting and paging for a list of all 
 - Microsoft SQL Server 5.0
 - xUnit
 - Moq
-- MyTested.AspNetCore.Mvc
+- MyTested.AspNetCore.Mvc 5.0
 - AJAX
 - Bootstrap
 - HTML 5
@@ -63,15 +64,19 @@ It is implemented a filtration, searching, sorting and paging for a list of all 
 
 **My Walks Page (logged-in users)**
 
-![image](https://user-images.githubusercontent.com/86654801/129206058-77964cae-c107-4be5-84bb-4e31618c1733.png)
+![image](https://user-images.githubusercontent.com/86654801/129725449-1d6eecfa-cc2c-440c-bceb-cf72459174ca.png)
 
 **Event Details Page (logged-in users)**
 
 ![image](https://user-images.githubusercontent.com/86654801/129203159-41eaafb0-ddf3-46a1-8580-7a79b3ce4454.png)
 
+**My Events Page(logged-in)**
+
+![image](https://user-images.githubusercontent.com/86654801/129725641-138c4bfa-4b0f-459b-91ec-2117b047e4c4.png)
+
 **My Events Page(logged-in guide-user)**
 
-![image](https://user-images.githubusercontent.com/86654801/129203409-d098c36c-198d-4ca0-81bf-e5b6c74969bd.png)
+![image](https://user-images.githubusercontent.com/86654801/129725822-016cd116-0783-42a5-b38b-bffb0c6b72f5.png)
 
 **Book Insurance Page(logged-in users)**
 
@@ -97,6 +102,8 @@ It is implemented a filtration, searching, sorting and paging for a list of all 
 
 ![image](https://user-images.githubusercontent.com/86654801/129520696-e649acd0-7168-472e-9010-4bce8770913c.png)
 
+**Testing**
 
+![image](https://user-images.githubusercontent.com/86654801/129763352-deb7df29-0923-4704-963e-30b22c177e8f.png)
 
 
